@@ -1,0 +1,40 @@
+.cardInfoContainer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 95vw;
+}
+
+.cardImg {
+  animation: float 2s ease-in-out infinite;
+  box-shadow: 10px 20px 30px grey;
+}
+
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  25% {
+    transform: translateY(-10px);
+  }
+
+  75% {
+    transform: translateY(10px);
+  }
+}
+
+
+.infosContainer {
+  font-size: 2rem;
+}
+
+.buttonContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+}
