@@ -1,0 +1,66 @@
+.setContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 2rem;
+  padding-top: 1.5rem;
+}
+
+.setCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  border: 1px grey solid;
+  border-radius: 15px;
+  width: 20rem;
+  height: 20rem;
+  box-shadow: 5px 1px 15px grey;
+  background: linear-gradient(58deg, #91c57b, #c1e2d6, #2197d2, #b7e535);
+  background-size: 300% 300%;
+  animation: gradient-animation 50s ease infinite;
+
+}
+
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.setCard:hover {
+  translate: 5px -5px;
+}
+
+.setName {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.setImg {
+  width: 45%;
+  height: auto;
+}
