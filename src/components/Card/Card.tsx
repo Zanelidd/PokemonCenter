@@ -1,5 +1,5 @@
-import { useLoaderData, useNavigate, useParams } from "react-router-dom";
-import { Card as ICard } from "pokemon-tcg-sdk-typescript/dist/sdk";
+import { useNavigate, useParams } from "react-router-dom";
+// import { Card as ICard } from "pokemon-tcg-sdk-typescript/dist/sdk";
 import style from "./card.module.css";
 import { useCollection } from "../../services/stores/CollectionStore";
 import { PokemonTCG } from "pokemon-tcg-sdk-typescript";
@@ -8,13 +8,13 @@ import loadingGif from "/ピカチュウ-pokeball.gif";
 import { useState } from "react";
 
 const Card = () => {
-  const card = useLoaderData() as ICard;
   const navigate = useNavigate();
   const params = useParams();
+  const cardId = params.cardId;
   const [coord, setCoord] = useState({ x: 0, y: 0 });
   const { collection, addToCollection, deleteFromCollection } = useCollection();
 
-  const isInCollection = collection.find((test) => test.id == card.id);
+  const isInCollection = collection.find((test) => test.id == params.cardId);
 
   const twentyFourHoursInMs = 1000 * 60 * 60 * 24;
 
@@ -82,7 +82,7 @@ const Card = () => {
           {isInCollection ? (
             <button
               onClick={() => {
-                deleteFromCollection(card.id);
+                cardId ? deleteFromCollection(cardId) : null;
               }}
             >
               Delete from colleciton
@@ -90,7 +90,7 @@ const Card = () => {
           ) : (
             <button
               onClick={() => {
-                addToCollection(card);
+                addToCollection(data);
               }}
             >
               Add to my collection
