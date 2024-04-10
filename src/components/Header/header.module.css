@@ -4,20 +4,26 @@
   justify-content: space-between;
   height: 5vh;
   border-bottom: 1px solid grey;
-  list-style: none;
-
 }
+
 
 .linkContainer {
   display: flex;
   align-items: center;
-  justify-content: space-around;
-  width: 15vw
+  justify-content: space-between;
+  gap: 1rem;
+  padding-left: 1rem;
 }
 
 .loginContainer {
   display: flex;
   align-items: center;
-  justify-content: space-around;
-  width: 15vw;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-right: 1rem
+}
+
+a.active {
+  text-decoration: none;
+  color: white;
 }
