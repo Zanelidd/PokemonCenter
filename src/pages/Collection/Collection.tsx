@@ -7,7 +7,7 @@ const Collection = () => {
     <>
       {collection &&
         collection.map((card) => {
-          return <h3>{card.name}</h3>;
+          return <h3 key={card.id}>{card.name}</h3>;
         })}
     </>
   );
