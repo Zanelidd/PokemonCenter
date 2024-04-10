@@ -4,11 +4,24 @@
   align-items: center;
   justify-content: space-around;
   padding: 1.5rem;
-  gap: 1rem
+  gap: 1rem;
 }
+
+
+.card {
+  box-shadow: 7px 5px 9px 0px grey;
+}
+
 
 
 .card:hover {
   transform: scale(1.2);
+
+}
+
+.loadingGif {
+  position: absolute;
+  top: 40%;
+  left: 40%;
 
 }

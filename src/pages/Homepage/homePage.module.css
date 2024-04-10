@@ -17,9 +17,9 @@
   width: 20rem;
   height: 20rem;
   box-shadow: 5px 1px 15px grey;
-  background: linear-gradient(58deg, #91c57b, #c1e2d6, #2197d2, #b7e535);
+  background: linear-gradient(58deg, #585e56, #87a399, #47606d);
   background-size: 300% 300%;
-  animation: gradient-animation 50s ease infinite;
+  animation: gradient-animation 20s ease infinite;
 
 }
 
@@ -63,4 +63,11 @@
 .setImg {
   width: 45%;
   height: auto;
+}
+
+.loadingGif {
+  position: absolute;
+  top: 40%;
+  left: 40%;
+
 }
