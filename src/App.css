@@ -5,6 +5,23 @@
 
 }
 
+:root {
+  --mouseX: 50%;
+  --mouseY: 50%;
+  --card-scale: 1;
+  --card-opacity: 0;
+  --translate-x: 0px;
+  --translate-y: 0px;
+  --xAxis: 0deg;
+  --yAxis: 0deg;
+  --background-x: var(--mouseX);
+  --background-y: var(--mouseY);
+  --pointer-from-center: 0;
+  --pointer-from-top: var(--pointer-from-center);
+  --pointer-from-left: var(--pointer-from-center);
+  --o: 1;
+}
+
 * {
   box-sizing: border-box;
 }
