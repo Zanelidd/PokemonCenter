@@ -2,39 +2,57 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  width: 95vw;
+  margin-top: 2rem;
+  padding: 2rem;
+  gap: 3rem;
+  width: 100vw;
+
+}
+
+.imgContainer {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 25px;
+  background: radial-gradient(circle at var(--mouseX) var(--mouseY), rgb(255, 255, 255) 0%, rgba(133, 137, 141, .33) 45%, rgba(100, 100, 100, .65)120%);
+  filter: brightness(.9) contrast(1.45);
+  transform: rotateX(var(--xAxis)) rotateY(var(--yAxis));
+
+  transition: all 0.15s ease-out;
+
+}
+
+.imgContainer.cardImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+}
+
+.card {
+  perspective: 1000px;
 }
 
 .cardImg {
-  animation: float 2s ease-in-out infinite;
-  box-shadow: 10px 20px 30px grey;
-}
-
-
-@keyframes float {
-
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  25% {
-    transform: translateY(-10px);
-  }
-
-  75% {
-    transform: translateY(10px);
-  }
+  opacity: calc(var(--o)*0.66);
 }
 
 
 .infosContainer {
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 
 .buttonContainer {
   display: flex;
   align-items: center;
   justify-content: space-around;
+
+}
+
+
+.loadingGif {
+  position: absolute;
+  top: 40%;
+  left: 40%;
 
 }
