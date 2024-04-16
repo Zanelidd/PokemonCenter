@@ -3,15 +3,20 @@ import style from "./homePage.module.css";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import loadingGif from "/ピカチュウ-pokeball.gif";
+import { useState } from "react";
+import {
+  getCoreRowModel,
+  getPaginationRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
 
 const HomePage = () => {
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   PokemonTCG.getAllSets().then((res) => {
-  //     setPokemonSets(res);
-  //   });
-  // }, []);
+  const [pagination, setPagination] = useState({
+    pageIndex: 0, //initial page index
+    pageSize: 20, //default page size
+  });
 
   const twentyFourHoursInMs = 1000 * 60 * 60 * 24;
 
@@ -21,6 +26,17 @@ const HomePage = () => {
       return PokemonTCG.getAllSets();
     },
     staleTime: twentyFourHoursInMs,
+  });
+
+  const table = useReactTable({
+    data,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    onPaginationChange: setPagination, //update the pagination state when internal APIs mutate the pagination state
+    state: {
+      //...
+      pagination,
+    },
   });
 
   if (isPending) {
@@ -34,22 +50,65 @@ const HomePage = () => {
   }
 
   return (
-    <div className={style.setContainer}>
-      {data?.map((set) => {
-        return (
-          <div
-            key={set.id}
-            className={style.setCard}
-            onClick={() => {
-              navigate(`/${set.id}`);
-            }}
-          >
-            <h3 className={style.setName}>{set.name}</h3>
-            <img className={style.setImg} src={set.images.logo} />
-          </div>
-        );
-      })}
-    </div>
+    <>
+      <div className={style.setContainer}>
+        {data
+          ?.slice(
+            pagination.pageIndex * pagination.pageSize,
+            pagination.pageSize + pagination.pageSize * pagination.pageIndex
+          )
+          .map((set) => {
+            return (
+              <div
+                key={set.id}
+                className={style.setCard}
+                onClick={() => {
+                  navigate(`/${set.id}`);
+                }}
+              >
+                <h3 className={style.setName}>{set.name}</h3>
+                <img className={style.setImg} src={set.images.logo} />
+              </div>
+            );
+          })}
+      </div>
+      <button
+        onClick={() => table.firstPage()}
+        disabled={!table.getCanPreviousPage()}
+      >
+        {"<<"}
+      </button>
+      <button
+        onClick={() => table.previousPage()}
+        disabled={!table.getCanPreviousPage()}
+      >
+        {"<"}
+      </button>
+      <button
+        onClick={() => table.nextPage()}
+        disabled={!table.getCanNextPage()}
+      >
+        {">"}
+      </button>
+      <button
+        onClick={() => table.lastPage()}
+        disabled={!table.getCanNextPage()}
+      >
+        {">>"}
+      </button>
+      <select
+        value={table.getState().pagination.pageSize}
+        onChange={(e) => {
+          table.setPageSize(Number(e.target.value));
+        }}
+      >
+        {[10, 20, 30, 40, 50].map((pageSize) => (
+          <option key={pageSize} value={pageSize}>
+            {pageSize}
+          </option>
+        ))}
+      </select>
+    </>
   );
 };
 
