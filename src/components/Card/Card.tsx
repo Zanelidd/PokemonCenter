@@ -1,5 +1,4 @@
 import { useNavigate, useParams } from "react-router-dom";
-// import { Card as ICard } from "pokemon-tcg-sdk-typescript/dist/sdk";
 import style from "./card.module.css";
 import { useCollection } from "../../services/stores/CollectionStore";
 import { PokemonTCG } from "pokemon-tcg-sdk-typescript";
