@@ -5,6 +5,7 @@
   flex-wrap: wrap;
   gap: 2rem;
   padding: 1.5rem;
+  height: 100%;
 }
 
 .setCard {
@@ -69,5 +70,11 @@
   position: absolute;
   top: 40%;
   left: 40%;
+
+}
+
+.paginationContainer {
+
+  bottom: 1rem;
 
 }
