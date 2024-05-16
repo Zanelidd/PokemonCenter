@@ -1,3 +1,12 @@
+.containerSet {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+
+}
+
 .cardContainer {
   display: flex;
   flex-wrap: wrap;
@@ -7,27 +16,30 @@
   gap: 1rem;
 }
 
-
 .card {
   box-shadow: 7px 5px 9px 0px grey;
 }
 
-
-
 .card:hover {
   transform: scale(1.2);
-
 }
 
 .loadingGif {
   position: absolute;
   top: 40%;
   left: 40%;
-
 }
 
 .paginationContainer {
+  width: 30%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  margin: 1rem;
+  gap: 0.5rem;
 
-  bottom: 1rem;
-
+  @media screen and (max-width : 420px) {
+    width: auto;
+  }
 }

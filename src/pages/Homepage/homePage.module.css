@@ -1,3 +1,12 @@
+.containerHome {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+
+
 .setContainer {
   display: flex;
   align-items: center;
@@ -70,11 +79,13 @@
   position: absolute;
   top: 40%;
   left: 40%;
-
 }
 
 .paginationContainer {
-
-  bottom: 1rem;
-
+  width: 30%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  margin: 1rem;
 }

@@ -55,7 +55,7 @@ const SetCards = () => {
   }
 
   return (
-    <>
+    <div className={style.containerSet}>
       <div className={style.cardContainer}>
         {data
           .slice(
@@ -89,6 +89,8 @@ const SetCards = () => {
         >
           {"<"}
         </button>
+        <div> Page : {pagination.pageIndex + 1}</div>
+
         <button
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
@@ -114,7 +116,7 @@ const SetCards = () => {
           ))}
         </select>
       </div>
-    </>
+    </div>
   );
 };
 

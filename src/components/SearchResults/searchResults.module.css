@@ -1,0 +1,8 @@
+.resultsContainer {
+  height: 75vh;
+  width: auto;
+  background-color: rgba(255, 255, 255, 0.199)smoke;
+  z-index: 15;
+  position: absolute;
+  top: 50%;
+}

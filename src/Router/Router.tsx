@@ -4,6 +4,7 @@ import SetCards from "../components/setCards/SetCards";
 import Card from "../components/Card/Card";
 import NavLayout from "../Layouts/NavLayout";
 import Collection from "../pages/Collection/Collection";
+import Results from "../pages/Results/Results";
 
 const Router = () => {
   const router = createBrowserRouter([
@@ -21,6 +22,7 @@ const Router = () => {
           element: <Card />,
         },
         { path: "/collection", element: <Collection /> },
+        { path: "/result", element: <Results /> },
       ],
     },
   ]);
