@@ -51,7 +51,7 @@ const HomePage = () => {
   }
 
   return (
-    <>
+    <div className={style.containerHome}>
       <div className={style.setContainer}>
         {data
           ?.slice(
@@ -74,7 +74,6 @@ const HomePage = () => {
           })}
       </div>
       <div className={style.paginationContainer}>
-        <div> Page : {pagination.pageIndex + 1}</div>
         <button
           onClick={() => table.firstPage()}
           disabled={!table.getCanPreviousPage()}
@@ -87,6 +86,8 @@ const HomePage = () => {
         >
           {"<"}
         </button>
+        <div> Page : {pagination.pageIndex + 1}</div>
+
         <button
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
@@ -112,7 +113,7 @@ const HomePage = () => {
           ))}
         </select>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -73,10 +73,12 @@ const Card = () => {
         </div>
       </div>
       <div className={style.infosContainer}>
-        <p>{data.flavorText}</p>
-        <p>Rarity : {data.rarity}</p>
-        <p>Card number : {data.number}</p>
-        <p>Average Price : {data.cardmarket.prices.trendPrice} </p>
+        <div className={style.textInfo}>
+          <p>{data.flavorText}</p>
+          <p>Rarity : {data.rarity}</p>
+          <p>Card number : {data.number}</p>
+          {/* <p>Average Price : {data.cardmarket.prices.trendPrice} $ </p> */}
+        </div>
         <div className={style.buttonContainer}>
           {isInCollection ? (
             <button
