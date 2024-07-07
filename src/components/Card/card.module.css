@@ -36,7 +36,6 @@
   height: 100%;
 }
 
-
 .infosContainer {
   height: 100%;
   width: 30%;
@@ -57,10 +56,26 @@
 
 }
 
-
 .loadingGif {
   position: absolute;
   top: 40%;
   left: 40%;
+
+}
+
+
+@media screen and (max-width : 400px) {
+  .cardInfoContainer {
+    flex-direction: column
+  }
+
+  .infosContainer {
+    width: 90vw;
+  }
+
+  .imgContainer {
+    height: auto;
+  }
+
 
 }

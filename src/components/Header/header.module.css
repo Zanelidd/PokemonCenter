@@ -6,7 +6,6 @@
   border-bottom: 1px solid grey;
 }
 
-
 .linkContainer {
   display: flex;
   align-items: center;
@@ -26,4 +25,13 @@
 a.active {
   text-decoration: none;
   color: white;
+}
+
+@media screen and (max-width : 400px) {
+  .header {
+    display: none
+  }
+
+  ;
+
 }
