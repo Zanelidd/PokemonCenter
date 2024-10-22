@@ -1,8 +1,63 @@
 #root {
-  margin: 0 auto;
   text-align: center;
   min-height: 100vh;
+
 }
+
+.loadingGif {
+  position: absolute;
+  top: 40%;
+  left: 40%;
+}
+
+@media screen and (max-width : 768px) {
+  .loadingGif {
+    top: 20%;
+    left: 10%;
+    width: 75vw;
+  }
+}
+
+.paginationContainer {
+  width: 50%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  margin: 1rem;
+  gap: 0.5rem;
+
+}
+
+@media screen and (max-width : 768px) {
+  .paginationContainer {
+    width: 55vw;
+    gap: 1rem;
+
+  }
+
+  button {
+    font-size: 0.5rem;
+    text-align: center;
+  }
+
+  .fastBackwardButton,
+  .fastForwardButton,
+  .selectPage {
+    display: none;
+  }
+
+}
+
+
+
+.pageInformation {
+  width: 6rem;
+  font-size: 1rem;
+  margin: 1rem;
+
+}
+
 
 :root {
   --mouseX: 50%;

@@ -44,9 +44,7 @@ const Results = () => {
   });
 
   if (isPending) {
-    return (
-      <img className={style.loadingGif} src={loadingGif} alt="Loading Gif" />
-    );
+    return <img className="loadingGif" src={loadingGif} alt="Loading Gif" />;
   }
 
   if (error) {
@@ -65,8 +63,9 @@ const Results = () => {
             return <SearchResults key={stat.id} data={stat} />;
           })}
       </div>
-      <div className={style.paginationContainer}>
+      <div className="paginationContainer">
         <button
+          className="fastBackwardButton"
           onClick={() => table.firstPage()}
           disabled={!table.getCanPreviousPage()}
         >
@@ -78,7 +77,7 @@ const Results = () => {
         >
           {"<"}
         </button>
-        <div> Page : {pagination.pageIndex + 1}</div>
+        <div className="pageInformation">{pagination.pageIndex + 1}</div>
 
         <button
           onClick={() => table.nextPage()}
@@ -87,12 +86,14 @@ const Results = () => {
           {">"}
         </button>
         <button
+          className="fastForwardButton"
           onClick={() => table.lastPage()}
           disabled={!table.getCanNextPage()}
         >
           {">>"}
         </button>
         <select
+          className="selectPage"
           value={table.getState().pagination.pageSize}
           onChange={(e) => {
             table.setPageSize(Number(e.target.value));

@@ -1,5 +1,5 @@
-import { Card } from "pokemon-tcg-sdk-typescript/dist/sdk";
 import { create } from "zustand";
+import { Card } from "pokemon-tcg-sdk-typescript/dist/sdk";
 
 type useCollectionStore = {
   collection: Array<Card>;

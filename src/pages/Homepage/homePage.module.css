@@ -75,23 +75,3 @@
   width: 45%;
   height: auto;
 }
-
-.loadingGif {
-  position: absolute;
-  top: 40vh;
-  left: 40vw;
-}
-
-.paginationContainer {
-  width: 30%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-around;
-  margin: 1rem;
-  gap: 0.5rem;
-
-  @media screen and (max-width : 420px) {
-    width: auto;
-  }
-}

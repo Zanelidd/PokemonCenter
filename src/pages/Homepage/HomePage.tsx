@@ -14,8 +14,8 @@ const HomePage = () => {
   const navigate = useNavigate();
 
   const [pagination, setPagination] = useState({
-    pageIndex: 0, //initial page index
-    pageSize: 20, //default page size
+    pageIndex: 0,
+    pageSize: 20,
   });
 
   const twentyFourHoursInMs = 1000 * 60 * 60 * 24;
@@ -33,17 +33,14 @@ const HomePage = () => {
     data: data || [],
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    onPaginationChange: setPagination, //update the pagination state when internal APIs mutate the pagination state
+    onPaginationChange: setPagination,
     state: {
-      //...
       pagination,
     },
   });
 
   if (isPending) {
-    return (
-      <img className={style.loadingGif} src={loadingGif} alt="Loading Gif" />
-    );
+    return <img className="loadingGif" src={loadingGif} alt="Loading Gif" />;
   }
 
   if (error) {
@@ -73,8 +70,9 @@ const HomePage = () => {
             );
           })}
       </div>
-      <div className={style.paginationContainer}>
+      <div className="paginationContainer">
         <button
+          className="fastBackwardButton"
           onClick={() => table.firstPage()}
           disabled={!table.getCanPreviousPage()}
         >
@@ -86,7 +84,7 @@ const HomePage = () => {
         >
           {"<"}
         </button>
-        <div> Page : {pagination.pageIndex + 1}</div>
+        <div className="pageInformation">{pagination.pageIndex + 1}</div>
 
         <button
           onClick={() => table.nextPage()}
@@ -95,12 +93,14 @@ const HomePage = () => {
           {">"}
         </button>
         <button
+          className="fastForwardButton"
           onClick={() => table.lastPage()}
           disabled={!table.getCanNextPage()}
         >
           {">>"}
         </button>
         <select
+          className="selectPage"
           value={table.getState().pagination.pageSize}
           onChange={(e) => {
             table.setPageSize(Number(e.target.value));

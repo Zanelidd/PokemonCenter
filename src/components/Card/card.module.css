@@ -46,7 +46,42 @@
 }
 
 .textInfo {
-  font-size: 1.5rem;
+  font-size: 1rem;
+
+}
+
+.attackContainer {
+  display: flex;
+
+
+}
+
+.attack {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 1rem;
+}
+
+.attackTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.priceInfo {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.normalPrice,
+.hollowPrice {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  align-items: center;
+  justify-content: space-around;
 }
 
 .buttonContainer {
@@ -56,17 +91,13 @@
 
 }
 
-.loadingGif {
-  position: absolute;
-  top: 40%;
-  left: 40%;
-
-}
 
 
-@media screen and (max-width : 400px) {
+
+@media screen and (max-width : 768px) {
   .cardInfoContainer {
-    flex-direction: column
+    flex-direction: column;
+    height: 100vh;
   }
 
   .infosContainer {
@@ -76,6 +107,7 @@
   .imgContainer {
     height: auto;
   }
+
 
 
 }
