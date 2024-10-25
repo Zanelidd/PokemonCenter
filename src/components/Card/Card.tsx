@@ -6,31 +6,71 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import loadingGif from "/ピカチュウ-pokeball.gif";
 import { useState } from "react";
 import type { Card } from "pokemon-tcg-sdk-typescript/dist/sdk";
+import { CollectionCard } from "../../services/types";
 
 const Card = () => {
   const navigate = useNavigate();
   const params = useParams();
   const cardId = params.cardId;
   const [coord, setCoord] = useState({ x: 0, y: 0 });
-  const { collection, addToCollection, deleteFromCollection } = useCollection();
+  const { collection, addToCollection, deleteFromCollection, getCardById } =
+    useCollection();
 
   const isInCollection = collection.find((test) => test.id == params.cardId);
 
   const twentyFourHoursInMs = 1000 * 60 * 60 * 24;
 
   const mutation = useMutation({
-    mutationFn: async (cardId: string) => {
+    mutationFn: async (data: Card) => {
       return await fetch(`${import.meta.env.VITE_BACKEND_URL}/collection`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
 
-        body: JSON.stringify({ cardId }),
+        body: JSON.stringify({
+          cardId: data.id,
+          cardName: data.name,
+          cardImg: data.images.small,
+        }),
       })
-        // .then((res) => {
-        //   res.json();
-        // })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status : ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((result) => {
+          console.log("Backend response: ", result);
+          addToCollection(data, result.id);
+          return result;
+        })
+
+        .catch((error) => {
+          console.error("Error", error);
+        });
+    },
+    onSuccess: (data, variables) => {
+      console.log("collection", collection);
+      //ajout toaster avec sonner
+    },
+    onError: (error) => {
+      console.error("Error", error);
+    },
+  });
+
+  const mutationDelete = useMutation({
+    mutationFn: async (data: CollectionCard) => {
+      console.log("entrée mutate: ", data);
+      return await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/collection/${data.collectionId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
         .then((res) => {
           res.json();
         })
@@ -38,14 +78,26 @@ const Card = () => {
           console.log(error);
         });
     },
-
-    // onSuccess: (data) => {
-    //   console.log("Success:", data);
-    // },
-    // onError: (error) => {
-    //   console.error("Error:", error);
-    // },
+    onSuccess: (data, variable) => {
+      //ajout toaster avec sonner
+    },
   });
+
+  const handleAddCollection = (data: Card) => {
+    mutation.mutate(data);
+  };
+
+  const handleDeleteCollection = (data: Card) => {
+    const findCard = getCardById(data.id);
+    if (findCard) {
+      console.log("Find card : ", findCard);
+      mutationDelete.mutate(findCard);
+      deleteFromCollection(data.id);
+    } else {
+      console.error("Card not found in collection");
+    }
+  };
+
   const { isPending, error, data } = useQuery({
     queryKey: ["PokemonCard", `${params.cardId}`],
     queryFn: () => {
@@ -61,11 +113,6 @@ const Card = () => {
   if (error) {
     return "An error occured: " + error.message;
   }
-
-  const handleAddCollection = (data: Card) => {
-    addToCollection(data);
-    mutation.mutate(data.id);
-  };
 
   return (
     <div className={style.cardInfoContainer}>
@@ -154,7 +201,7 @@ const Card = () => {
           {isInCollection ? (
             <button
               onClick={() => {
-                cardId ? deleteFromCollection(cardId) : null;
+                cardId ? handleDeleteCollection(data) : null;
               }}
             >
               Delete from colleciton
