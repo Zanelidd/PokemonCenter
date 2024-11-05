@@ -41,7 +41,6 @@ const Card = () => {
           return response.json();
         })
         .then((result) => {
-          console.log("Backend response: ", result);
           addToCollection(data, result.id);
           return result;
         })
@@ -50,7 +49,7 @@ const Card = () => {
           console.error("Error", error);
         });
     },
-    onSuccess: (data, variables) => {
+    onSuccess: () => {
       console.log("collection", collection);
       //ajout toaster avec sonner
     },
@@ -61,7 +60,6 @@ const Card = () => {
 
   const mutationDelete = useMutation({
     mutationFn: async (data: CollectionCard) => {
-      console.log("entrée mutate: ", data);
       return await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/collection/${data.collectionId}`,
         {
@@ -78,8 +76,12 @@ const Card = () => {
           console.log(error);
         });
     },
-    onSuccess: (data, variable) => {
+    onSuccess: () => {
+      console.log("collection", collection);
       //ajout toaster avec sonner
+    },
+    onError: (error) => {
+      console.error("Error", error);
     },
   });
 

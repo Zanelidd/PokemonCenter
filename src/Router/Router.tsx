@@ -21,8 +21,8 @@ const Router = () => {
           path: "/card/:cardId",
           element: <Card />,
         },
-        { path: "/collection", element: <Collection /> },
         { path: "/result", element: <Results /> },
+        { path: "/collection", element: <Collection /> },
       ],
     },
   ]);
