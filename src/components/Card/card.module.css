@@ -52,6 +52,7 @@
 
 .attackContainer {
   display: flex;
+  flex-direction: column;
 
 
 }
@@ -59,20 +60,26 @@
 .attack {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
   gap: 1rem;
 }
 
 .attackTitle {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 .priceInfo {
   display: flex;
   align-items: center;
   justify-content: space-around;
+
+}
+
+.priceTitle {
+  font-weight: bold;
+  font-size: 1.4rem;
 }
 
 .normalPrice,
