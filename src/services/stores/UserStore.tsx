@@ -6,7 +6,7 @@ interface UserState {
   user: User | null;
   isAuthenticated: boolean;
   setUser: (user: User | null) => void;
-  login: (username: string, token: string) => void;
+  login: (username: string, token: string,userId :number) => void;
   logout: () => void;
   showModal: boolean;
   toggleModal: () => void;
@@ -25,9 +25,9 @@ export const useUser = create<UserState>()(
           isAuthenticated: !!user,
         }),
 
-      login: (username, access_token) =>
+      login: (username:string, access_token:string,userId:number) =>
         set({
-          user: { username, access_token },
+          user: { username, access_token,userId },
           isAuthenticated: true,
         }),
       logout: () =>
