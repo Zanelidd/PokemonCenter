@@ -1,8 +1,8 @@
-import { PokemonTCG } from "pokemon-tcg-sdk-typescript";
 import style from "./homePage.module.css";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import loadingGif from "/ピカチュウ-pokeball.gif";
+import type { Set } from "pokemon-tcg-sdk-typescript/dist/sdk";
 import { useState } from "react";
 import {
   getCoreRowModel,
@@ -22,8 +22,20 @@ const HomePage = () => {
 
   const { isPending, error, data } = useQuery({
     queryKey: ["PokemonSet"],
-    queryFn: () => {
-      return PokemonTCG.getAllSets();
+    queryFn: async ():Promise<Array<Set>> => {
+     const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/external_api`,
+         {method: "GET", headers: {
+           "Content-Type": "application/json",
+           }})
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const result = await response.json();
+
+      return Array.isArray(result) ? result :result.data || [];
+
     },
     staleTime: twentyFourHoursInMs,
   });
@@ -44,7 +56,7 @@ const HomePage = () => {
   }
 
   if (error) {
-    return "An error occured: " + error.message;
+    return "An error occurred: " + error.message;
   }
 
   return (
@@ -65,7 +77,7 @@ const HomePage = () => {
                 }}
               >
                 <h3 className={style.setName}>{set.name}</h3>
-                <img className={style.setImg} src={set.images.logo} />
+                <img className={style.setImg} src={set.images.logo} alt={`Image of the set ${set.name}`} />
               </div>
             );
           })}

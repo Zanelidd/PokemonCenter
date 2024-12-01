@@ -9,7 +9,6 @@ import {
 } from "@tanstack/react-table";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { PokemonTCG } from "pokemon-tcg-sdk-typescript";
 import loadingGif from "/ピカチュウ-pokeball.gif";
 
 const Results = () => {
@@ -24,13 +23,22 @@ const Results = () => {
 
   const { isPending, error, data } = useQuery({
     queryKey: ["SearchResults", `${state}`],
-    queryFn: () => {
-      return PokemonTCG.findCardsByQueries({
-        q: `name:${state}`,
-      });
-    },
     staleTime: twentyFourHoursInMs,
-  });
+    queryFn: async () :Promise<Array<Card>> => {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/external_api`,
+      {method : "POST",
+      headers:{
+        "Content-Type": "application/json",
+      },
+      body : JSON.stringify({ name : state }),},
+      )
+      if (!response.ok) {
+        throw new Error("Could not find any result");
+      }
+      const result = await response.json();
+      return Array.isArray(result) ? result :result.data || [];
+    }})
+
 
   const table = useReactTable({
     columns: [],
