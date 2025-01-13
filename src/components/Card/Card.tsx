@@ -1,13 +1,13 @@
-import { useNavigate, useParams } from "react-router-dom";
-import style from "./card.module.css";
-import { useCollection } from "../../services/stores/CollectionStore";
-import { PokemonTCG } from "pokemon-tcg-sdk-typescript";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import loadingGif from "/ピカチュウ-pokeball.gif";
-import { useState } from "react";
-import type { Card } from "pokemon-tcg-sdk-typescript/dist/sdk";
-import { CollectionCard } from "../../services/types";
-import { useUser } from "../../services/stores/UserStore.tsx";
+import { useNavigate, useParams } from 'react-router-dom';
+import style from './card.module.css';
+import { useCollection } from '../../services/stores/CollectionStore';
+import { PokemonTCG } from 'pokemon-tcg-sdk-typescript';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import loadingGif from '/ピカチュウ-pokeball.gif';
+import { useState } from 'react';
+import type { Card } from 'pokemon-tcg-sdk-typescript/dist/sdk';
+import { CollectionCard } from '../../services/types';
+import { useUser } from '../../services/stores/UserStore.tsx';
 
 const Card = () => {
   const navigate = useNavigate();
@@ -62,7 +62,7 @@ const Card = () => {
   const mutationDelete = useMutation({
     mutationFn: async (data: CollectionCard) => {
       return await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/collection/${data.collectionId}`,
+        `${import.meta.env.VITE_BACKEND_URL}/card/${data.id}`,
         {
           method: "DELETE",
           headers: {
