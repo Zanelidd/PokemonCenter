@@ -9,10 +9,12 @@ type useCollectionStore = {
   clearCollection: () => void;
   // isInCollection: (cardId: string) => boolean;
   getCardById: (cardId: string) => Card | undefined;
+  fillCollection: (userId: number) => void;
 };
 
 export const useCollection = create<useCollectionStore>((set) => ({
   collection: [],
+
   addToCollection: (card, collectionId: number) =>
     set((state) => {
       if (state.collection.some((c) => c.id === card.id)) {
@@ -20,17 +22,38 @@ export const useCollection = create<useCollectionStore>((set) => ({
       }
       return { collection: [...state.collection, { ...card, collectionId }] };
     }),
+
   deleteFromCollection: (cardId: string) =>
     set((state) => ({
       collection: state.collection.filter((card) => card.id !== cardId),
     })),
+
   clearCollection: () => set({ collection: [] }),
+
   // isInCollection: (cardId: string) => {
   //   const state = get();
   //   return state.collection.some((card: Card) => card.id === cardId);
   // },
+
   getCardById: (cardId: string): Card | undefined =>
     useCollection
       .getState()
       .collection.find((card: CollectionCard) => card.id === cardId),
+
+  fillCollection: (userId) =>
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/card/${userId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((err) => {
+        console.error(err);
+      }),
 }));

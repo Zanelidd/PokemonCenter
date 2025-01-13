@@ -10,6 +10,8 @@ import { useMutation } from "@tanstack/react-query";
 import { useUser } from "../../services/stores/UserStore";
 import style from "./login.module.css";
 import { User } from "../../services/types";
+import { useCollection } from "../../services/stores/CollectionStore.tsx";
+import Card from "../Card/Card.tsx";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -68,6 +70,7 @@ const Login = () => {
   };
 
   const { login, setUser } = useUser();
+  const { addToCollection } = useCollection();
 
   const mutation = useMutation({
     mutationFn: async (userData: {
@@ -90,25 +93,46 @@ const Login = () => {
       if (!response.ok) {
         throw new Error(`HTTP error! status ${response.status}`);
       }
-      const result: User = await response.json();
 
-      signIn ? login(result.username, result.access_token) : setUser(result);
+      const result: User = await response.json();
+      await fetch(`${import.meta.env.VITE_BACKEND_URL}/card/${result.userId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((result) => {
+          result.map((card: Card) => {
+            addToCollection(card, result.userId);
+          });
+        });
+
+      signIn
+        ? login(result.username, result.access_token, result.userId)
+        : setUser(result);
     },
     onSuccess: () => {
-      console.log(`${signIn ? "Connection" : "Incription"} success`);
+      console.log(`${signIn ? "Connection" : "Inscription"} success`);
+      // Penser à intégrer l'ID du user
+      setSignIn(true);
+      toggleModal();
     },
     onError: (error) => {
       console.error("Error", error);
     },
   });
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (signIn) {
-      await mutation.mutate(formData);
+      mutation.mutate(formData);
     } else {
       if (VerifPassword()) {
-        await mutation.mutate(formData);
+        mutation.mutate(formData);
       }
     }
   };
@@ -153,7 +177,7 @@ const Login = () => {
     <div className={style.loginBack}>
       <div className={style.loginContainer} ref={modalRef}>
         <div className={style.headContainer}>
-          <div onClick={() => setSignIn(true)}>Login</div>
+          <div onClick={() => setSignIn(true)}>Sign In</div>
           <div onClick={() => setSignIn(false)}>Sign Up</div>
         </div>
         <form onSubmit={handleSubmit} className={style.loginForm}>
@@ -184,7 +208,6 @@ const Login = () => {
             type="password"
             name="password"
             id="password"
-            value={password}
             onChange={signIn ? handleChange : signUpHandler}
             disabled={mutation.isPending}
           />

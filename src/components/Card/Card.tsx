@@ -7,6 +7,7 @@ import loadingGif from "/ピカチュウ-pokeball.gif";
 import { useState } from "react";
 import type { Card } from "pokemon-tcg-sdk-typescript/dist/sdk";
 import { CollectionCard } from "../../services/types";
+import { useUser } from "../../services/stores/UserStore.tsx";
 
 const Card = () => {
   const navigate = useNavigate();
@@ -19,10 +20,11 @@ const Card = () => {
   const isInCollection = collection.find((test) => test.id == params.cardId);
 
   const twentyFourHoursInMs = 1000 * 60 * 60 * 24;
+  const { user } = useUser();
 
   const mutation = useMutation({
     mutationFn: async (data: Card) => {
-      return await fetch(`${import.meta.env.VITE_BACKEND_URL}/collection`, {
+      return await fetch(`${import.meta.env.VITE_BACKEND_URL}/card`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -30,8 +32,7 @@ const Card = () => {
 
         body: JSON.stringify({
           cardId: data.id,
-          cardName: data.name,
-          cardImg: data.images.small,
+          userId: user?.userId,
         }),
       })
         .then((response) => {
@@ -177,8 +178,8 @@ const Card = () => {
             })}
           </div>
           <p>{data.flavorText}</p>
-          <div className={style.priceINfo}>
-            <p>Prices</p>
+          <div className={style.priceInfo}>
+            <p className={style.priceTitle}>Prices</p>
             <div className={style.normalPrice}>
               <p>Low Price : {data.tcgplayer?.prices.normal?.low} $ </p>
               <p>Average Price : {data.tcgplayer?.prices.normal?.market} $</p>
@@ -206,7 +207,7 @@ const Card = () => {
                 cardId ? handleDeleteCollection(data) : null;
               }}
             >
-              Delete from colleciton
+              Delete from collection
             </button>
           ) : (
             <button

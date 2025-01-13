@@ -5,17 +5,16 @@ import { useUser } from "../../services/stores/UserStore";
 
 const Header = () => {
   const { toggleModal, isAuthenticated, logout } = useUser();
-  console.log("test", isAuthenticated);
 
   return (
     <header className={style.header}>
       <nav className={style.linkContainer}>
         <NavLink to="/home"> Home</NavLink>
-        <NavLink to="/collection"> Collection</NavLink>
+        {isAuthenticated && <NavLink to="user/collection"> Collection</NavLink>}
       </nav>
       <SearchCard />
       <div className={style.loginContainer}>
-        {isAuthenticated && <NavLink to="/account">Account</NavLink>}
+        {isAuthenticated && <NavLink to="user/account">Account</NavLink>}
         {isAuthenticated ? (
           <button
             onClick={() => {
