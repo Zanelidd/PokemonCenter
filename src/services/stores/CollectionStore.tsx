@@ -1,6 +1,6 @@
-import { create } from "zustand";
-import { Card } from "pokemon-tcg-sdk-typescript/dist/sdk";
-import { CollectionCard } from "../types";
+import { create } from 'zustand';
+import { Card } from 'pokemon-tcg-sdk-typescript/dist/sdk';
+import { CollectionCard } from '../types';
 
 type useCollectionStore = {
   collection: Array<CollectionCard>;
@@ -9,7 +9,7 @@ type useCollectionStore = {
   clearCollection: () => void;
   // isInCollection: (cardId: string) => boolean;
   getCardById: (cardId: string) => Card | undefined;
-  fillCollection: (userId: number) => void;
+  fillCollection: (userId: number | undefined) => void;
 };
 
 export const useCollection = create<useCollectionStore>((set) => ({
@@ -30,10 +30,6 @@ export const useCollection = create<useCollectionStore>((set) => ({
 
   clearCollection: () => set({ collection: [] }),
 
-  // isInCollection: (cardId: string) => {
-  //   const state = get();
-  //   return state.collection.some((card: Card) => card.id === cardId);
-  // },
 
   getCardById: (cardId: string): Card | undefined =>
     useCollection
