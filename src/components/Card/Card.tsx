@@ -93,7 +93,6 @@ const Card = () => {
   const handleDeleteCollection = (data: Card) => {
     const findCard = getCardById(data.id);
     if (findCard) {
-      console.log("Find card : ", findCard);
       mutationDelete.mutate(findCard);
       deleteFromCollection(data.id);
     } else {
@@ -201,23 +200,24 @@ const Card = () => {
           </div>
         </div>
         <div className={style.buttonContainer}>
-          {isInCollection ? (
-            <button
-              onClick={() => {
-                cardId ? handleDeleteCollection(data) : null;
-              }}
-            >
-              Delete from collection
-            </button>
-          ) : (
-            <button
-              onClick={() => {
-                handleAddCollection(data);
-              }}
-            >
-              Add to my collection
-            </button>
-          )}
+          {user ?  isInCollection ? (
+              <button
+                onClick={() => {
+                  cardId ? handleDeleteCollection(data) : null;
+                }}
+              >
+                Delete from collection
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  handleAddCollection(data);
+                }}
+              >
+                Add to my collection
+              </button>
+            ) : null}
+
           <button
             onClick={() => {
               navigate(-1);

@@ -1,14 +1,10 @@
-import style from "./homePage.module.css";
-import { useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import loadingGif from "/ピカチュウ-pokeball.gif";
-import type { Set } from "pokemon-tcg-sdk-typescript/dist/sdk";
-import { useState } from "react";
-import {
-  getCoreRowModel,
-  getPaginationRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import style from './homePage.module.css';
+import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import loadingGif from '/ピカチュウ-pokeball.gif';
+import type { Set } from 'pokemon-tcg-sdk-typescript/dist/sdk';
+import { useState } from 'react';
+import { getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -76,14 +72,14 @@ const HomePage = () => {
                   navigate(`/${set.id}`);
                 }}
               >
-                <h3 className={style.setName}>{set.name}</h3>
                 <img className={style.setImg} src={set.images.logo} alt={`Image of the set ${set.name}`} />
+                <h3 className={style.setName}>{set.name}</h3>
               </div>
             );
           })}
       </div>
       <div className="paginationContainer">
-        <button
+      <button
           className="fastBackwardButton"
           onClick={() => table.firstPage()}
           disabled={!table.getCanPreviousPage()}

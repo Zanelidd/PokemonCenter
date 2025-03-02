@@ -1,7 +1,20 @@
 .collectionContainer {
-  min-width: 100vw;
-  display : flex;
+display: flex;
   flex-direction: column;
-  justify-content: space-around;
   align-items: center;
+  justify-content: center;
+
 }
+
+.collectionCardContainer{
+  display: grid;
+  max-width: 1200px;
+  margin: 20px auto;
+  justify-items: center;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 50px;
+  padding: 0 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+

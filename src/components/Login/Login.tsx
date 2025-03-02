@@ -1,17 +1,10 @@
-import {
-  ChangeEvent,
-  FormEvent,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { useMutation } from "@tanstack/react-query";
-import { useUser } from "../../services/stores/UserStore";
-import style from "./login.module.css";
-import { User } from "../../services/types";
-import { useCollection } from "../../services/stores/CollectionStore.tsx";
-import Card from "../Card/Card.tsx";
+import { ChangeEvent, FormEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { useUser } from '../../services/stores/UserStore';
+import style from './login.module.css';
+import { User } from '../../services/types';
+import { useCollection } from '../../services/stores/CollectionStore.tsx';
+import Card from '../Card/Card.tsx';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -91,6 +84,13 @@ const Login = () => {
         }
       );
       if (!response.ok) {
+ response.json()
+   .then((errorData) => {
+   console.log("Erreur",errorData.message);
+ })
+   .catch(err => {
+     console.log('Impossible de parser la réponse JSON:', err);
+   });
         throw new Error(`HTTP error! status ${response.status}`);
       }
 
@@ -177,8 +177,8 @@ const Login = () => {
     <div className={style.loginBack}>
       <div className={style.loginContainer} ref={modalRef}>
         <div className={style.headContainer}>
-          <div onClick={() => setSignIn(true)}>Sign In</div>
-          <div onClick={() => setSignIn(false)}>Sign Up</div>
+          <div className={signIn ? style.activeTab : style.inactiveTab} onClick={() => setSignIn(true)}>Sign In</div>
+          <div className={!signIn ? style.activeTab : style.inactiveTab} onClick={() => setSignIn(false)}>Sign Up</div>
         </div>
         <form onSubmit={handleSubmit} className={style.loginForm}>
           <label htmlFor="username">Username</label>

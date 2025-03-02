@@ -1,10 +1,14 @@
 .resultContainer {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  align-items: center;
-  margin: 1.5rem;
+  max-width: 1200px;
+  margin: 20px auto;
+  display: grid;
+  justify-items: center;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 50px;
+  padding: 0 20px;
+  width: 100%;
+  box-sizing: border-box;
+padding-top: 3rem;
   height: 100%;
 }
 
