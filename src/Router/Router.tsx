@@ -1,16 +1,13 @@
-import {
-  createBrowserRouter,
-  Navigate,
-  RouterProvider,
-} from "react-router-dom";
-import HomePage from "../pages/Homepage/HomePage";
-import SetCards from "../components/setCards/SetCards";
-import Card from "../components/Card/Card";
-import NavLayout from "../Layouts/NavLayout";
-import Collection from "../pages/Collection/Collection";
-import Results from "../pages/Results/Results";
-import Account from "../pages/Account/Account";
-import { useUser } from "../services/stores/UserStore";
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
+import HomePage from '../pages/Homepage/HomePage';
+import SetCards from '../components/setCards/SetCards';
+import Card from '../components/Card/Card';
+import NavLayout from '../Layouts/NavLayout';
+import Collection from '../pages/Collection/Collection';
+import Results from '../pages/Results/Results';
+import Account from '../pages/Account/Account';
+import { useUser } from '../services/stores/UserStore';
+import { useCollection } from '../services/stores/CollectionStore.tsx';
 
 const PrivateRoute = ({ children }: { children: React.ReactElement }) => {
   const { isAuthenticated } = useUser();
@@ -21,7 +18,11 @@ const PrivateRoute = ({ children }: { children: React.ReactElement }) => {
   return children;
 };
 
+
+
 const Router = () => {
+  const { fillCollection } = useCollection();
+  const { getUser } = useUser();
   const router = createBrowserRouter([
     {
       path: "/",
@@ -47,6 +48,16 @@ const Router = () => {
                   <Collection />
                 </PrivateRoute>
               ),
+              loader: async () => {
+                const currentUser = getUser();
+
+                if (currentUser?.userId) {
+                  return fillCollection(currentUser.userId);
+                }
+
+                // Si pas d'utilisateur, retournez null
+                return null;
+              }
             },
             {
               path: "/user/account",

@@ -46,8 +46,8 @@ export const useCollection = create<useCollectionStore>((set) => ({
       .then((res) => {
         return res.json();
       })
-      .then((result) => {
-        console.log(result);
+      .then(() => {
+        return true
       })
       .catch((err) => {
         console.error(err);
