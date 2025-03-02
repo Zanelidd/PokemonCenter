@@ -7,6 +7,7 @@
   padding: 2rem;
   gap: 3rem;
 
+
 }
 
 .imgContainer {
@@ -37,84 +38,207 @@
 }
 
 .infosContainer {
-  height: 100%;
-  width: 30%;
   display: flex;
   flex-direction: column;
+  background: linear-gradient(145deg, #1a2a42 0%, #0f1723 100%);
+  color: white;
+  font-family: 'Montserrat', sans-serif;
+  border-radius: 15px;
+  max-width: 1200px;
+  min-width: 1000px;
+  padding: 25px 20px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  border: 2px solid #3a4d6b;
+}
+
+.infosContainer h2 {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  color: #e0e7ff;
+  text-align: center;
+}
+
+.infosContainer h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #7dcbff;
+  margin: 5px 0;
+  text-align: center;
+}
+
+.infosContainer h3:nth-child(3) {
+  color: #ffb347;
+}
+
+.infosContainer h3:last-child {
+  font-size: 16px;
+  color: #a0b0c8;
+  padding: 8px 0 ;
+  margin-top: 10px;
+  border-top: 1px solid #3a4d6b;
+  border-bottom: 1px solid #3a4d6b;
+
+}
+
+.descriptions{
+  display: flex;
+  flex-direction: row;
   justify-content: space-around;
+  align-items: start;
   gap: 2rem;
 }
 
 .textInfo {
-  font-size: 1rem;
-
+  margin-top: 20px;
 }
 
 .attackContainer {
-  display: flex;
-  flex-direction: column;
-
+  margin: 15px 0;
 
 }
 
 .attack {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 1rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 1rem 2rem 1rem 2rem ;
+  margin-bottom: 15px;
 }
 
 .attackTitle {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: space-around;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.attackTitle p:first-child {
+  color: #7dcbff;
+  font-size: 18px;
+}
+
+.attackTitle p:last-child {
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.attack > p {
+  color: #d0d9e8;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.textInfo > p {
+  font-style: italic;
+  color: #bcc5d9;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.05);
+  margin: 15px 0;
+  font-size: 14px;
+  text-align: center;
+}
+
+.priceInfo {
+  margin-top: 25px;
+  border-top: 1px solid #3a4d6b;
+  padding-top: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.priceTitle {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  color: #e0e7ff;
+  text-align: center;
 }
 
 .priceInfo {
   display: flex;
-  align-items: center;
-  justify-content: space-around;
-
+  justify-content: space-between;
+  gap: 20px;
 }
 
-.priceTitle {
-  font-weight: bold;
-  font-size: 1.4rem;
-}
-
-.normalPrice,
-.hollowPrice {
+.normalPrice, .hollowPrice {
+  flex: 1;
   display: flex;
-  gap: 1rem;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.normalPrice p, .hollowPrice p {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 14px;
+  text-align: center;
+  margin: 0;
+}
+
+.hollowPrice p {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #f0f8ff;
+}
+
+.priceInfo > p:last-child {
+  text-align: right;
+  font-size: 14px;
+  color: #bcc5d9;
+  margin-top: 15px;
   width: 100%;
-  align-items: center;
-  justify-content: space-around;
 }
 
-.buttonContainer {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
+@media screen and (max-width: 768px) {
 
-}
-
-
-
-
-@media screen and (max-width : 768px) {
   .cardInfoContainer {
     flex-direction: column;
     height: 100vh;
+    align-items: center;
+  }
+  .priceInfo {
+    flex-direction: column;
+  }
+  .infosContainer{
+    min-width: auto;
+    gap : 2rem;
+
+  }
+  .descriptions{
+    flex-direction: column;
+    align-items: center;
   }
 
-  .infosContainer {
-    width: 90vw;
+  .infosContainer > div:first-child {
+    flex: 1;
   }
 
-  .imgContainer {
+  .textInfo {
+    flex: 2;
+    margin-top: 0;
+  }
+
+  .imgContainer{
     height: auto;
   }
+}
 
 
+@media  screen and (max-width: 480px) {
+
+  .priceInfo {
+    flex-direction: column;
+  }
+  .cardInfoContainer {
+    flex-direction: column;
+    height: 100vh;
+    align-items: center;
+  }
 
 }
+
+

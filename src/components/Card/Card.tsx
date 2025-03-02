@@ -154,16 +154,19 @@ const Card = () => {
         </div>
       </div>
       <section className={style.infosContainer}>
+        <div className={style.descriptions}>
         <div>
           <h2>{data.name}</h2>
           <h3>{data.set.name}</h3>
           <h3>{data.types}</h3>
           <h3>{data.supertype}</h3>
+          {data?.evolvesFrom ? <h3>Evolves from {data?.evolvesFrom}</h3> : null}
+          {data?.evolvesTo ? <h3>Evolves to {data?.evolvesTo}</h3> : null }
 
-          <h3>Evolves from {data.evolvesFrom}</h3>
         </div>
         <div className={style.textInfo}>
           <div className={style.attackContainer}>
+            <p className={style.priceTitle}>Attacks</p>
             {data.attacks?.map((attack) => {
               return (
                 <div key={attack.text} className={style.attack}>
@@ -179,12 +182,12 @@ const Card = () => {
           <p>{data.flavorText}</p>
           <div className={style.priceInfo}>
             <p className={style.priceTitle}>Prices</p>
-            <div className={style.normalPrice}>
+            {data?.tcgplayer?.prices.normal ? <div className={style.normalPrice}>
               <p>Low Price : {data.tcgplayer?.prices.normal?.low} $ </p>
               <p>Average Price : {data.tcgplayer?.prices.normal?.market} $</p>
               <p>High Price : {data.tcgplayer?.prices.normal?.high} $ </p>
-            </div>
-            <div className={style.hollowPrice}>
+            </div> : null}
+            {data?.tcgplayer?.prices.holofoil ? <div className={style.hollowPrice}>
               <p>Hollow Low Price : {data.tcgplayer?.prices.holofoil?.low} $</p>
               <p>
                 Hollow Average Price : {data.tcgplayer?.prices.holofoil?.market}
@@ -193,12 +196,14 @@ const Card = () => {
               <p>
                 Hollow High Price : {data.tcgplayer?.prices.holofoil?.high} $
               </p>
-            </div>
+            </div> : null}
             <p>
               Card number : {data.number}/{data.set.total}
             </p>
           </div>
         </div>
+        </div>
+
         <div className={style.buttonContainer}>
           {user ?  isInCollection ? (
               <button
