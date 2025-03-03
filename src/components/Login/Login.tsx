@@ -14,15 +14,18 @@ const Login = () => {
   });
 
   const [signIn, setSignIn] = useState<boolean>(true);
-
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordBis, setShowPasswordBis] = useState(false);
   const [passwordErrors, setPasswordErrors] = useState<Array<string>>([]);
 
   const VerifPassword = () => {
     const error: string[] = [];
+
     if (password !== confirmPassword) {
       error.push("Password don't match");
+      setPasswordErrors(error);
       return false;
     }
     const validations = [
@@ -43,8 +46,8 @@ const Login = () => {
         message: "At least one special character (#?!@$%^&*-) required",
       },
       {
-        test: /.{8,}/,
-        message: "Password must be at least 8 characters long",
+        test: /.{12,}/,
+        message: "Password must be at least 12 characters long",
       },
     ];
 
@@ -53,7 +56,6 @@ const Login = () => {
         error.push(validation.message);
       }
     }
-
     setPasswordErrors(error);
     if (error.length === 0) {
       setFormData({ ...formData, password: password });
@@ -84,10 +86,11 @@ const Login = () => {
         }
       );
       if (!response.ok) {
- response.json()
-   .then((errorData) => {
-   console.log("Erreur",errorData.message);
- })
+          response.json()
+          .then((errorData) => {
+              console.log("Erreur",errorData.message);
+              setPasswordErrors(errorData.message);
+           })
    .catch(err => {
      console.log('Impossible de parser la réponse JSON:', err);
    });
@@ -165,6 +168,14 @@ const Login = () => {
     [toggleModal]
   );
 
+  const togglePasswordVisibility=()=>{
+    setShowPassword(!showPassword);
+
+  }
+  const togglePasswordBisVisibility=()=>{
+    setShowPasswordBis(!showPasswordBis);
+  }
+
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
 
@@ -189,7 +200,9 @@ const Login = () => {
             value={formData.username}
             onChange={handleChange}
             disabled={mutation.isPending}
+            required
           />
+
           {!signIn && (
             <>
               <label htmlFor="email">Email</label>
@@ -200,41 +213,53 @@ const Login = () => {
                 value={formData.email}
                 onChange={handleChange}
                 disabled={mutation.isPending}
+                required
               />
             </>
           )}
           <label htmlFor="password">Password</label>
+          <div className={style.passwordContainer}>
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             name="password"
             id="password"
             onChange={signIn ? handleChange : signUpHandler}
             disabled={mutation.isPending}
+            required
           />
+          <button type="button"  onClick={togglePasswordVisibility}>
+            {showPassword ? "🙈" : "👁️"}</button>
+          </div>
           {!signIn && (
             <>
               <label htmlFor="Confirmpassword">Repeat Password</label>
+              <div className={style.passwordContainer}>
               <input
-                type="password"
+                type={showPasswordBis ? "text" : "password"}
                 name="Confirmpassword"
                 id="Confirmpassword"
                 onChange={(e) => {
                   setConfirmPassword(e.target.value);
                 }}
+                required
               />
+              <button type="button"  onClick={togglePasswordBisVisibility}>
+                {showPasswordBis ? "🙈" : "👁️"}</button>
+              </div>
             </>
           )}
-          <button type="submit" disabled={mutation.isPending}>
+          <button type="submit" disabled={mutation.isPending} onClick={()=>  setPasswordErrors([])
+          }>
             {mutation.isPending
               ? `Signing ${signIn ? "in" : "up"}...`
               : `Sign ${signIn ? "in" : "up"}`}
           </button>
-          {passwordErrors
-            ? passwordErrors.map((err) => {
-                return <div>{err}</div>;
-              })
-            : null}
         </form>
+        {passwordErrors
+          ? passwordErrors.map((err,index) => {
+            return <div key={index} className={style.errorMessage}> ⚠️ {err}</div>;
+          })
+          : null}
       </div>
     </div>
   );
