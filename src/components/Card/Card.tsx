@@ -155,7 +155,7 @@ const Card = () => {
       </div>
       <section className={style.infosContainer}>
         <div className={style.descriptions}>
-        <div>
+        <div className={style.nameContainer}>
           <h2>{data.name}</h2>
           <h3>{data.set.name}</h3>
           <h3>{data.types}</h3>

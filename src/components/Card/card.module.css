@@ -44,7 +44,7 @@
   color: white;
   font-family: 'Montserrat', sans-serif;
   border-radius: 15px;
-  max-width: 1200px;
+  max-width: 1100px;
   min-width: 1000px;
   padding: 25px 20px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
@@ -89,6 +89,8 @@
   align-items: start;
   gap: 2rem;
 }
+
+
 
 .textInfo {
   margin-top: 20px;
