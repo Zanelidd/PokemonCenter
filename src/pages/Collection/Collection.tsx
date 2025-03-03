@@ -1,5 +1,5 @@
 import { useCollection } from '../../services/stores/CollectionStore';
-import style from './collection.module.css';
+import style from '../../components/setCards/setCards.module.css';
 import SearchResults from '../../components/SearchResults/SearchResults.tsx';
 import { useEffect, useState } from 'react';
 import { getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
@@ -37,8 +37,8 @@ const Collection = () => {
 
 
   return (
-    <div className={style.collectionContainer}>
-      <div className={style.collectionCardContainer}>
+    <>
+      <div className={style.cardContainer}>
         {collection &&
           collection.slice(
             pagination.pageIndex * pagination.pageSize,
@@ -94,7 +94,7 @@ const Collection = () => {
           ))}
         </select>
       </div>
-    </div>
+    </>
   );
 };
 

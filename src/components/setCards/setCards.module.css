@@ -1,11 +1,4 @@
-.containerSet {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  padding-top: 3rem;
 
-}
 
 .cardContainer {
   max-width: 1200px;
@@ -14,7 +7,8 @@
   justify-items: center;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 50px;
-  padding: 0 20px;
+  padding: 0 5rem;
+
   width: 100%;
   box-sizing: border-box;
 

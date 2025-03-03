@@ -1,15 +1,11 @@
-import { useNavigate, useParams } from "react-router-dom";
-import style from "./setCards.module.css";
-import { useQuery } from "@tanstack/react-query";
-import { PokemonTCG } from "pokemon-tcg-sdk-typescript";
-import loadingGif from "/ピカチュウ-pokeball.gif";
-import { Card } from "pokemon-tcg-sdk-typescript/dist/sdk";
-import {
-  getCoreRowModel,
-  getPaginationRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import { useState } from "react";
+import { useNavigate, useParams } from 'react-router-dom';
+import style from './setCards.module.css';
+import { useQuery } from '@tanstack/react-query';
+import { PokemonTCG } from 'pokemon-tcg-sdk-typescript';
+import loadingGif from '/ピカチュウ-pokeball.gif';
+import { Card } from 'pokemon-tcg-sdk-typescript/dist/sdk';
+import { getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
+import { useState } from 'react';
 
 const SetCards = () => {
   const navigate = useNavigate();
@@ -53,7 +49,7 @@ const SetCards = () => {
   }
 
   return (
-    <div className={style.containerSet}>
+    < >
       <div className={style.cardContainer}>
         {data
           .slice(
@@ -74,7 +70,7 @@ const SetCards = () => {
             );
           })}
       </div>
-      <div className="paginationContainer">
+      <div  className="paginationContainer">
         <button
           className="fastBackwardButton"
           onClick={() => table.firstPage()}
@@ -117,7 +113,7 @@ const SetCards = () => {
           ))}
         </select>
       </div>
-    </div>
+    </>
   );
 };
 
