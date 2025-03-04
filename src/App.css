@@ -1,12 +1,13 @@
 #root {
   text-align: center;
-  min-height: 100vh;
+  width: 100%;
   overflow-x: hidden;
-
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: space-between;}
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 100px;
+}
 
 .loadingGif {
   position: absolute;
