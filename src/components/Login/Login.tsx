@@ -5,6 +5,7 @@ import style from './login.module.css';
 import { User } from '../../services/types';
 import { useCollection } from '../../services/stores/CollectionStore.tsx';
 import Card from '../Card/Card.tsx';
+import VerifPassword from '../../services/validationPassword.ts';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -14,55 +15,10 @@ const Login = () => {
   });
 
   const [signIn, setSignIn] = useState<boolean>(true);
-  const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [passwordErrors, setPasswordErrors] = useState<Array<string>>([]);
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordBis, setShowPasswordBis] = useState(false);
-  const [passwordErrors, setPasswordErrors] = useState<Array<string>>([]);
-
-  const VerifPassword = () => {
-    const error: string[] = [];
-
-    if (password !== confirmPassword) {
-      error.push("Password don't match");
-      setPasswordErrors(error);
-      return false;
-    }
-    const validations = [
-      {
-        test: /[A-Z]/,
-        message: "At least one uppercase letter required",
-      },
-      {
-        test: /[a-z]/,
-        message: "At least one lowercase letter required",
-      },
-      {
-        test: /[0-9]/,
-        message: "At least one number required",
-      },
-      {
-        test: /[#?!@$%^&*-]/,
-        message: "At least one special character (#?!@$%^&*-) required",
-      },
-      {
-        test: /.{12,}/,
-        message: "Password must be at least 12 characters long",
-      },
-    ];
-
-    for (const validation of validations) {
-      if (!validation.test.test(password)) {
-        error.push(validation.message);
-      }
-    }
-    setPasswordErrors(error);
-    if (error.length === 0) {
-      setFormData({ ...formData, password: password });
-      return true;
-    }
-    return false;
-  };
 
   const { login, setUser } = useUser();
   const { addToCollection } = useCollection();
@@ -88,12 +44,12 @@ const Login = () => {
       if (!response.ok) {
           response.json()
           .then((errorData) => {
-              console.log("Erreur",errorData.message);
-              setPasswordErrors(errorData.message);
-           })
-   .catch(err => {
-     console.log('Impossible de parser la réponse JSON:', err);
-   });
+            throw errorData;
+          })
+          .catch(err => {
+            console.log('Unable to parse JSON response:', err);
+            setPasswordErrors(err.message);
+          });
         throw new Error(`HTTP error! status ${response.status}`);
       }
 
@@ -132,12 +88,21 @@ const Login = () => {
     e.preventDefault();
 
     if (signIn) {
+
       mutation.mutate(formData);
+
     } else {
-      if (VerifPassword()) {
-        mutation.mutate(formData);
+
+      const ifPasswordValid= VerifPassword(formData, confirmPassword)
+      if (ifPasswordValid.length !==0 ) {
+        setPasswordErrors(ifPasswordValid)
       }
+      if(ifPasswordValid.length === 0){
+        mutation.mutate(formData);
+        setPasswordErrors([]);
+        console.log(formData);}
     }
+
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -149,9 +114,7 @@ const Login = () => {
     }));
   };
 
-  const signUpHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-  };
+
 
   const { toggleModal } = useUser();
   const modalRef = useRef<HTMLDivElement>(null);
@@ -223,7 +186,7 @@ const Login = () => {
             type={showPassword ? "text" : "password"}
             name="password"
             id="password"
-            onChange={signIn ? handleChange : signUpHandler}
+            onChange={ handleChange }
             disabled={mutation.isPending}
             required
           />
@@ -255,11 +218,12 @@ const Login = () => {
               : `Sign ${signIn ? "in" : "up"}`}
           </button>
         </form>
-        {passwordErrors
-          ? passwordErrors.map((err,index) => {
-            return <div key={index} className={style.errorMessage}> ⚠️ {err}</div>;
-          })
-          : null}
+        {passwordErrors &&
+           (Array.isArray(passwordErrors)
+            ? passwordErrors.map((err,index) =>{
+             return <div key={index} className={style.errorMessage}> ⚠️ {err}</div>
+            })
+            :  <div className={style.errorMessage}> ⚠️ {passwordErrors}</div> )}
       </div>
     </div>
   );
