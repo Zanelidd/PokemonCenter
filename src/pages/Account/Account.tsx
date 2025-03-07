@@ -19,7 +19,7 @@ const Account = () => {
     }) => {
 
       const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/users/${user?.userId}`,
+        `${import.meta.env.VITE_BACKEND_URL}/users/${user?.id}`,
         {method : "PATCH",
         headers : {"Content-Type": "application/json"},
         body : JSON.stringify(userData)}

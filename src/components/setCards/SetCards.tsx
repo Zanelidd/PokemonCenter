@@ -1,7 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import style from './setCards.module.css';
 import { useQuery } from '@tanstack/react-query';
-import { PokemonTCG } from 'pokemon-tcg-sdk-typescript';
 import loadingGif from '/ピカチュウ-pokeball.gif';
 import { Card } from 'pokemon-tcg-sdk-typescript/dist/sdk';
 import { getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
@@ -12,13 +11,25 @@ const SetCards = () => {
   const params = useParams();
 
   const twentyFourHoursInMs = 1000 * 60 * 60 * 24;
-
   const { isPending, error, data } = useQuery({
     queryKey: ["SetCard", `${params.setId}`],
-    queryFn: () => {
-      return PokemonTCG.findCardsByQueries({
-        q: `set.id:${params.setId}`,
-      });
+    queryFn: async ():Promise<Array<Card>> => {
+      const response =
+        await fetch(`${import.meta.env.VITE_BACKEND_URL}/external_api/cards`,
+        {method : "POST",
+         headers:{
+          "Content-Type": "application/json",
+          },
+        body : JSON.stringify({ setId:params.setId}),
+        },)
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const result = await response.json();
+
+      return Array.isArray(result) ? result :result.data || [];
+
     },
     staleTime: twentyFourHoursInMs,
   });

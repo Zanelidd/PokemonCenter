@@ -58,7 +58,8 @@ const Login = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-        },
+          "Authorization": `Bearer ${result.access_token}`
+                  },
       })
         .then((response) => {
           return response.json();
@@ -67,7 +68,8 @@ const Login = () => {
           result.map((card: Card) => {
             addToCollection(card, result.userId);
           });
-        });
+        })
+
 
       signIn
         ? login(result.username, result.access_token, result.userId)

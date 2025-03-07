@@ -1,9 +1,9 @@
 import { useCollection } from '../../services/stores/CollectionStore';
+import { useUser } from '../../services/stores/UserStore.tsx';
 import style from '../../components/setCards/setCards.module.css';
 import SearchResults from '../../components/SearchResults/SearchResults.tsx';
 import { useEffect, useState } from 'react';
 import { getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
-import { useUser } from '../../services/stores/UserStore.tsx';
 
 
 const Collection = () => {
@@ -27,7 +27,7 @@ const Collection = () => {
     }});
 
   const currentUser = getUser()
-  
+
   useEffect(() => {
     if (currentUser?.userId && collection.length == 0 ) {
       fillCollection(currentUser.userId);

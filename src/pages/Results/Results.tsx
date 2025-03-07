@@ -1,15 +1,11 @@
-import { useLocation } from "react-router-dom";
-import SearchResults from "../../components/SearchResults/SearchResults";
-import { Card } from "pokemon-tcg-sdk-typescript/dist/sdk";
-import style from "./result.module.css";
-import {
-  getCoreRowModel,
-  getPaginationRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import loadingGif from "/ピカチュウ-pokeball.gif";
+import { useLocation } from 'react-router-dom';
+import SearchResults from '../../components/SearchResults/SearchResults';
+import { Card } from 'pokemon-tcg-sdk-typescript/dist/sdk';
+import style from './result.module.css';
+import { getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import loadingGif from '/ピカチュウ-pokeball.gif';
 
 const Results = () => {
   const location = useLocation();
@@ -25,7 +21,8 @@ const Results = () => {
     queryKey: ["SearchResults", `${state}`],
     staleTime: twentyFourHoursInMs,
     queryFn: async () :Promise<Array<Card>> => {
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/external_api`,
+    const response =
+      await fetch(`${import.meta.env.VITE_BACKEND_URL}/external_api/searchCard`,
       {method : "POST",
       headers:{
         "Content-Type": "application/json",

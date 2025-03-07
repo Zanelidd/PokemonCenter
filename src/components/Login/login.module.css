@@ -8,8 +8,8 @@
 
 .loginContainer {
   position: absolute;
-  top: 25vh;
-  left: 34vw;
+  top: 10vh;
+  left: 30vw;
   z-index : 999;
   display: flex;
   flex-direction: column;

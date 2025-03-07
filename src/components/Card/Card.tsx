@@ -42,7 +42,7 @@ const Card = () => {
           return response.json();
         })
         .then((result) => {
-          addToCollection(data, result.id);
+          addToCollection(data, result.userId);
           return result;
         })
 
