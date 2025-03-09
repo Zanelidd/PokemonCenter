@@ -19,9 +19,10 @@ const Account = () => {
     }) => {
 
       const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/users/${user?.id}`,
+        `${import.meta.env.VITE_BACKEND_URL}/users/${user?.userId}`,
         {method : "PATCH",
-        headers : {"Content-Type": "application/json"},
+        headers : {"Content-Type": "application/json",
+          "Authorization": `Bearer ${user?.access_token}`},
         body : JSON.stringify(userData)}
       )
 
@@ -57,8 +58,7 @@ const Account = () => {
     }
    if(ifPasswordValid.length === 0){
       mutation.mutate(formData);
-     setPasswordErrors([]);
-      console.log(formData);}
+     setPasswordErrors([]);}
     }
 
 

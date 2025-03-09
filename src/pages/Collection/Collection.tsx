@@ -30,7 +30,7 @@ const Collection = () => {
 
   useEffect(() => {
     if (currentUser?.userId && collection.length == 0 ) {
-      fillCollection(currentUser.userId);
+      fillCollection(currentUser.userId,currentUser.access_token);
     }
   }, [currentUser, fillCollection,collection.length]);
 

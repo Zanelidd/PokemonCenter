@@ -28,6 +28,7 @@ const Card = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${user?.access_token}`
         },
 
         body: JSON.stringify({
@@ -36,26 +37,21 @@ const Card = () => {
         }),
       })
         .then((response) => {
-          if (!response.ok) {
-            throw new Error(`HTTP error! status : ${response.status}`);
-          }
           return response.json();
         })
         .then((result) => {
-          addToCollection(data, result.userId);
           return result;
         })
 
-        .catch((error) => {
-          console.error("Error", error);
-        });
     },
-    onSuccess: () => {
-      console.log("collection", collection);
+    onSuccess: (result,data : Card) => {
+      addToCollection(data, result.id)
+
       //ajout toaster avec sonner
     },
     onError: (error) => {
-      console.error("Error", error);
+      console.error("Error", error.message);
+
     },
   });
 
@@ -67,18 +63,21 @@ const Card = () => {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${user?.access_token}`
           },
         }
       )
-        .then((res) => {
-          res.json();
+        .then((response) => {
+          return response.json();
         })
-        .catch((error) => {
-          console.log(error);
-        });
+        .then((result) => {
+
+          return result;
+        })
+
     },
-    onSuccess: () => {
-      console.log("collection", collection);
+    onSuccess: (data) => {
+      deleteFromCollection(data.remoteId);
       //ajout toaster avec sonner
     },
     onError: (error) => {
@@ -94,7 +93,6 @@ const Card = () => {
     const findCard = getCardById(data.id);
     if (findCard) {
       mutationDelete.mutate(findCard);
-      deleteFromCollection(data.id);
     } else {
       console.error("Card not found in collection");
     }

@@ -9,7 +9,7 @@ type useCollectionStore = {
   clearCollection: () => void;
   // isInCollection: (cardId: string) => boolean;
   getCardById: (cardId: string) => Card | undefined;
-  fillCollection: (userId: number | undefined) => void;
+  fillCollection: (userId: number | undefined, token : string) => void;
 };
 
 export const useCollection = create<useCollectionStore>((set) => ({
@@ -36,20 +36,23 @@ export const useCollection = create<useCollectionStore>((set) => ({
       .getState()
       .collection.find((card: CollectionCard) => card.id === cardId),
 
-  fillCollection: (userId) =>
+  fillCollection: (userId,token) => {
+
     fetch(`${import.meta.env.VITE_BACKEND_URL}/card/${userId}`, {
-      method: "GET",
+      method: 'GET',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
+        "Authorization": `Bearer ${token}`
       },
     })
       .then((res) => {
         return res.json();
       })
       .then(() => {
-        return true
+        return true;
       })
       .catch((err) => {
         console.error(err);
-      }),
+      })
+  }
 }));
