@@ -1,29 +1,37 @@
-import { PokemonTCG } from "pokemon-tcg-sdk-typescript";
-import style from "./homePage.module.css";
-import { useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import loadingGif from "/ピカチュウ-pokeball.gif";
-import { useState } from "react";
-import {
-  getCoreRowModel,
-  getPaginationRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import style from './homePage.module.css';
+import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import loadingGif from '/ピカチュウ-pokeball.gif';
+import type { Set } from 'pokemon-tcg-sdk-typescript/dist/sdk';
+import { useState } from 'react';
+import { getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
 
 const HomePage = () => {
   const navigate = useNavigate();
 
   const [pagination, setPagination] = useState({
-    pageIndex: 0, //initial page index
-    pageSize: 20, //default page size
+    pageIndex: 0,
+    pageSize: 20,
   });
 
   const twentyFourHoursInMs = 1000 * 60 * 60 * 24;
 
   const { isPending, error, data } = useQuery({
     queryKey: ["PokemonSet"],
-    queryFn: () => {
-      return PokemonTCG.getAllSets();
+    queryFn: async ():Promise<Array<Set>> => {
+     const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/external_api`,
+         {method: "GET", headers: {
+           "Content-Type": "application/json",
+           }})
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const result = await response.json();
+
+      return Array.isArray(result) ? result :result.data || [];
+
     },
     staleTime: twentyFourHoursInMs,
   });
@@ -33,21 +41,18 @@ const HomePage = () => {
     data: data || [],
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    onPaginationChange: setPagination, //update the pagination state when internal APIs mutate the pagination state
+    onPaginationChange: setPagination,
     state: {
-      //...
       pagination,
     },
   });
 
   if (isPending) {
-    return (
-      <img className={style.loadingGif} src={loadingGif} alt="Loading Gif" />
-    );
+    return <img className="loadingGif" src={loadingGif} alt="Loading Gif" />;
   }
 
   if (error) {
-    return "An error occured: " + error.message;
+    return "An error occurred: " + error.message;
   }
 
   return (
@@ -67,14 +72,15 @@ const HomePage = () => {
                   navigate(`/${set.id}`);
                 }}
               >
+                <img className={style.setImg} src={set.images.logo} alt={`Image of the set ${set.name}`} />
                 <h3 className={style.setName}>{set.name}</h3>
-                <img className={style.setImg} src={set.images.logo} />
               </div>
             );
           })}
       </div>
-      <div className={style.paginationContainer}>
-        <button
+      <div className="paginationContainer">
+      <button
+          className="fastBackwardButton"
           onClick={() => table.firstPage()}
           disabled={!table.getCanPreviousPage()}
         >
@@ -86,7 +92,7 @@ const HomePage = () => {
         >
           {"<"}
         </button>
-        <div> Page : {pagination.pageIndex + 1}</div>
+        <div className="pageInformation">{pagination.pageIndex + 1}</div>
 
         <button
           onClick={() => table.nextPage()}
@@ -95,12 +101,15 @@ const HomePage = () => {
           {">"}
         </button>
         <button
+          className="fastForwardButton"
           onClick={() => table.lastPage()}
           disabled={!table.getCanNextPage()}
         >
           {">>"}
         </button>
         <select
+          className="selectPage"
+          id="selectPage"
           value={table.getState().pagination.pageSize}
           onChange={(e) => {
             table.setPageSize(Number(e.target.value));

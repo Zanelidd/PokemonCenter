@@ -1,48 +1,24 @@
-.containerSet {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-
-
-}
 
 .cardContainer {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-around;
-  padding: 1.5rem;
-  gap: 1rem;
-  min-width: 100vw;
-  min-height: 85vh;
+  max-width: 1200px;
+  margin: 20px auto;
+  display: grid;
+  justify-items: center;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 50px;
+  padding: 0 5rem;
+
+  width: 100%;
+  box-sizing: border-box;
+
 }
 
+
 .card {
-  box-shadow: 7px 5px 9px 0px grey;
+  box-shadow: 7px 5px 9px 0 grey;
 }
 
 .card:hover {
-  transform: scale(1.2);
-}
-
-.loadingGif {
-  position: absolute;
-  top: 40%;
-  left: 40%;
-
-}
-
-.paginationContainer {
-  width: 30%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-around;
-  margin: 1rem;
-  gap: 0.5rem;
-
-  @media screen and (max-width : 420px) {
-    width: auto;
-  }
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
 }

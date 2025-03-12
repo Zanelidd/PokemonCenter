@@ -1,28 +1,35 @@
-import { useNavigate, useParams } from "react-router-dom";
-import style from "./setCards.module.css";
-import { useQuery } from "@tanstack/react-query";
-import { PokemonTCG } from "pokemon-tcg-sdk-typescript";
-import loadingGif from "/ピカチュウ-pokeball.gif";
-import { Card } from "pokemon-tcg-sdk-typescript/dist/sdk";
-import {
-  getCoreRowModel,
-  getPaginationRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import { useState } from "react";
+import { useNavigate, useParams } from 'react-router-dom';
+import style from './setCards.module.css';
+import { useQuery } from '@tanstack/react-query';
+import loadingGif from '/ピカチュウ-pokeball.gif';
+import { Card } from 'pokemon-tcg-sdk-typescript/dist/sdk';
+import { getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
+import { useState } from 'react';
 
 const SetCards = () => {
   const navigate = useNavigate();
   const params = useParams();
 
   const twentyFourHoursInMs = 1000 * 60 * 60 * 24;
-
   const { isPending, error, data } = useQuery({
     queryKey: ["SetCard", `${params.setId}`],
-    queryFn: () => {
-      return PokemonTCG.findCardsByQueries({
-        q: `set.id:${params.setId}`,
-      });
+    queryFn: async ():Promise<Array<Card>> => {
+      const response =
+        await fetch(`${import.meta.env.VITE_BACKEND_URL}/external_api/cards`,
+        {method : "POST",
+         headers:{
+          "Content-Type": "application/json",
+          },
+        body : JSON.stringify({ setId:params.setId}),
+        },)
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const result = await response.json();
+
+      return Array.isArray(result) ? result :result.data || [];
+
     },
     staleTime: twentyFourHoursInMs,
   });
@@ -45,9 +52,7 @@ const SetCards = () => {
   });
 
   if (isPending) {
-    return (
-      <img className={style.loadingGif} src={loadingGif} alt="Loading Gif" />
-    );
+    return <img className="loadingGif" src={loadingGif} alt="Loading Gif" />;
   }
 
   if (error) {
@@ -55,7 +60,7 @@ const SetCards = () => {
   }
 
   return (
-    <div className={style.containerSet}>
+    < >
       <div className={style.cardContainer}>
         {data
           .slice(
@@ -76,8 +81,9 @@ const SetCards = () => {
             );
           })}
       </div>
-      <div className={style.paginationContainer}>
+      <div  className="paginationContainer">
         <button
+          className="fastBackwardButton"
           onClick={() => table.firstPage()}
           disabled={!table.getCanPreviousPage()}
         >
@@ -89,7 +95,7 @@ const SetCards = () => {
         >
           {"<"}
         </button>
-        <div> Page : {pagination.pageIndex + 1}</div>
+        <div className="pageInformation">{pagination.pageIndex + 1}</div>
 
         <button
           onClick={() => table.nextPage()}
@@ -98,12 +104,15 @@ const SetCards = () => {
           {">"}
         </button>
         <button
+          className="fastForwardButton"
           onClick={() => table.lastPage()}
           disabled={!table.getCanNextPage()}
         >
           {">>"}
         </button>
         <select
+          className="selectPage"
+          id="selectPage"
           value={table.getState().pagination.pageSize}
           onChange={(e) => {
             table.setPageSize(Number(e.target.value));
@@ -116,7 +125,7 @@ const SetCards = () => {
           ))}
         </select>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import style from "./searchCard.module.css";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import style from './searchCard.module.css';
 
 const SearchCard = () => {
   const [search, setSearch] = useState<string>("");
@@ -13,8 +13,10 @@ const SearchCard = () => {
   return (
     <div className={style.searchContainer}>
       <input
+        id="search"
         type="search"
         value={search}
+        placeholder={"Search..."}
         onChange={(e) => {
           setSearch(e.target.value);
         }}

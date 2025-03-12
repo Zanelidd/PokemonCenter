@@ -1,8 +1,104 @@
 #root {
-  margin: 0 auto;
   text-align: center;
-  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 100px;
 }
+
+.loadingGif {
+  position: absolute;
+  top: 40%;
+  left: 40%;
+}
+
+@media screen and (max-width : 768px) {
+  .loadingGif {
+    top: 20%;
+    left: 10%;
+    width: 75vw;
+  }
+}
+
+.paginationContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.paginationContainer button,
+.paginationContainer select{
+  background-color: #38bdf8;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  margin: 0 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.paginationContainer button:hover,
+.paginationContainer select:hover{
+  background-color: #0284c7;
+}
+
+.paginationContainer select{
+  appearance: none;
+  outline: none;
+  font-family: 'Arial', sans-serif;
+  font-size: 14px;
+  padding-right: 30px;
+  position: relative;
+}
+
+.paginationContainer select::after{
+  content: '▼';
+  position: absolute;
+  right: 10px;
+  pointer-events: none;
+
+}
+
+.paginationContainer select option {
+  background-color: #1f2937;
+  color: #fff;
+}
+
+
+@media screen and (max-width : 768px) {
+  .paginationContainer {
+    width: 55vw;
+    gap: 1rem;
+
+  }
+
+  button {
+    font-size: 0.5rem;
+    text-align: center;
+  }
+
+  .fastBackwardButton,
+  .fastForwardButton,
+  .selectPage {
+    display: none;
+  }
+
+}
+
+
+
+.pageInformation {
+  width: 6rem;
+  font-size: 1rem;
+  margin: 1rem;
+
+}
+
 
 :root {
   --mouseX: 50%;
