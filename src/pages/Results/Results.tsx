@@ -6,6 +6,7 @@ import { getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import loadingGif from '/ピカチュウ-pokeball.gif';
+import Pagination from '../../components/pagination/Pagination.tsx';
 
 const Results = () => {
   const location = useLocation();
@@ -68,50 +69,7 @@ const Results = () => {
             return <SearchResults key={stat.id} data={stat} />;
           })}
       </div>
-      <div className="paginationContainer">
-        <button
-          className="fastBackwardButton"
-          onClick={() => table.firstPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          {"<<"}
-        </button>
-        <button
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          {"<"}
-        </button>
-        <div className="pageInformation">{pagination.pageIndex + 1}</div>
-
-        <button
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          {">"}
-        </button>
-        <button
-          className="fastForwardButton"
-          onClick={() => table.lastPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          {">>"}
-        </button>
-        <select
-          className="selectPage"
-          id="selectPage"
-          value={table.getState().pagination.pageSize}
-          onChange={(e) => {
-            table.setPageSize(Number(e.target.value));
-          }}
-        >
-          {[10, 20, 30, 40, 50].map((pageSize) => (
-            <option key={pageSize} value={pageSize}>
-              {pageSize}
-            </option>
-          ))}
-        </select>
-      </div>
+      <Pagination table={table} pagination={pagination}  />
     </div>
   );
 };

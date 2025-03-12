@@ -5,6 +5,7 @@ import loadingGif from '/ピカチュウ-pokeball.gif';
 import type { Set } from 'pokemon-tcg-sdk-typescript/dist/sdk';
 import { useState } from 'react';
 import { getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
+import Pagination from '../../components/pagination/Pagination.tsx';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -78,50 +79,7 @@ const HomePage = () => {
             );
           })}
       </div>
-      <div className="paginationContainer">
-      <button
-          className="fastBackwardButton"
-          onClick={() => table.firstPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          {"<<"}
-        </button>
-        <button
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          {"<"}
-        </button>
-        <div className="pageInformation">{pagination.pageIndex + 1}</div>
-
-        <button
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          {">"}
-        </button>
-        <button
-          className="fastForwardButton"
-          onClick={() => table.lastPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          {">>"}
-        </button>
-        <select
-          className="selectPage"
-          id="selectPage"
-          value={table.getState().pagination.pageSize}
-          onChange={(e) => {
-            table.setPageSize(Number(e.target.value));
-          }}
-        >
-          {[10, 20, 30, 40, 50].map((pageSize) => (
-            <option key={pageSize} value={pageSize}>
-              {pageSize}
-            </option>
-          ))}
-        </select>
-      </div>
+      <Pagination table={table} pagination={pagination }  />
     </div>
   );
 };

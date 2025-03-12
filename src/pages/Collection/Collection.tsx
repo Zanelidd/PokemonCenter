@@ -3,12 +3,20 @@ import { useUser } from '../../services/stores/UserStore.tsx';
 import style from '../../components/setCards/setCards.module.css';
 import SearchResults from '../../components/SearchResults/SearchResults.tsx';
 import { useEffect, useState } from 'react';
+import Pagination from '../../components/pagination/Pagination.tsx';
 import { getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
 
 
 const Collection = () => {
   const { collection,fillCollection} = useCollection();
-  const {getUser} = useUser();
+  const {user} = useUser();
+
+  useEffect(() => {
+    if (user?.userId && collection.length == 0 ) {
+      fillCollection(user.userId, user.access_token)
+    }
+  }, [user, fillCollection, collection.length, ]);
+
 
   const [pagination, setPagination] = useState({
     pageIndex: 0, //initial page index
@@ -17,24 +25,14 @@ const Collection = () => {
 
   const table = useReactTable({
     columns: [],
-    data: collection ?? [],
+    data: collection || [],
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onPaginationChange: setPagination,
     state: {
-      //...
-      pagination
-    }});
-
-  const currentUser = getUser()
-
-  useEffect(() => {
-    if (currentUser?.userId && collection.length == 0 ) {
-      fillCollection(currentUser.userId,currentUser.access_token);
-    }
-  }, [currentUser, fillCollection,collection.length]);
-
-
+      pagination,
+    },
+  });
 
   return (
     <>
@@ -50,50 +48,9 @@ const Collection = () => {
           })
         }
       </div>
+      <Pagination table={table} pagination={pagination}  />
 
-      <div className="paginationContainer">
-        <button
-          className="fastBackwardButton"
-          onClick={() => table.firstPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          {"<<"}
-        </button>
-        <button
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          {"<"}
-        </button>
-        <div className="pageInformation">{pagination.pageIndex + 1}</div>
 
-        <button
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          {">"}
-        </button>
-        <button
-          className="fastForwardButton"
-          onClick={() => table.lastPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          {">>"}
-        </button>
-        <select
-          className="selectPage"
-          value={table.getState().pagination.pageSize}
-          onChange={(e) => {
-            table.setPageSize(Number(e.target.value));
-          }}
-        >
-          {[10, 20, 30, 40, 50].map((pageSize) => (
-            <option key={pageSize} value={pageSize}>
-              {pageSize}
-            </option>
-          ))}
-        </select>
-      </div>
     </>
   );
 };
