@@ -20,7 +20,7 @@ const Card = () => {
   const isInCollection = collection.find((test) => test.id == params.cardId);
 
   const twentyFourHoursInMs = 1000 * 60 * 60 * 24;
-  const { user } = useUser();
+  const { user,logout} = useUser();
 
   const mutation = useMutation({
     mutationFn: async (data: Card) => {
@@ -51,6 +51,7 @@ const Card = () => {
     },
     onError: (error) => {
       console.error("Error", error.message);
+      logout()
 
     },
   });
@@ -82,6 +83,7 @@ const Card = () => {
     },
     onError: (error) => {
       console.error("Error", error);
+      logout()
     },
   });
 
