@@ -17,7 +17,6 @@ const Account = () => {
     mutationFn : async (userData:{
       password: string;
     }) => {
-
       const response = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/users/${user?.userId}`,
         {method : "PATCH",
@@ -67,10 +66,11 @@ const Account = () => {
     <div className ={style.accountContainer}>
       <h1>Account</h1>
       <p>{user?.username}</p>
-      <form className={style.changePassword} onSubmit={handleSubmit}>
-        <label htmlFor="password">Password</label>
-        <input type="password"
-               name="password"
+      <form id="accountForm" className={style.changePassword} onSubmit={handleSubmit}>
+        <label htmlFor="pass">Password</label>
+        <input type="pass"
+               name="pass"
+               id="pass"
                value={formData.password}
                onChange={(e)=>setFormData({ ...formData, password: e.target.value })}
                placeholder="..."
@@ -78,7 +78,8 @@ const Account = () => {
                required ></input>
         <label htmlFor="password_confirmation">Confirm Password</label>
         <input type="password"
-               name="Confirmpassword"
+               id="password_confirmation"
+               name="password_confirmation"
                placeholder="..."
                required
                value={confirmPassword}

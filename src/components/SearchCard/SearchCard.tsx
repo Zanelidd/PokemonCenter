@@ -13,6 +13,7 @@ const SearchCard = () => {
   return (
     <div className={style.searchContainer}>
       <input
+        id="search"
         type="search"
         value={search}
         placeholder={"Search..."}

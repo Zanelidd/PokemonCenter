@@ -99,6 +99,7 @@ const Results = () => {
         </button>
         <select
           className="selectPage"
+          id="selectPage"
           value={table.getState().pagination.pageSize}
           onChange={(e) => {
             table.setPageSize(Number(e.target.value));

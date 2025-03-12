@@ -156,7 +156,7 @@ const Login = () => {
           <div className={signIn ? style.activeTab : style.inactiveTab} onClick={() => setSignIn(true)}>Sign In</div>
           <div className={!signIn ? style.activeTab : style.inactiveTab} onClick={() => setSignIn(false)}>Sign Up</div>
         </div>
-        <form onSubmit={handleSubmit} className={style.loginForm}>
+        <form id="loginForm" onSubmit={handleSubmit} className={style.loginForm}>
           <label htmlFor="username">Username</label>
           <input
             type="text"
