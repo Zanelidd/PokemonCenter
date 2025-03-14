@@ -1,21 +1,13 @@
-import { useCollection } from '../../services/stores/CollectionStore';
-import { useUser } from '../../services/stores/UserStore.tsx';
+import { useCollection } from '../../stores/CollectionStore';
 import style from '../../components/setCards/setCards.module.css';
 import SearchResults from '../../components/SearchResults/SearchResults.tsx';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Pagination from '../../components/pagination/Pagination.tsx';
 import { getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
 
 
 const Collection = () => {
-  const { collection,fillCollection} = useCollection();
-  const {user} = useUser();
-
-  useEffect(() => {
-    if (user?.userId && collection.length == 0 ) {
-      fillCollection(user.userId, user.access_token)
-    }
-  }, [user, fillCollection, collection.length, ]);
+  const { collection} = useCollection();
 
 
   const [pagination, setPagination] = useState({
@@ -43,7 +35,7 @@ const Collection = () => {
             pagination.pageSize + pagination.pageSize * pagination.pageIndex
           ).map((card) => {
             return (
-              <SearchResults key={card.id} data={card} />
+              <SearchResults key={`${card.name}${card.set}`} data={card} />
             );
           })
         }

@@ -1,4 +1,4 @@
-import { useUser } from '../../services/stores/UserStore';
+import { useUser } from '../../stores/UserStore';
 import style from './account.module.css';
 import { useMutation } from '@tanstack/react-query';
 import { FormEvent, useState } from 'react';
@@ -68,7 +68,7 @@ const Account = () => {
       <p>{user?.username}</p>
       <form id="accountForm" className={style.changePassword} onSubmit={handleSubmit}>
         <label htmlFor="pass">Password</label>
-        <input type="pass"
+        <input type="password"
                name="pass"
                id="pass"
                value={formData.password}

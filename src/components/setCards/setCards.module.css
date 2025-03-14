@@ -4,10 +4,8 @@
   margin: 20px auto;
   display: grid;
   justify-items: center;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 50px;
-  padding: 0 5rem;
-
   width: 100%;
   box-sizing: border-box;
 

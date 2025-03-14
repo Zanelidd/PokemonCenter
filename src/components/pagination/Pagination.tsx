@@ -1,6 +1,7 @@
 import { Table } from '@tanstack/react-table';
-import { CollectionCard } from '../../services/types.ts';
+
 import type { Set } from 'pokemon-tcg-sdk-typescript/dist/sdk';
+import { CollectionCard } from '../../types/card.types';
 
 const Pagination =(  { table, pagination }
  :

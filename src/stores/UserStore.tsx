@@ -1,6 +1,7 @@
 import { create } from 'zustand';
-import { User } from '../types';
+import { User } from '../types/user.types.ts';
 import { persist } from 'zustand/middleware';
+import { useCollection } from './CollectionStore.tsx';
 
 interface UserState {
   user: User | null;
@@ -32,11 +33,13 @@ export const useUser = create<UserState>()(
           user: { username, access_token,userId },
           isAuthenticated: true,
         }),
-      logout: () =>
+      logout: () => {
         set({
           user: null,
           isAuthenticated: false,
-        }),
+        });
+        useCollection.getState().clearCollection()
+      },
 
       toggleModal: () =>
         set((state) => ({

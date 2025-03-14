@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import style from './header.module.css';
 import SearchCard from '../SearchCard/SearchCard';
-import { useUser } from '../../services/stores/UserStore';
+import { useUser } from '../../stores/UserStore';
 
 const Header = () => {
   const { toggleModal, isAuthenticated, logout } = useUser();
