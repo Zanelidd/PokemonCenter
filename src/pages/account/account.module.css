@@ -1,6 +1,8 @@
-.accountContainer{
+.accountContainer {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
     height: 75vh;
     background: linear-gradient(145deg, #1a2a42 0%, #0f1723 100%);
     color: white;
@@ -13,15 +15,23 @@
     border: 2px solid #3a4d6b;
 }
 
-.changePassword{
+.changePassword {
     display: flex;
     flex-direction: column;
-    align-items: center ;
+    align-items: center;
     justify-content: space-around;
-   gap : 1rem;
+    gap: 1rem;
 }
+.accountInfo{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+
+}
+
 @media screen and (max-width: 768px) {
-    .accountContainer{
-  width: 80vw;
+    .accountContainer {
+        width: 80vw;
     }
 }

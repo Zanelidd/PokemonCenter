@@ -1,7 +1,7 @@
 .searchContainer {
-  width: 25vw;
+  width: 20vw;
   display: flex;
-  justify-content: space-around;
+  justify-content: end;
   align-items: center;
   font-size: 0.75rem;
   text-align: center;

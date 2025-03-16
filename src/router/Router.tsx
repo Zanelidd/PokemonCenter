@@ -6,9 +6,10 @@ import NavLayout from '../Layouts/NavLayout';
 import Collection from '../pages/Collection/Collection';
 import Results from '../pages/Results/Results';
 import Account from '../pages/Account/Account';
-import { useUser } from '../services/stores/UserStore';
+import { useUser } from '../stores/UserStore';
+import { ReactElement } from 'react';
 
-const PrivateRoute = ({ children }: { children: React.ReactElement }) => {
+const PrivateRoute = ({ children }: { children: ReactElement }) => {
   const { isAuthenticated } = useUser();
   if (!isAuthenticated) {
     return <Navigate to="/home" replace />;
@@ -17,30 +18,28 @@ const PrivateRoute = ({ children }: { children: React.ReactElement }) => {
   return children;
 };
 
-
-
 const Router = () => {
 
   const router = createBrowserRouter([
     {
-      path: "/",
+      path: '/',
       element: <NavLayout />,
       children: [
-        { path: "/home", element: <HomePage /> },
+        { path: '/home', element: <HomePage /> },
         {
-          path: "/:setId",
+          path: '/:setId',
           element: <SetCards />,
         },
         {
-          path: "/card/:cardId",
+          path: '/card/:cardId',
           element: <Card />,
         },
-        { path: "/result", element: <Results /> },
+        { path: '/result', element: <Results /> },
         {
-          path: "/user",
+          path: '/user',
           children: [
             {
-              path: "/user/collection",
+              path: '/user/collection',
               element: (
                 <PrivateRoute>
                   <Collection />
@@ -49,7 +48,7 @@ const Router = () => {
 
             },
             {
-              path: "/user/account",
+              path: '/user/account',
               element: (
                 <PrivateRoute>
                   <Account />

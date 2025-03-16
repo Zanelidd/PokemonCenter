@@ -5,38 +5,28 @@ import loadingGif from '/ピカチュウ-pokeball.gif';
 import { Card } from 'pokemon-tcg-sdk-typescript/dist/sdk';
 import { getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
 import { useState } from 'react';
+import Pagination from '../pagination/Pagination.tsx';
+import api from '../../api/api.service.ts';
 
 const SetCards = () => {
   const navigate = useNavigate();
   const params = useParams();
-
   const twentyFourHoursInMs = 1000 * 60 * 60 * 24;
   const { isPending, error, data } = useQuery({
-    queryKey: ["SetCard", `${params.setId}`],
-    queryFn: async ():Promise<Array<Card>> => {
-      const response =
-        await fetch(`${import.meta.env.VITE_BACKEND_URL}/external_api/cards`,
-        {method : "POST",
-         headers:{
-          "Content-Type": "application/json",
-          },
-        body : JSON.stringify({ setId:params.setId}),
-        },)
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
+    queryKey: ['SetCard', `${params.setId}`],
+    queryFn: async (): Promise<Array<Card>> => {
+      if (params.setId) {
+        const response = await api.apiCard.getCardBySet(params.setId);
+        return Array.isArray(response) ? response : response.data;
       }
-
-      const result = await response.json();
-
-      return Array.isArray(result) ? result :result.data || [];
-
+      return [];
     },
     staleTime: twentyFourHoursInMs,
   });
 
   const [pagination, setPagination] = useState({
-    pageIndex: 0, //initial page index
-    pageSize: 20, //default page size
+    pageIndex: 0,
+    pageSize: 20,
   });
 
   const table = useReactTable({
@@ -44,8 +34,7 @@ const SetCards = () => {
     data: data ?? [],
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    onPaginationChange: setPagination, //update the pagination state when internal APIs mutate the pagination state
-    state: {
+    onPaginationChange: setPagination, state: {
       //...
       pagination,
     },
@@ -56,7 +45,7 @@ const SetCards = () => {
   }
 
   if (error) {
-    return "An error occured: " + error.message;
+    return 'An error occured: ' + error.message;
   }
 
   return (
@@ -65,7 +54,7 @@ const SetCards = () => {
         {data
           .slice(
             pagination.pageIndex * pagination.pageSize,
-            pagination.pageSize + pagination.pageSize * pagination.pageIndex
+            pagination.pageSize + pagination.pageSize * pagination.pageIndex,
           )
           .map((card: Card) => {
             return (
@@ -81,50 +70,7 @@ const SetCards = () => {
             );
           })}
       </div>
-      <div  className="paginationContainer">
-        <button
-          className="fastBackwardButton"
-          onClick={() => table.firstPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          {"<<"}
-        </button>
-        <button
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          {"<"}
-        </button>
-        <div className="pageInformation">{pagination.pageIndex + 1}</div>
-
-        <button
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          {">"}
-        </button>
-        <button
-          className="fastForwardButton"
-          onClick={() => table.lastPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          {">>"}
-        </button>
-        <select
-          className="selectPage"
-          id="selectPage"
-          value={table.getState().pagination.pageSize}
-          onChange={(e) => {
-            table.setPageSize(Number(e.target.value));
-          }}
-        >
-          {[10, 20, 30, 40, 50].map((pageSize) => (
-            <option key={pageSize} value={pageSize}>
-              {pageSize}
-            </option>
-          ))}
-        </select>
-      </div>
+      <Pagination table={table} pagination={pagination} />
     </>
   );
 };

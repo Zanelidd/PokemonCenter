@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { Card } from 'pokemon-tcg-sdk-typescript/dist/sdk';
-import { CollectionCard } from '../types';
-import { useUser } from './UserStore';
+import { CollectionCard } from '../types/card.types';
+
 
 type useCollectionStore = {
   collection: Array<CollectionCard>;
@@ -10,7 +10,7 @@ type useCollectionStore = {
   clearCollection: () => void;
   // isInCollection: (cardId: string) => boolean;
   getCardById: (cardId: string) => Card | undefined;
-  fillCollection: (userId: number | undefined, token : string) => void;
+
 };
 
 export const useCollection = create<useCollectionStore>((set) => {
@@ -38,30 +38,7 @@ export const useCollection = create<useCollectionStore>((set) => {
         .getState()
         .collection.find((card: CollectionCard) => card.id === cardId),
 
-    fillCollection: (userId, token) => {
-      fetch(`${import.meta.env.VITE_BACKEND_URL}/card/${userId}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-      })
-        .then((res) => {
-          return res.json();
-        })
-        .then((res) => {
-          set((state)=>{
-            return {
-           collection : [...state.collection,...res]
-            }
-        });
-          return true;
-        })
-        .catch(() => {
-          useUser.getState().logout();
-          return false;
-        });
-    },
+
   };
 });
 
