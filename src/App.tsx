@@ -1,8 +1,8 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import './App.css';
-import Router from './Router/Router';
+import Router from './router/Router';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import Login from './components/Login/Login';
+import Login from './components/login/Login';
 import { useUser } from './stores/UserStore';
 
 function App() {
