@@ -5,10 +5,10 @@ import { useCollection } from './CollectionStore.tsx';
 
 interface UserState {
   user: User | null;
-  getUser : ()=> User | null;
+  getUser: () => User | null;
   isAuthenticated: boolean;
   setUser: (user: User | null) => void;
-  login: (username: string, token: string,userId :number) => void;
+  login: (username: string, token: string, userId: number) => void;
   logout: () => void;
   showModal: boolean;
   toggleModal: () => void;
@@ -16,7 +16,7 @@ interface UserState {
 
 export const useUser = create<UserState>()(
   persist(
-    (set,get) => ({
+    (set, get) => ({
       user: null,
       isAuthenticated: false,
       showModal: false,
@@ -26,11 +26,12 @@ export const useUser = create<UserState>()(
           user,
           isAuthenticated: !!user,
         }),
-      getUser : ()=>
-      {return get().user},
-      login: (username:string, access_token:string,userId:number) =>
+      getUser: () => {
+        return get().user;
+      },
+      login: (username: string, access_token: string, userId: number) =>
         set({
-          user: { username, access_token,userId },
+          user: { username, access_token, userId },
           isAuthenticated: true,
         }),
       logout: () => {
@@ -38,7 +39,7 @@ export const useUser = create<UserState>()(
           user: null,
           isAuthenticated: false,
         });
-        useCollection.getState().clearCollection()
+        useCollection.getState().clearCollection();
       },
 
       toggleModal: () =>
@@ -47,7 +48,7 @@ export const useUser = create<UserState>()(
         })),
     }),
     {
-      name: "user-storage",
-    }
-  )
+      name: 'user-storage',
+    },
+  ),
 );

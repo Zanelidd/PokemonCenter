@@ -1,14 +1,13 @@
 import { useCollection } from '../../stores/CollectionStore';
 import style from '../../components/setCards/setCards.module.css';
-import SearchResults from '../../components/SearchResults/SearchResults.tsx';
 import { useState } from 'react';
 import Pagination from '../../components/pagination/Pagination.tsx';
 import { getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
+import SearchResults from '../../components/searchResults/SearchResults.tsx';
 
 
 const Collection = () => {
-  const { collection} = useCollection();
-
+  const { collection } = useCollection();
 
   const [pagination, setPagination] = useState({
     pageIndex: 0, //initial page index
@@ -32,7 +31,7 @@ const Collection = () => {
         {collection &&
           collection.slice(
             pagination.pageIndex * pagination.pageSize,
-            pagination.pageSize + pagination.pageSize * pagination.pageIndex
+            pagination.pageSize + pagination.pageSize * pagination.pageIndex,
           ).map((card) => {
             return (
               <SearchResults key={`${card.name}${card.set}`} data={card} />
@@ -40,9 +39,7 @@ const Collection = () => {
           })
         }
       </div>
-      <Pagination table={table} pagination={pagination}  />
-
-
+      <Pagination table={table} pagination={pagination} />
     </>
   );
 };

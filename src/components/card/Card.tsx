@@ -29,7 +29,7 @@ const Card = () => {
       if (user) {
         return api.card.addCard(user.userId, data.id);
       }
-      throw new Error()
+      throw new Error();
     },
     onSuccess: (result, data: Card) => {
       addToCollection(data, result.id);
@@ -37,8 +37,6 @@ const Card = () => {
     },
     onError: (error) => {
       console.error('Error', error.message);
-
-
     },
   });
 

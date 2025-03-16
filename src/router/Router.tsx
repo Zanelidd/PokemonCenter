@@ -7,8 +7,9 @@ import Collection from '../pages/Collection/Collection';
 import Results from '../pages/Results/Results';
 import Account from '../pages/Account/Account';
 import { useUser } from '../stores/UserStore';
+import { ReactElement } from 'react';
 
-const PrivateRoute = ({ children }: { children: React.ReactElement }) => {
+const PrivateRoute = ({ children }: { children: ReactElement }) => {
   const { isAuthenticated } = useUser();
   if (!isAuthenticated) {
     return <Navigate to="/home" replace />;
