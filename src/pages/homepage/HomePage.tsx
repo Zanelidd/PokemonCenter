@@ -6,33 +6,22 @@ import type { Set } from 'pokemon-tcg-sdk-typescript/dist/sdk';
 import { useState } from 'react';
 import { getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
 import Pagination from '../../components/pagination/Pagination.tsx';
+import api from '../../api/api.service.ts';
 
 const HomePage = () => {
   const navigate = useNavigate();
+  const twentyFourHoursInMs = 1000 * 60 * 60 * 24;
 
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 20,
   });
 
-  const twentyFourHoursInMs = 1000 * 60 * 60 * 24;
-
   const { isPending, error, data } = useQuery({
-    queryKey: ["PokemonSet"],
-    queryFn: async ():Promise<Array<Set>> => {
-     const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/external_api`,
-         {method: "GET", headers: {
-           "Content-Type": "application/json",
-           }})
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const result = await response.json();
-
-      return Array.isArray(result) ? result :result.data || [];
-
+    queryKey: ['PokemonSet'],
+    queryFn: async (): Promise<Array<Set>> => {
+      const result = await api.apiCard.getAllSets();
+      return Array.isArray(result) ? result : result.data || [];
     },
     staleTime: twentyFourHoursInMs,
   });
@@ -53,7 +42,7 @@ const HomePage = () => {
   }
 
   if (error) {
-    return "An error occurred: " + error.message;
+    return 'An error occurred: ' + error.message;
   }
 
   return (
@@ -62,7 +51,7 @@ const HomePage = () => {
         {data
           ?.slice(
             pagination.pageIndex * pagination.pageSize,
-            pagination.pageSize + pagination.pageSize * pagination.pageIndex
+            pagination.pageSize + pagination.pageSize * pagination.pageIndex,
           )
           .map((set) => {
             return (
@@ -79,7 +68,7 @@ const HomePage = () => {
             );
           })}
       </div>
-      <Pagination table={table} pagination={pagination }  />
+      <Pagination table={table} pagination={pagination} />
     </div>
   );
 };

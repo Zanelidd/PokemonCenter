@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom';
-import SearchResults from '../../components/SearchResults/SearchResults';
+import SearchResults from '../../components/searchResults/SearchResults';
 import { Card } from 'pokemon-tcg-sdk-typescript/dist/sdk';
 import style from './result.module.css';
 import { getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import loadingGif from '/ピカチュウ-pokeball.gif';
 import Pagination from '../../components/pagination/Pagination.tsx';
+import api from '../../api/api.service.ts';
 
 const Results = () => {
   const location = useLocation();
@@ -19,24 +20,13 @@ const Results = () => {
   });
 
   const { isPending, error, data } = useQuery({
-    queryKey: ["SearchResults", `${state}`],
+    queryKey: ['SearchResults', `${state}`],
     staleTime: twentyFourHoursInMs,
-    queryFn: async () :Promise<Array<Card>> => {
-    const response =
-      await fetch(`${import.meta.env.VITE_BACKEND_URL}/external_api/searchCard`,
-      {method : "POST",
-      headers:{
-        "Content-Type": "application/json",
-      },
-      body : JSON.stringify({ name : state }),},
-      )
-      if (!response.ok) {
-        throw new Error("Could not find any result");
-      }
-      const result = await response.json();
-      return Array.isArray(result) ? result :result.data || [];
-    }})
-
+    queryFn: async (): Promise<Array<Card>> => {
+      const result = await api.apiCard.getCardByName({ name: state });
+      return Array.isArray(result) ? result : result.data || [];
+    },
+  });
 
   const table = useReactTable({
     columns: [],
@@ -54,7 +44,7 @@ const Results = () => {
   }
 
   if (error) {
-    return "An error occured: " + error.message;
+    return 'An error occured: ' + error.message;
   }
 
   return (
@@ -63,13 +53,13 @@ const Results = () => {
         {data
           .slice(
             pagination.pageIndex * pagination.pageSize,
-            pagination.pageSize + pagination.pageSize * pagination.pageIndex
+            pagination.pageSize + pagination.pageSize * pagination.pageIndex,
           )
           .map((stat: Card) => {
             return <SearchResults key={stat.id} data={stat} />;
           })}
       </div>
-      <Pagination table={table} pagination={pagination}  />
+      <Pagination table={table} pagination={pagination} />
     </div>
   );
 };
