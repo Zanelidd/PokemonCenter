@@ -6,7 +6,6 @@ import VerifPassword from '../../services/validationPassword.ts';
 import { useCollection } from '../../stores/CollectionStore.tsx';
 import api from '../../api/api.service.ts';
 
-
 const Account = () => {
   const { user } = useUser();
   const [passwordErrors, setPasswordErrors] = useState<Array<string>>([]);
@@ -14,6 +13,7 @@ const Account = () => {
   const [formData, setFormData] = useState({
     password: '',
   });
+  const [validationModal, setValidationModal] = useState(false);
   const { collection, clearCollection } = useCollection();
 
   const mutation = useMutation({
@@ -45,18 +45,37 @@ const Account = () => {
     }
   };
 
+  const handleCollectionDelete = () => {
+      clearCollection();
+      setValidationModal(false);
+  };
 
   return (
-
     <div className={style.accountContainer}>
       <div className={style.accountInfos}>
         <p>{user?.username}</p>
         <p>Number of Cards : {collection.length}</p>
 
         <button type="button" onClick={() => {
-          clearCollection();
-        }}>Delete collection
+          setValidationModal(!validationModal);
+        }
+        }>Delete collection
         </button>
+
+        {validationModal ? <>
+          <div>
+            Are you sure you want to remove your collection ?
+          </div>
+          <button type="button" onClick={() => {
+            handleCollectionDelete();
+          }}>Yes
+          </button>
+          <button type="button" onClick={() => {
+            setValidationModal(false);
+          }}>No
+          </button>
+        </> : null
+        }
       </div>
       <div className={style.accountPassword}>
         <form id="accountForm" className={style.changePassword} onSubmit={handleSubmit}>
@@ -89,7 +108,6 @@ const Account = () => {
           : null}
       </div>
     </div>
-
 
   );
 };

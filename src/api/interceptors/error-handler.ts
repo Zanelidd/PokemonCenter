@@ -6,9 +6,8 @@ export const errorHandlerInterceptor: ResponseInterceptor = async (response: Res
 
   if (!response.ok) {
     if (response.status === 401) {
-      window.location.href = '/home';
+      useUser.getState().logout()
     }
-    useUser.getState().logout()
     throw new Error(`HTTP error! Status: ${response.status}`);
   }
   return response;

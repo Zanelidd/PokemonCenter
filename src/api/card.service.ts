@@ -1,7 +1,6 @@
 import endpoints from './config/endpoints.ts';
-import Card from '../components/Card/Card.tsx';
+import Card from '../components/card/Card.tsx';
 import { useCollection } from '../stores/CollectionStore.tsx';
-
 import http from './client.ts';
 import { cardResponse } from '../types/card.types.ts';
 
@@ -13,7 +12,7 @@ export const cardService = {
       .then((res) => res.json())
       .then((result) => {
         result.map((card: Card) => {
-          return useCollection.getState().addToCollection(card, result.id);
+          return  useCollection.getState().addToCollection(card, result.id);
         });
       });
   },

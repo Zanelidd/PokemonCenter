@@ -1,13 +1,14 @@
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
-import HomePage from '../pages/Homepage/HomePage';
+import HomePage from '../pages/homepage/HomePage';
 import SetCards from '../components/setCards/SetCards';
-import Card from '../components/Card/Card';
-import NavLayout from '../Layouts/NavLayout';
-import Collection from '../pages/Collection/Collection';
-import Results from '../pages/Results/Results';
-import Account from '../pages/Account/Account';
+import Card from '../components/card/Card';
+import NavLayout from '../layouts/NavLayout';
+import Collection from '../pages/collection/Collection';
+import Results from '../pages/results/Results';
+import Account from '../pages/account/Account';
 import { useUser } from '../stores/UserStore';
 import { ReactElement } from 'react';
+import Login from '../components/login/Login.tsx';
 
 const PrivateRoute = ({ children }: { children: ReactElement }) => {
   const { isAuthenticated } = useUser();
@@ -26,6 +27,7 @@ const Router = () => {
       element: <NavLayout />,
       children: [
         { path: '/home', element: <HomePage /> },
+        {path : '/login',element : <Login/>},
         {
           path: '/:setId',
           element: <SetCards />,
