@@ -48,6 +48,7 @@ const Login = () => {
       user &&  api.card.getCard(user?.userId)
       setSignIn(true);
       toggleModal();
+
     },
     onError: (error) => {
       console.error("Error", error);

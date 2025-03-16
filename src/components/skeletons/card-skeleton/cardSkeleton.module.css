@@ -1,0 +1,48 @@
+.cardContainer {
+    max-width: 1200px;
+    margin: 20px auto;
+    display: grid;
+    justify-items: center;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 50px;
+    width: 100%;
+    box-sizing: border-box;
+
+}
+.card{
+    box-shadow: 7px 5px 9px 0 grey;
+    width: 240px;
+    height: 330px;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.card::after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 0)
+    );
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+
+
+
