@@ -1,9 +1,11 @@
 import { useCollection } from '../../stores/CollectionStore';
 import style from '../../components/setCards/setCards.module.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Pagination from '../../components/pagination/Pagination.tsx';
 import { getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
 import SearchResults from '../../components/searchResults/SearchResults.tsx';
+import api from '../../api/api.service.ts';
+import { useUser } from '../../stores/UserStore.tsx';
 
 
 const Collection = () => {
@@ -25,6 +27,15 @@ const Collection = () => {
     },
   });
 
+  const { user } = useUser();
+
+  useEffect(() => {
+    if (user?.userId && collection.length == 0) {
+      api.card.getCard(user.userId)
+        .then(() => console.log('card Added'));
+    }
+  }, [user, collection.length]);
+  
   return (
     <>
       <div className={style.cardContainer}>
@@ -45,3 +56,5 @@ const Collection = () => {
 };
 
 export default Collection;
+
+
