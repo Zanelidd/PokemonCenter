@@ -8,6 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 import Pagination from '../../components/pagination/Pagination.tsx';
 import api from '../../api/api.service.ts';
 import CardSkeleton from '../../components/skeletons/card-skeleton/CardSkeleton.tsx';
+import { toast, Toaster } from 'sonner';
 
 const Results = () => {
   const location = useLocation();
@@ -40,15 +41,17 @@ const Results = () => {
   });
 
   if (isPending) {
-return <CardSkeleton/>
+    return <CardSkeleton />;
   }
 
   if (error) {
-    return 'An error occured: ' + error.message;
+    toast.error(error.message);
+    return error;
   }
 
   return (
     <div className={style.globalContainer}>
+      <Toaster position="top-right" />
       <div className={style.resultContainer}>
         {data
           .slice(
