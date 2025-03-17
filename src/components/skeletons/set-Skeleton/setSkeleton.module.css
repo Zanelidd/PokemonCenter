@@ -1,0 +1,51 @@
+.setContainer {
+    max-width: 1200px;
+    margin: 55px auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 0 20px;
+    width: 100%;
+    height: 65vh;
+    box-sizing: border-box;
+}
+
+.setSkeletonCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    background: rgba(31, 41, 55, 0.8);
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+    height: 197px;
+    width: 216px;
+    position: relative;
+    overflow: hidden;
+}
+
+.setSkeletonCard::after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 0)
+    );
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}

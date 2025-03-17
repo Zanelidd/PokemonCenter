@@ -1,14 +1,19 @@
-import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
-import HomePage from '../pages/homepage/HomePage';
-import SetCards from '../components/setCards/SetCards';
-import Card from '../components/card/Card';
-import NavLayout from '../layouts/NavLayout';
-import Collection from '../pages/collection/Collection';
-import Results from '../pages/results/Results';
-import Account from '../pages/account/Account';
-import { useUser } from '../stores/UserStore';
-import { ReactElement } from 'react';
-import Login from '../components/login/Login.tsx';
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
+import HomePage from "../pages/homepage/HomePage";
+import SetCards from "../components/setCards/SetCards";
+import Card from "../components/card/Card";
+import NavLayout from "../layouts/NavLayout";
+import Collection from "../pages/collection/Collection";
+import Results from "../pages/results/Results";
+import Account from "../pages/account/Account";
+import { useUser } from "../stores/UserStore";
+import { ReactElement } from "react";
+import Login from "../components/login/Login";
+import VerifyEmail from "../components/login/VerifyEmail";
 
 const PrivateRoute = ({ children }: { children: ReactElement }) => {
   const { isAuthenticated } = useUser();
@@ -20,37 +25,35 @@ const PrivateRoute = ({ children }: { children: ReactElement }) => {
 };
 
 const Router = () => {
-
   const router = createBrowserRouter([
     {
-      path: '/',
+      path: "/",
       element: <NavLayout />,
       children: [
-        { path: '/home', element: <HomePage /> },
-        {path : '/login',element : <Login/>},
+        { path: "/home", element: <HomePage /> },
+        { path: "/login", element: <Login /> },
         {
-          path: '/:setId',
+          path: "/:setId",
           element: <SetCards />,
         },
         {
-          path: '/card/:cardId',
+          path: "/card/:cardId",
           element: <Card />,
         },
-        { path: '/result', element: <Results /> },
+        { path: "/result", element: <Results /> },
         {
-          path: '/user',
+          path: "/user",
           children: [
             {
-              path: '/user/collection',
+              path: "/user/collection",
               element: (
                 <PrivateRoute>
                   <Collection />
                 </PrivateRoute>
               ),
-
             },
             {
-              path: '/user/account',
+              path: "/user/account",
               element: (
                 <PrivateRoute>
                   <Account />
@@ -60,6 +63,14 @@ const Router = () => {
           ],
         },
       ],
+    },
+    {
+      path: "/register",
+      element: <Login />,
+    },
+    {
+      path: "/verify-email",
+      element: <VerifyEmail />,
     },
   ]);
 

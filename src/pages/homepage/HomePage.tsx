@@ -1,12 +1,12 @@
 import style from './homePage.module.css';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import loadingGif from '/ピカチュウ-pokeball.gif';
 import type { Set } from 'pokemon-tcg-sdk-typescript/dist/sdk';
 import { useState } from 'react';
 import { getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
 import Pagination from '../../components/pagination/Pagination.tsx';
 import api from '../../api/api.service.ts';
+import SetSkeleton from '../../components/skeletons/set-Skeleton/SetSkeleton.tsx';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -38,7 +38,7 @@ const HomePage = () => {
   });
 
   if (isPending) {
-    return <img className="loadingGif" src={loadingGif} alt="Loading Gif" />;
+    return <SetSkeleton />;
   }
 
   if (error) {

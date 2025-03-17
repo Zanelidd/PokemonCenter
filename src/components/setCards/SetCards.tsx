@@ -1,12 +1,13 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import style from './setCards.module.css';
 import { useQuery } from '@tanstack/react-query';
-import loadingGif from '/ピカチュウ-pokeball.gif';
 import { Card } from 'pokemon-tcg-sdk-typescript/dist/sdk';
 import { getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
 import { useState } from 'react';
 import Pagination from '../pagination/Pagination.tsx';
 import api from '../../api/api.service.ts';
+import CardSkeleton from '../skeletons/card-skeleton/CardSkeleton.tsx';
+
 
 const SetCards = () => {
   const navigate = useNavigate();
@@ -41,8 +42,9 @@ const SetCards = () => {
   });
 
   if (isPending) {
-    return <img className="loadingGif" src={loadingGif} alt="Loading Gif" />;
+    return <CardSkeleton />;
   }
+
 
   if (error) {
     return 'An error occured: ' + error.message;

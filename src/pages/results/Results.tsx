@@ -5,9 +5,9 @@ import style from './result.module.css';
 import { getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import loadingGif from '/ピカチュウ-pokeball.gif';
 import Pagination from '../../components/pagination/Pagination.tsx';
 import api from '../../api/api.service.ts';
+import CardSkeleton from '../../components/skeletons/card-skeleton/CardSkeleton.tsx';
 
 const Results = () => {
   const location = useLocation();
@@ -40,7 +40,7 @@ const Results = () => {
   });
 
   if (isPending) {
-    return <img className="loadingGif" src={loadingGif} alt="Loading Gif" />;
+return <CardSkeleton/>
   }
 
   if (error) {

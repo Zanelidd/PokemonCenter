@@ -1,33 +1,58 @@
-import endpoints from './config/endpoints.ts';
-import http from './client.ts';
+import endpoints from "./config/endpoints.ts";
+import http from "./client.ts";
+import { LoginResponse, RegisterResponse } from "../types/response.types.ts";
 
 export const authService = {
-  login: async (form: { username: string; password: string; email: string }) => {
+  login: async (form: {
+    username: string;
+    password: string;
+    email: string;
+  }): Promise<LoginResponse> => {
     return http(endpoints.auth.subroutes.login, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(form),
-    })
-      .then((response) => {
-        return response.json();
-      });
+    }).then((response) => {
+      return response.json();
+    });
+  },
 
-  },
-  register: async (form: { username: string; password: string; email: string }) => {
+  register: async (form: {
+    username: string;
+    password: string;
+    email: string;
+  }): Promise<RegisterResponse> => {
     return http(endpoints.auth.subroutes.register, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(form),
-    })
-      .then((response) => {
-        return response.json();
-      });
+    }).then((response) => {
+      return response.json();
+    });
   },
-  modifyPassword: async (form: { password: string }, userId: number) => {
+
+  verifyEmail: async (token: string): Promise<LoginResponse> => {
+    const body = { token };
+    const config = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    };
+
+    return http(endpoints.auth.subroutes.verify, config).then((response) => {
+      return response.json();
+    });
+  },
+
+  modifyPassword: async (
+    form: { password: string },
+    userId: number
+  ): Promise<{ message: string }> => {
     return http(`${endpoints.auth.path}/${userId}`, {
-      method: 'PATCH',
+      method: "PATCH",
       body: JSON.stringify(form),
-    })
-      .then((response) => {
-        return response.json();
-      });
+    }).then((response) => {
+      return response.json();
+    });
   },
 };
