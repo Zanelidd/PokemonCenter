@@ -21,7 +21,7 @@ const Results = () => {
   });
 
   const { isPending, error, data } = useQuery({
-    queryKey: ['SearchResults', `${state}`],
+    queryKey: ["SearchResults", `${state}`],
     staleTime: twentyFourHoursInMs,
     queryFn: async (): Promise<Array<Card>> => {
       const result = await api.apiCard.getCardByName({ name: state });
@@ -46,7 +46,7 @@ const Results = () => {
 
   if (error) {
     toast.error(error.message);
-    return error;
+    return [];
   }
 
   return (
@@ -56,7 +56,7 @@ const Results = () => {
         {data
           .slice(
             pagination.pageIndex * pagination.pageSize,
-            pagination.pageSize + pagination.pageSize * pagination.pageIndex,
+            pagination.pageSize + pagination.pageSize * pagination.pageIndex
           )
           .map((stat: Card) => {
             return <SearchResults key={stat.id} data={stat} />;

@@ -19,7 +19,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordBis, setShowPasswordBis] = useState(false);
 
-  const { login, setUser, user } = useUser();
+  const { login, user } = useUser();
 
   const mutation = useMutation({
     mutationFn: async (userData: {
