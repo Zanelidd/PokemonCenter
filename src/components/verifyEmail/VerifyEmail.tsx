@@ -1,9 +1,10 @@
-import { useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
-import { authService } from "../../api/auth.service";
-import styles from "./verify-email.module.css";
-import { ApiError } from "../../types/response.types";
+import { useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useMutation } from '@tanstack/react-query';
+import { authService } from '../../api/auth.service.ts';
+import styles from './verify-email.module.css';
+import { ApiError } from '../../types/response.types.ts';
+import { useUser } from '../../stores/UserStore.tsx';
 
 export default function VerifyEmail() {
   const [searchParams] = useSearchParams();
@@ -11,13 +12,15 @@ export default function VerifyEmail() {
   const [error, setError] = useState<string | null>(null);
 
   const token = searchParams.get("token");
+  const {setUser}=useUser()
 
   const verifyMutation = useMutation({
     mutationFn: async (token: string) => {
-      const response = await authService.verifyEmail(token);
-      return response;
+     return  await authService.verifyEmail(token);
+
     },
     onSuccess: (data) => {
+      setUser(data);
       localStorage.setItem("token", data.access_token);
       localStorage.setItem("userId", data.userId.toString());
       localStorage.setItem("username", data.username);
