@@ -1,15 +1,14 @@
-import { useNavigate, useParams } from 'react-router-dom';
-import style from './card.module.css';
-import { useCollection } from '../../stores/CollectionStore';
-import { PokemonTCG } from 'pokemon-tcg-sdk-typescript';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import loadingGif from '/ピカチュウ-pokeball.gif';
-import { useState } from 'react';
-import type { Card } from 'pokemon-tcg-sdk-typescript/dist/sdk';
-
-import { useUser } from '../../stores/UserStore.tsx';
-import api from '../../api/api.service.ts';
-import { cardResponse, CollectionCard } from '../../types/card.types.ts';
+import { useNavigate, useParams } from "react-router-dom";
+import style from "./card.module.css";
+import { useCollection } from "../../stores/CollectionStore";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import loadingGif from "/ピカチュウ-pokeball.gif";
+import { useState } from "react";
+import type { Card } from "pokemon-tcg-sdk-typescript/dist/sdk";
+import { useUser } from "../../stores/UserStore.tsx";
+import api from "../../api/api.service.ts";
+import { cardResponse, CollectionCard } from "../../types/card.types.ts";
+import { toast, Toaster } from "sonner";
 
 const Card = () => {
   const navigate = useNavigate();
@@ -33,26 +32,23 @@ const Card = () => {
     },
     onSuccess: (result, data: Card) => {
       addToCollection(data, result.id);
-      //ajout toaster avec sonner
+      toast.success("Cards added successfully.");
     },
     onError: (error) => {
-      console.error('Error', error.message);
+      toast.error(error.message);
     },
   });
 
   const mutationDelete = useMutation({
     mutationFn: async (data: CollectionCard) => {
       return api.card.deleteCard(data.id);
-
     },
     onSuccess: (data: cardResponse) => {
       deleteFromCollection(data.remoteId);
-      //ajout toaster avec sonner
+      toast.success("Card deleted successfully.");
     },
     onError: (error) => {
-      console.error('Error', error);
-
-      /*logout()*/
+      toast.error(error.message);
     },
   });
 
@@ -65,14 +61,16 @@ const Card = () => {
     if (findCard) {
       mutationDelete.mutate(findCard);
     } else {
-      console.error('Card not found in collection');
+      toast.error("Card not found in collection");
     }
   };
-// Changer appel a pokemon
+
   const { isPending, error, data } = useQuery({
-    queryKey: ['PokemonCard', `${params.cardId}`],
-    queryFn: () => {
-      return PokemonTCG.findCardByID(`${params.cardId}`);
+    queryKey: ["PokemonCard", `${params.cardId}`],
+    queryFn: async () => {
+      if (params.cardId) {
+        return await api.apiCard.getCardById(params.cardId);
+      }
     },
     staleTime: twentyFourHoursInMs,
   });
@@ -82,11 +80,13 @@ const Card = () => {
   }
 
   if (error) {
-    return 'An error occured: ' + error.message;
+    toast.error(error.message);
+    return "An error occurred: " + error.message;
   }
 
   return (
     <div className={style.cardInfoContainer}>
+      <Toaster position="top-right" />
       <div className={style.card}>
         <div
           className={style.imgContainer}
@@ -106,17 +106,17 @@ const Card = () => {
               y: Math.round(e.clientY / 10),
             });
 
-            root.style.setProperty('--xAxis', `${xAxis}deg`);
-            root.style.setProperty('--yAxis', `${yAxis}deg`);
-            root.style.setProperty('--mouseX', `${coord.x}%`);
-            root.style.setProperty('--mouseY', `${coord.y}%`);
+            root.style.setProperty("--xAxis", `${xAxis}deg`);
+            root.style.setProperty("--yAxis", `${yAxis}deg`);
+            root.style.setProperty("--mouseX", `${coord.x}%`);
+            root.style.setProperty("--mouseY", `${coord.y}%`);
           }}
           onMouseLeave={() => {
             const root = document.documentElement;
 
-            root.style.setProperty('--xAxis', `0 deg`);
-            root.style.setProperty('--yAxis', `0 deg`);
-            root.style.setProperty('--o', '1');
+            root.style.setProperty("--xAxis", `0 deg`);
+            root.style.setProperty("--yAxis", `0 deg`);
+            root.style.setProperty("--o", "1");
           }}
         >
           <img className={style.cardImg} src={data.images.large} alt="" />
@@ -129,9 +129,10 @@ const Card = () => {
             <h3>{data.set.name}</h3>
             <h3>{data.types}</h3>
             <h3>{data.supertype}</h3>
-            {data?.evolvesFrom ? <h3>Evolves from {data?.evolvesFrom}</h3> : null}
+            {data?.evolvesFrom ? (
+              <h3>Evolves from {data?.evolvesFrom}</h3>
+            ) : null}
             {data?.evolvesTo ? <h3>Evolves to {data?.evolvesTo}</h3> : null}
-
           </div>
           <div className={style.textInfo}>
             <div className={style.attackContainer}>
@@ -151,45 +152,55 @@ const Card = () => {
             <p>{data.flavorText}</p>
             <div className={style.priceInfo}>
               <p className={style.priceTitle}>Prices</p>
-              {data?.tcgplayer?.prices.normal ? <div className={style.normalPrice}>
-                <p>Low Price : {data.tcgplayer?.prices.normal?.low} $ </p>
-                <p>Average Price : {data.tcgplayer?.prices.normal?.market} $</p>
-                <p>High Price : {data.tcgplayer?.prices.normal?.high} $ </p>
-              </div> : null}
-              {data?.tcgplayer?.prices.holofoil ? <div className={style.hollowPrice}>
-                <p>Hollow Low Price : {data.tcgplayer?.prices.holofoil?.low} $</p>
-                <p>
-                  Hollow Average Price : {data.tcgplayer?.prices.holofoil?.market}
-                  $
-                </p>
-                <p>
-                  Hollow High Price : {data.tcgplayer?.prices.holofoil?.high} $
-                </p>
-              </div> : null}
+              {data?.tcgplayer?.prices.normal ? (
+                <div className={style.normalPrice}>
+                  <p>Low Price: {data.tcgplayer?.prices.normal?.low} $</p>
+                  <p>
+                    Average Price: {data.tcgplayer?.prices.normal?.market} $
+                  </p>
+                  <p>High Price: {data.tcgplayer?.prices.normal?.high} $</p>
+                </div>
+              ) : null}
+              {data?.tcgplayer?.prices.holofoil ? (
+                <div className={style.hollowPrice}>
+                  <p>
+                    Holo Low Price: {data.tcgplayer?.prices.holofoil?.low} $
+                  </p>
+                  <p>
+                    Holo Average Price:{" "}
+                    {data.tcgplayer?.prices.holofoil?.market} $
+                  </p>
+                  <p>
+                    Holo High Price: {data.tcgplayer?.prices.holofoil?.high} $
+                  </p>
+                </div>
+              ) : null}
               <p>
-                Card number : {data.number}/{data.set.total}
+                Card number: {data.number}/{data.set.total}
               </p>
             </div>
           </div>
         </div>
 
         <div className={style.buttonContainer}>
-          {user ? isInCollection ? (
-            <button
-              onClick={() => {
-                cardId ? handleDeleteCollection(data) : null;
-              }}
-            >
-              Delete from collection
-            </button>
-          ) : (
-            <button
-              onClick={() => {
-                handleAddCollection(data);
-              }}
-            >
-              Add to my collection
-            </button>
+          {user ? (
+            isInCollection ? (
+              <button
+                onClick={() => {
+                  cardId ? handleDeleteCollection(data) : null;
+                }}
+              >
+                Remove from collection
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  handleAddCollection(data);
+                }}
+              >
+                Add to collection
+              </button>
+            )
           ) : null}
 
           <button

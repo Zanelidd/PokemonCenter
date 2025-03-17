@@ -5,47 +5,49 @@
   justify-content: center;
   min-height: 100vh;
   padding: 2rem;
-  background-color: var(--background-color);
+  background: linear-gradient(145deg, #1a2a42 0%, #0f1723 100%);
 }
 
 .verifyCard {
-  background: var(--card-background);
+  background: linear-gradient(145deg, #1a2a42 0%, #0f1723 100%);
   border-radius: 12px;
   padding: 2rem;
-  box-shadow: var(--card-shadow);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
   width: 100%;
   max-width: 400px;
   text-align: center;
+  border: 2px solid #3a4d6b;
 }
 
 .verifyTitle {
-  color: var(--text-primary);
+  color: #fff;
   font-size: 1.8rem;
   margin-bottom: 1.5rem;
   font-weight: 600;
 }
 
 .verifyMessage {
-  color: var(--text-secondary);
+  color: #fff;
   font-size: 1.1rem;
   line-height: 1.6;
   margin-bottom: 2rem;
 }
 
 .verifyError {
-  color: var(--error-text);
-  background-color: var(--error-background);
+  color: #fff;
+  background-color: rgba(239, 68, 68, 0.1);
   padding: 1rem;
   border-radius: 8px;
   margin-bottom: 1.5rem;
   font-size: 0.9rem;
+  border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
 .verifySpinner {
   width: 40px;
   height: 40px;
-  border: 4px solid var(--spinner-border);
-  border-top: 4px solid var(--spinner-accent);
+  border: 4px solid #3a4d6b;
+  border-top: 4px solid #38bdf8;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin: 0 auto 1.5rem;
@@ -62,7 +64,7 @@
 }
 
 .verifyButton {
-  background-color: var(--primary-color);
+  background-color: #38bdf8;
   color: white;
   border: none;
   border-radius: 8px;
@@ -74,7 +76,7 @@
 }
 
 .verifyButton:hover {
-  background-color: var(--primary-color-dark);
+  background-color: #0284c7;
 }
 
 /* Responsive Design */
