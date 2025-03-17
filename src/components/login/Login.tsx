@@ -4,7 +4,7 @@ import { useUser } from '../../stores/UserStore';
 import style from './login.module.css';
 import VerifPassword from '../../services/validationPassword.ts';
 import api from '../../api/api.service.ts';
-import { User } from '../../types/user.types.ts';
+import { toast, Toaster } from 'sonner';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -19,8 +19,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordBis, setShowPasswordBis] = useState(false);
 
-  const { login, setUser,user } = useUser();
-
+  const { login, setUser, user } = useUser();
 
   const mutation = useMutation({
     mutationFn: async (userData: {
@@ -28,32 +27,28 @@ const Login = () => {
       password: string;
       email: string;
     }) => {
-
-      let result:User;
-
       if (signIn) {
         const response = await api.auth.login(userData);
-        result  = await response;
-        login(result.username, result.access_token, result.userId)
-
+        const result = await response;
+        login(result.username, result.access_token, result.userId);
       } else {
         const response = await api.auth.register(userData);
-         result  = await response;
-        setUser(result);
+        const result = await response;
+        toast.success(result.message);
+        setSignIn(true);
       }
     },
     onSuccess: () => {
-      console.log(`${signIn ? "Connection" : "Inscription"} success`);
-      // Penser à intégrer l'ID du user
-      user &&  api.card.getCard(user?.userId)
-      setSignIn(true);
-      toggleModal();
-
+      if (signIn) {
+        toast.success("Login successful");
+        user && api.card.getCard(user?.userId);
+        toggleModal();
+      }
     },
     onError: (error) => {
-      console.error("Error", error);
+      toast.error(error.message);
       const errorMessage = error.message || "Unknown error";
-      setPasswordErrors([...passwordErrors,errorMessage]);
+      setPasswordErrors([...passwordErrors, errorMessage]);
     },
   });
 
@@ -61,19 +56,16 @@ const Login = () => {
     e.preventDefault();
 
     if (signIn) {
-
       mutation.mutate(formData);
-
     } else {
-
-      const ifPasswordValid= VerifPassword(formData, confirmPassword)
-      if (ifPasswordValid.length !==0 ) {
-        setPasswordErrors(ifPasswordValid)
+      const ifPasswordValid = VerifPassword(formData, confirmPassword);
+      if (ifPasswordValid.length !== 0) {
+        setPasswordErrors(ifPasswordValid);
       }
-      if(ifPasswordValid.length === 0){
+      if (ifPasswordValid.length === 0) {
         mutation.mutate(formData);
         setPasswordErrors([]);
-        }
+      }
     }
   };
 
@@ -85,7 +77,6 @@ const Login = () => {
       [name]: value,
     }));
   };
-
 
   const { toggleModal } = useUser();
   const modalRef = useRef<HTMLDivElement>(null);
@@ -102,13 +93,12 @@ const Login = () => {
     [toggleModal]
   );
 
-  const togglePasswordVisibility=()=>{
+  const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
-
-  }
-  const togglePasswordBisVisibility=()=>{
+  };
+  const togglePasswordBisVisibility = () => {
     setShowPasswordBis(!showPasswordBis);
-  }
+  };
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
@@ -120,12 +110,27 @@ const Login = () => {
 
   return (
     <div className={style.loginBack}>
+      <Toaster position="top-right" />
       <div className={style.loginContainer} ref={modalRef}>
         <div className={style.headContainer}>
-          <div className={signIn ? style.activeTab : style.inactiveTab} onClick={() => setSignIn(true)}>Sign In</div>
-          <div className={!signIn ? style.activeTab : style.inactiveTab} onClick={() => setSignIn(false)}>Sign Up</div>
+          <div
+            className={signIn ? style.activeTab : style.inactiveTab}
+            onClick={() => setSignIn(true)}
+          >
+            Sign In
+          </div>
+          <div
+            className={!signIn ? style.activeTab : style.inactiveTab}
+            onClick={() => setSignIn(false)}
+          >
+            Sign Up
+          </div>
         </div>
-        <form id="loginForm" onSubmit={handleSubmit} className={style.loginForm}>
+        <form
+          id="loginForm"
+          onSubmit={handleSubmit}
+          className={style.loginForm}
+        >
           <label htmlFor="username">Username</label>
           <input
             type="text"
@@ -153,48 +158,60 @@ const Login = () => {
           )}
           <label htmlFor="password">Password</label>
           <div className={style.passwordContainer}>
-          <input
-            type={showPassword ? "text" : "password"}
-            name="password"
-            id="password"
-            onChange={ handleChange }
-            disabled={mutation.isPending}
-            required
-          />
-          <button type="button"  onClick={togglePasswordVisibility}>
-            {showPassword ? "🙈" : "👁️"}</button>
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              id="password"
+              onChange={handleChange}
+              disabled={mutation.isPending}
+              required
+            />
+            <button type="button" onClick={togglePasswordVisibility}>
+              {showPassword ? "🙈" : "👁️"}
+            </button>
           </div>
           {!signIn && (
             <>
               <label htmlFor="Confirmpassword">Repeat Password</label>
               <div className={style.passwordContainer}>
-              <input
-                type={showPasswordBis ? "text" : "password"}
-                name="Confirmpassword"
-                id="Confirmpassword"
-                onChange={(e) => {
-                  setConfirmPassword(e.target.value);
-                }}
-                required
-              />
-              <button type="button"  onClick={togglePasswordBisVisibility}>
-                {showPasswordBis ? "🙈" : "👁️"}</button>
+                <input
+                  type={showPasswordBis ? "text" : "password"}
+                  name="Confirmpassword"
+                  id="Confirmpassword"
+                  onChange={(e) => {
+                    setConfirmPassword(e.target.value);
+                  }}
+                  required
+                />
+                <button type="button" onClick={togglePasswordBisVisibility}>
+                  {showPasswordBis ? "🙈" : "👁️"}
+                </button>
               </div>
             </>
           )}
-          <button type="submit" disabled={mutation.isPending} onClick={()=>  setPasswordErrors([])
-          }>
+          <button
+            type="submit"
+            disabled={mutation.isPending}
+            onClick={() => setPasswordErrors([])}
+          >
             {mutation.isPending
               ? `Signing ${signIn ? "in" : "up"}...`
               : `Sign ${signIn ? "in" : "up"}`}
           </button>
         </form>
         {passwordErrors &&
-           (Array.isArray(passwordErrors)
-            ? passwordErrors.map((err,index) =>{
-             return <div key={index} className={style.errorMessage}> ⚠️ {err}</div>
+          (Array.isArray(passwordErrors) ? (
+            passwordErrors.map((err, index) => {
+              return (
+                <div key={index} className={style.errorMessage}>
+                  {" "}
+                  ⚠️ {err}
+                </div>
+              );
             })
-            :  <div className={style.errorMessage}> ⚠️ {passwordErrors}</div> )}
+          ) : (
+            <div className={style.errorMessage}> ⚠️ {passwordErrors}</div>
+          ))}
       </div>
     </div>
   );

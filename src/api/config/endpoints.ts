@@ -4,6 +4,7 @@ const endpoints = {
     subroutes: {
       login: `/users/signIn`,
       register: `/users/signUp`,
+      verify: `/users/verify`,
     },
   },
   card: {
@@ -11,10 +12,10 @@ const endpoints = {
   },
   externalApi: {
     path: `/external_api`,
-    subroutes:{
-      cards : `/external_api/cards`,
-      searchCard : `/external_api/searchCard`,
-    }
+    subroutes: {
+      cards: `/external_api/cards`,
+      searchCard: `/external_api/searchCard`,
+    },
   },
 };
 

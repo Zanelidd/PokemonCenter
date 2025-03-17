@@ -1,18 +1,25 @@
-import { CustomFetch, Interceptors, RequestInterceptor, ResponseInterceptor } from '../../types/api.types';
+import {
+  CustomFetch,
+  Interceptors,
+  RequestInterceptor,
+  ResponseInterceptor,
+} from "../../types/api.types";
 
 export function createFetchWithInterceptors(): CustomFetch {
-
   const interceptors: Interceptors = {
     request: [],
     response: [],
   };
 
-  const customFetch = async (url: RequestInfo, config?: RequestInit): Promise<Response> => {
+  const customFetch = async (
+    url: RequestInfo,
+    config?: RequestInit
+  ): Promise<Response> => {
     let resource: RequestInfo = url;
-    let configuration: RequestInit = config || {};
+    let configuration: RequestInit = config ? { ...config } : {};
 
     for (const interceptor of interceptors.request) {
-      const result = interceptor(resource, config);
+      const result = interceptor(resource, configuration);
       if (result) {
         if (Array.isArray(result)) {
           [resource, configuration] = result;
