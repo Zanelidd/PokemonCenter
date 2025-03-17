@@ -1,10 +1,14 @@
 .loginBack {
+  position: absolute;
   background-color: transparent;
+  height: 95vh;
+  width: 95vw;
+  z-index: 998;
 }
 
 .loginContainer {
   position: absolute;
-  top: 32vh;
+  top: 18vh;
   left: 35vw;
   z-index : 999;
   display: flex;

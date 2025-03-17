@@ -5,7 +5,11 @@ import { useUser } from '../../stores/UserStore';
 import SearchCard from '../searchCard/SearchCard';
 
 const Header = () => {
-  const { toggleModal, isAuthenticated, logout } = useUser();
+  const { toggleModal,showModal, isAuthenticated, logout } = useUser();
+
+  const handleModalOpen = () => {
+    toggleModal();
+  }
 
   return (
     <header className={style.header}>
@@ -25,9 +29,9 @@ const Header = () => {
             Logout
           </button>
         ) : (
-          <button
+          <button type="button" disabled={showModal}
             onClick={() => {
-              toggleModal();
+              handleModalOpen();
             }}
           >
             Connect

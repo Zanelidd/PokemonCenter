@@ -1,35 +1,36 @@
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import style from './searchCard.module.css';
 
 const SearchCard = () => {
-  const [search, setSearch] = useState<string>("");
+  const [search, setSearch] = useState<string>('');
   const navigate = useNavigate();
 
-  const handleSearch = () => {
-    navigate("/result", { state: search });
+  const handleSearch = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    navigate('/result', { state: search });
+
   };
 
   return (
-    <div className={style.searchContainer}>
+
+    <form className={style.searchContainer} onSubmit={(e) => handleSearch(e)}>
       <input
         id="search"
         type="search"
         value={search}
-        placeholder={"Search..."}
+        placeholder={'Search...'}
+        required
         onChange={(e) => {
           setSearch(e.target.value);
         }}
       />
-
-      <button
-        onClick={() => {
-          handleSearch();
-        }}
-      >
+      <button type="submit">
         Search
       </button>
-    </div>
+    </form>
+
+
   );
 };
 
