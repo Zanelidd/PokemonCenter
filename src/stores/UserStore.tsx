@@ -1,13 +1,13 @@
 import { create } from 'zustand';
-import { User } from '../types/user.types.ts';
+import { UserTypes } from '../types/user.types.ts';
 import { persist } from 'zustand/middleware';
-import { useCollection } from './CollectionStore.tsx';
+import { useCollection } from './CollectionStore';
 
 interface UserState {
-  user: User | null;
-  getUser: () => User | null;
+  user: UserTypes | null;
+  getUser: () => UserTypes | null;
   isAuthenticated: boolean;
-  setUser: (user: User | null) => void;
+  setUser: (user: UserTypes | null) => void;
   login: (username: string, token: string, userId: number) => void;
   logout: () => void;
   showModal: boolean;
@@ -48,7 +48,7 @@ export const useUser = create<UserState>()(
         })),
     }),
     {
-      name: 'user-storage',
-    },
-  ),
+      name: "user-storage",
+    }
+  )
 );

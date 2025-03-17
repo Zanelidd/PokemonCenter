@@ -1,14 +1,14 @@
-import { useNavigate, useParams } from "react-router-dom";
-import style from "./card.module.css";
-import { useCollection } from "../../stores/CollectionStore";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import loadingGif from "/ピカチュウ-pokeball.gif";
-import { useState } from "react";
-import type { Card } from "pokemon-tcg-sdk-typescript/dist/sdk";
-import { useUser } from "../../stores/UserStore.tsx";
-import api from "../../api/api.service.ts";
-import { cardResponse, CollectionCard } from "../../types/card.types.ts";
-import { toast, Toaster } from "sonner";
+import { useNavigate, useParams } from 'react-router-dom';
+import style from './card.module.css';
+import { useCollection } from '../../stores/CollectionStore';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import loadingGif from '/ピカチュウ-pokeball.gif';
+import { useState } from 'react';
+import type { Attack, Card } from 'pokemon-tcg-sdk-typescript/dist/sdk';
+import { useUser } from '../../stores/UserStore.tsx';
+import api from '../../api/api.service.ts';
+import { cardResponse, CollectionCard } from '../../types/card.types.ts';
+import { toast, Toaster } from 'sonner';
 
 const Card = () => {
   const navigate = useNavigate();
@@ -137,7 +137,7 @@ const Card = () => {
           <div className={style.textInfo}>
             <div className={style.attackContainer}>
               <p className={style.priceTitle}>Attacks</p>
-              {data.attacks?.map((attack) => {
+              {data.attacks?.map((attack : Attack) => {
                 return (
                   <div key={attack.text} className={style.attack}>
                     <div className={style.attackTitle}>
