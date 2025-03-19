@@ -5,15 +5,9 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   define: {
+    // Provide a polyfill for process.env
     "process.env": {},
+    // If you need specific environment variables, you can add them here:
+    // 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
   },
-  // server: {
-  // proxy: {
-  //   "/api": {
-  //     target: `http://localhost:3000`,
-  //     changeOrigin: true,
-  //     rewrite: (path) => path.replace(/^\/api/, ""),
-  //   },
-  // },
-  // },
 });

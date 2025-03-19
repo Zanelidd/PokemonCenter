@@ -1,23 +1,30 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { authService } from '../../api/auth.service.ts';
 import styles from './verify-email.module.css';
 import { ApiError } from '../../types/response.types.ts';
 import { useUser } from '../../stores/UserStore.tsx';
+import { showError, showInfo, showSuccess } from '../../utils/toastUtils';
 
 export default function VerifyEmail() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const [error, setError] = useState<string | null>(null);
-
   const token = searchParams.get("token");
-  const {setUser}=useUser()
+  const { setUser } = useUser();
 
   const verifyMutation = useMutation({
     mutationFn: async (token: string) => {
-     return  await authService.verifyEmail(token);
-
+      try {
+        return await authService.verifyEmail(token);
+      } catch (error) {
+        const apiError = error as ApiError;
+        throw new Error(
+          apiError.response?.data?.message ||
+            apiError.message ||
+            "Failed to verify email"
+        );
+      }
     },
     onSuccess: (data) => {
       setUser(data);
@@ -25,19 +32,39 @@ export default function VerifyEmail() {
       localStorage.setItem("userId", data.userId.toString());
       localStorage.setItem("username", data.username);
 
+      showSuccess(
+        "Email verified successfully!",
+        "You will be redirected to the home page"
+      );
+
       setTimeout(() => {
         navigate("/home");
       }, 2500);
     },
-    onError: (error: ApiError) => {
+    onError: (error: Error) => {
       console.error("Verification error:", error);
-      setError(
-        error.response?.data?.message ||
-          error.message ||
-          "An error occurred during verification"
-      );
+      showError("Email verification failed", error.message);
     },
   });
+
+  useEffect(() => {
+    if (!token) {
+      showError("Verification failed", "Missing verification token");
+      return;
+    }
+
+    if (
+      !verifyMutation.isPending &&
+      !verifyMutation.isSuccess &&
+      !verifyMutation.isError
+    ) {
+      showInfo(
+        "Verifying email",
+        "Please wait while we verify your email address"
+      );
+      verifyMutation.mutate(token);
+    }
+  }, [token, verifyMutation]);
 
   if (!token) {
     return (
@@ -56,19 +83,11 @@ export default function VerifyEmail() {
     );
   }
 
-  if (
-    !verifyMutation.isPending &&
-    !verifyMutation.isSuccess &&
-    !verifyMutation.isError
-  ) {
-    verifyMutation.mutate(token);
-  }
-
   return (
     <div className={styles.verifyContainer}>
       <div className={styles.verifyCard}>
         <h1 className={styles.verifyTitle}>
-          {error ? "Verification Error" : "Email Verification"}
+          {verifyMutation.isError ? "Verification Error" : "Email Verification"}
         </h1>
 
         {verifyMutation.isPending && (
@@ -78,12 +97,17 @@ export default function VerifyEmail() {
           </>
         )}
 
-        {error && (
+        {verifyMutation.isError && (
           <>
-            <div className={styles.verifyError}>{error}</div>
+            <div className={styles.verifyError}>
+              {verifyMutation.error.message}
+            </div>
             <button
               className={styles.verifyButton}
-              onClick={() => navigate("/register")}
+              onClick={() => {
+                verifyMutation.reset();
+                navigate("/register");
+              }}
             >
               Back to registration
             </button>
