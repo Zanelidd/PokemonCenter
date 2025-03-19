@@ -1,10 +1,23 @@
-import { ChangeEvent, FormEvent, useCallback, useEffect, useRef, useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
-import { useUser } from '../../stores/UserStore';
-import style from './login.module.css';
-import VerifPassword from '../../services/validationPassword.ts';
-import api from '../../api/api.service.ts';
-import { toast, Toaster } from 'sonner';
+import {
+  ChangeEvent,
+  FormEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { useMutation } from "@tanstack/react-query";
+import { useUser } from "../../stores/UserStore";
+import style from "./login.module.css";
+import VerifPassword from "../../services/validationPassword.ts";
+import api from "../../api/api.service.ts";
+import {
+  showSuccess,
+  showError,
+  showWarning,
+  showLoading,
+  updateLoadingToast,
+} from "../../utils/toastUtils.ts";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -15,7 +28,6 @@ const Login = () => {
 
   const [signIn, setSignIn] = useState<boolean>(true);
   const [confirmPassword, setConfirmPassword] = useState<string>("");
-  const [passwordErrors, setPasswordErrors] = useState<Array<string>>([]);
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordBis, setShowPasswordBis] = useState(false);
 
@@ -27,28 +39,62 @@ const Login = () => {
       password: string;
       email: string;
     }) => {
+      const loadingId = showLoading(
+        signIn ? "Signing in..." : "Creating your account..."
+      );
+      try {
+        if (signIn) {
+          const response = await api.auth.login(userData);
+          const result = await response;
+          login(result.username, result.access_token, result.userId);
+          return { result, loadingId };
+        } else {
+          const response = await api.auth.register(userData);
+          const result = await response;
+          return { result, loadingId };
+        }
+      } catch (error) {
+        throw { error, loadingId };
+      }
+    },
+    onSuccess: (data) => {
       if (signIn) {
-        const response = await api.auth.login(userData);
-        const result = await response;
-        login(result.username, result.access_token, result.userId);
+        showSuccess("Welcome back! 👋", `${formData.username}`);
+        user && api.card.getCard(user?.userId);
+        toggleModal();
       } else {
-        const response = await api.auth.register(userData);
-        const result = await response;
-        toast.success(result.message);
+        updateLoadingToast(
+          data.loadingId,
+          "success",
+          "Mail sent successfully! ✨",
+          "Please check your email to verify your account"
+        );
         setSignIn(true);
       }
     },
-    onSuccess: () => {
-      if (signIn) {
-        toast.success("Login successful");
-        user && api.card.getCard(user?.userId);
-        toggleModal();
+    onError: (error: { error?: { message?: string }; loadingId?: string }) => {
+      const errorMessage =
+        error.error?.message || "An unexpected error occurred";
+      if (error.loadingId) {
+        updateLoadingToast(
+          error.loadingId,
+          "error",
+          errorMessage,
+          signIn
+            ? "Please check your credentials and try again"
+            : "Registration failed"
+        );
+      } else {
+        showError(
+          errorMessage,
+          signIn
+            ? "Please check your credentials and try again"
+            : "Registration failed"
+        );
       }
-    },
-    onError: (error) => {
-      toast.error(error.message);
-      const errorMessage = error.message || "Unknown error";
-      setPasswordErrors([...passwordErrors, errorMessage]);
+      if (!signIn) {
+        showError(errorMessage);
+      }
     },
   });
 
@@ -56,16 +102,27 @@ const Login = () => {
     e.preventDefault();
 
     if (signIn) {
+      if (!formData.username || !formData.password) {
+        showWarning("Please fill in all fields");
+        return;
+      }
       mutation.mutate(formData);
     } else {
+      if (
+        !formData.username ||
+        !formData.password ||
+        !formData.email ||
+        !confirmPassword
+      ) {
+        showWarning("Please fill in all fields");
+        return;
+      }
       const ifPasswordValid = VerifPassword(formData, confirmPassword);
       if (ifPasswordValid.length !== 0) {
-        setPasswordErrors(ifPasswordValid);
+        ifPasswordValid.forEach((error) => showWarning(error));
+        return;
       }
-      if (ifPasswordValid.length === 0) {
-        mutation.mutate(formData);
-        setPasswordErrors([]);
-      }
+      mutation.mutate(formData);
     }
   };
 
@@ -110,7 +167,6 @@ const Login = () => {
 
   return (
     <div className={style.loginBack}>
-      <Toaster position="top-right" />
       <div className={style.loginContainer} ref={modalRef}>
         <div className={style.headContainer}>
           <div
@@ -189,29 +245,12 @@ const Login = () => {
               </div>
             </>
           )}
-          <button
-            type="submit"
-            disabled={mutation.isPending}
-            onClick={() => setPasswordErrors([])}
-          >
+          <button type="submit" disabled={mutation.isPending}>
             {mutation.isPending
               ? `Signing ${signIn ? "in" : "up"}...`
               : `Sign ${signIn ? "in" : "up"}`}
           </button>
         </form>
-        {passwordErrors &&
-          (Array.isArray(passwordErrors) ? (
-            passwordErrors.map((err, index) => {
-              return (
-                <div key={index} className={style.errorMessage}>
-                  {" "}
-                  ⚠️ {err}
-                </div>
-              );
-            })
-          ) : (
-            <div className={style.errorMessage}> ⚠️ {passwordErrors}</div>
-          ))}
       </div>
     </div>
   );

@@ -6,14 +6,30 @@ import { getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack
 import SearchResults from '../../components/searchResults/SearchResults.tsx';
 import api from '../../api/api.service.ts';
 import { useUser } from '../../stores/UserStore.tsx';
-
+import { useMutation } from '@tanstack/react-query';
+import CardSkeleton from '../../components/skeletons/card-skeleton/CardSkeleton.tsx';
+import { showError } from '../../utils/toastUtils.ts';
 
 const Collection = () => {
   const { collection } = useCollection();
+  const { user } = useUser();
 
   const [pagination, setPagination] = useState({
-    pageIndex: 0, //initial page index
-    pageSize: 20, //default page size
+    pageIndex: 0,
+    pageSize: 20,
+  });
+
+  const { mutate: fetchCards, isPending } = useMutation({
+    mutationFn: async () => {
+      if (!user?.userId) throw new Error("User not logged in");
+      return api.card.getCard(user.userId);
+    },
+    onError: (error) => {
+      if (error instanceof Error) {
+        showError(error.message);
+      }}
+
+
   });
 
   const table = useReactTable({
@@ -27,34 +43,41 @@ const Collection = () => {
     },
   });
 
-  const { user } = useUser();
-
   useEffect(() => {
-    if (user?.userId && collection.length == 0) {
-      api.card.getCard(user.userId)
-        .then(() => console.log('card Added'));
+    if (user?.userId && collection.length === 0) {
+      fetchCards();
     }
-  }, [user, collection.length]);
-  
+  }, [user, collection.length, fetchCards]);
+
   return (
     <>
+      {isPending && <CardSkeleton />}
+
       <div className={style.cardContainer}>
         {collection &&
-          collection.slice(
-            pagination.pageIndex * pagination.pageSize,
-            pagination.pageSize + pagination.pageSize * pagination.pageIndex,
-          ).map((card) => {
-            return (
-              <SearchResults key={`${card.name}${card.set}`} data={card} />
-            );
-          })
-        }
+          collection
+            .slice(
+              pagination.pageIndex * pagination.pageSize,
+              pagination.pageSize + pagination.pageSize * pagination.pageIndex
+            )
+            .map((card) => {
+              return (
+                <SearchResults key={`${card.name}${card.set}`} data={card} />
+              );
+            })}
       </div>
-      <Pagination table={table} pagination={pagination} />
+
+      {collection.length === 0 && !isPending && (
+        <div className={style.emptyCollection}>
+          Your collection is empty. Start adding cards!
+        </div>
+      )}
+
+      {collection.length > 0 && (
+        <Pagination table={table} pagination={pagination} />
+      )}
     </>
   );
 };
 
 export default Collection;
-
-

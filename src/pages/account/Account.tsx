@@ -5,11 +5,10 @@ import { FormEvent, useState } from "react";
 import VerifPassword from "../../services/validationPassword.ts";
 import { useCollection } from "../../stores/CollectionStore.tsx";
 import api from "../../api/api.service.ts";
-import { toast, Toaster } from "sonner";
+import { showError, showSuccess, showWarning } from "../../utils/toastUtils.ts";
 
 const Account = () => {
   const { user } = useUser();
-  const [passwordErrors, setPasswordErrors] = useState<Array<string>>([]);
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [formData, setFormData] = useState({
     password: "",
@@ -22,12 +21,12 @@ const Account = () => {
       user && (await api.auth.modifyPassword(userData, user?.userId));
     },
     onSuccess: () => {
-      toast.success(`Password change successfully`);
+      showSuccess(`Password change successfully`);
       setFormData({ ...formData, password: "" });
       setConfirmPassword("");
     },
     onError: (error) => {
-      toast.error(error.message);
+      showError(error.message);
     },
   });
 
@@ -36,22 +35,22 @@ const Account = () => {
     const ifPasswordValid = VerifPassword(formData, confirmPassword);
 
     if (ifPasswordValid.length !== 0) {
-      setPasswordErrors(ifPasswordValid);
+      ifPasswordValid.forEach((error) => showWarning(error));
+      return;
     }
     if (ifPasswordValid.length === 0) {
       mutation.mutate(formData);
-      setPasswordErrors([]);
     }
   };
 
   const handleCollectionDelete = () => {
     clearCollection();
+    showSuccess("Collection now is gone...");
     setValidationModal(false);
   };
 
   return (
     <div className={style.accountContainer}>
-      <Toaster position="top-right" />
       <div className={style.accountInfos}>
         <p>{user?.username}</p>
         <p>Number of Cards: {collection.length}</p>
@@ -119,16 +118,6 @@ const Account = () => {
           />
           <button type="submit">Update Password</button>
         </form>
-        {passwordErrors
-          ? passwordErrors.map((err, index) => {
-              return (
-                <div key={index} className={style.errorMessage}>
-                  {" "}
-                  ⚠️ {err}
-                </div>
-              );
-            })
-          : null}
       </div>
     </div>
   );
