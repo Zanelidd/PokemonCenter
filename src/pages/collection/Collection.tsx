@@ -1,18 +1,14 @@
-import { useCollection } from "../../stores/CollectionStore";
-import style from "../../components/setCards/setCards.module.css";
-import { useEffect, useState } from "react";
-import Pagination from "../../components/pagination/Pagination.tsx";
-import {
-  getCoreRowModel,
-  getPaginationRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import SearchResults from "../../components/searchResults/SearchResults.tsx";
-import api from "../../api/api.service.ts";
-import { useUser } from "../../stores/UserStore.tsx";
-import { useMutation } from "@tanstack/react-query";
-import { toast } from "sonner";
-import CardSkeleton from "../../components/skeletons/card-skeleton/CardSkeleton.tsx";
+import { useCollection } from '../../stores/CollectionStore';
+import style from '../../components/setCards/setCards.module.css';
+import { useEffect, useState } from 'react';
+import Pagination from '../../components/pagination/Pagination.tsx';
+import { getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
+import SearchResults from '../../components/searchResults/SearchResults.tsx';
+import api from '../../api/api.service.ts';
+import { useUser } from '../../stores/UserStore.tsx';
+import { useMutation } from '@tanstack/react-query';
+import CardSkeleton from '../../components/skeletons/card-skeleton/CardSkeleton.tsx';
+import { showError } from '../../utils/toastUtils.ts';
 
 const Collection = () => {
   const { collection } = useCollection();
@@ -30,17 +26,10 @@ const Collection = () => {
     },
     onError: (error) => {
       if (error instanceof Error) {
-        toast.error("Unable to load your card collection", {
-          description: error.message,
-          action: {
-            label: "Retry",
-            onClick: () => {
-              fetchCards();
-            },
-          },
-        });
-      }
-    },
+        showError(error.message);
+      }}
+
+
   });
 
   const table = useReactTable({
