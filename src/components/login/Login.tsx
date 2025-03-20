@@ -44,7 +44,7 @@ const Login = () => {
     },
     onSuccess: (data) => {
       if (signIn) {
-        updateLoadingToast(data.loadingId,"success","Welcome back! 👋", `${formData.username}`);
+        updateLoadingToast(data.loadingId,"success","Welcome back! 👋",`${formData.username}`);
         user && api.card.getCard(user?.userId);
         toggleModal();
       } else {
