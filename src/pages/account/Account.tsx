@@ -56,9 +56,10 @@ const Account = () => {
         <h2>{user?.username}</h2>
         <div className={style.accountInfosContainer}>
           <div className={style.accountInfos}>
-            <p>Number of Cards: {collection.length}</p>
+            <p className={style.accountNumberCard}>Number of Cards: {collection.length}</p>
 
             <button
+                className={style.buttonConfirmAccount}
               type="button"
               onClick={() => {
                 setValidationModal(!validationModal);

@@ -4,15 +4,15 @@
     align-items: center;
     justify-content: space-evenly;
     height: 75vh;
-    background: linear-gradient(145deg, #1a2a42 0%, #0f1723 100%);
-    color: white;
+    background: linear-gradient(145deg, var(--primaryColor) 0%, var(--secondaryColor) 100%);
+    color:var(--color);
     font-family: 'Montserrat', sans-serif;
     border-radius: 15px;
     max-width: 95%;
     min-width: 75vw;
     padding: 25px 20px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-    border: 2px solid #3a4d6b;
+    border: 2px solid var(--borderColor);
 }
 
 .accountInfosContainer {
@@ -41,15 +41,15 @@
     width: 10vw;
 }
 
-button{
+.buttonConfirmAccount{
     width: auto;
     margin-left: 0;
 }
-p{
+.accountNumberCard{
     width: 70vw;
 }
 .confirmationModal {
-    background-color: #3a4d6b;
+    background-color: var(--borderColor);
     position: absolute;
     top: 0;
     left: 0;
@@ -75,9 +75,6 @@ p{
     }
     .accountInfosContainer{
         flex-direction: column;
-    }
-    input {
-        width: 100%;
     }
 }
 

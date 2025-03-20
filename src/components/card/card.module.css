@@ -1,244 +1,243 @@
 .cardInfoContainer {
-  display: flex;
-  width: 100vw;
-  justify-content: space-around;
-  align-items: center;
-  padding: 2rem;
-  gap: 3rem;
-
-
+    display: flex;
+    width: 100vw;
+    justify-content: space-around;
+    align-items: center;
+    padding: 2rem;
+    gap: 3rem;
 }
 
 .imgContainer {
-  height: 700px;
-  width: auto;
-  overflow: hidden;
-  border-radius: 25px;
-  background: radial-gradient(circle at var(--mouseX) var(--mouseY), rgb(255, 255, 255) 0%, rgba(133, 137, 141, .33) 45%, rgba(100, 100, 100, .65)120%);
-  filter: brightness(.9) contrast(1.45);
-  transform: rotateX(var(--xAxis)) rotateY(var(--yAxis));
-  transition: all 0.15s ease-out;
+    height: 700px;
+    width: auto;
+    overflow: hidden;
+    border-radius: 25px;
+    background: radial-gradient(circle at var(--mouseX) var(--mouseY), rgb(255, 255, 255) 0%, rgba(133, 137, 141, .33) 45%, rgba(100, 100, 100, .65) 120%);
+    filter: brightness(.9) contrast(1.45);
+    transform: rotateX(var(--xAxis)) rotateY(var(--yAxis));
+    transition: all 0.15s ease-out;
 }
 
 .imgContainer.cardImg {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .card {
-  perspective: 1000px;
+    perspective: 1000px;
 }
 
 .cardImg {
-  opacity: calc(var(--o)*0.66);
-  width: 100%;
-  height: 100%;
+    opacity: calc(var(--o) * 0.66);
+    width: 100%;
+    height: 100%;
 }
 
 .infosContainer {
-  display: flex;
-  flex-direction: column;
-  background: linear-gradient(145deg, #1a2a42 0%, #0f1723 100%);
-  color: white;
-  font-family: 'Montserrat', sans-serif;
-  border-radius: 15px;
-  max-width: 1100px;
-  min-width: 1000px;
-  padding: 25px 20px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-  border: 2px solid #3a4d6b;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(145deg, var(--primaryColor) 0%, var(--secondaryColor) 100%);
+    color: var(--color);
+    font-family: 'Montserrat', sans-serif;
+    border-radius: 15px;
+    max-width: 1100px;
+    min-width: 1000px;
+    padding: 25px 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    border: 2px solid var(--borderColor);
 }
 
 .infosContainer h2 {
-  font-size: 32px;
-  font-weight: 700;
-  margin-bottom: 5px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-  color: #e0e7ff;
-  text-align: center;
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    color: var(--color);
+    text-align: center;
 }
 
 .infosContainer h3 {
-  font-size: 18px;
-  font-weight: 600;
-  color: #7dcbff;
-  margin: 5px 0;
-  text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--colorBis);
+    margin: 5px 0;
+    text-align: center;
 }
 
 .infosContainer h3:nth-child(3) {
-  color: #ffb347;
+    color: var(--colorTer);
 }
 
 .infosContainer h3:last-child {
-  font-size: 16px;
-  color: #a0b0c8;
-  padding: 8px 0 ;
-  margin-top: 10px;
-  border-top: 1px solid #3a4d6b;
-  border-bottom: 1px solid #3a4d6b;
-
+    font-size: 16px;
+    color: var(--colorQua);
+    padding: 8px 0;
+    margin-top: 10px;
+    border-top: 1px solid var(--borderColor);
+    border-bottom: 1px solid var(--borderColor);
 }
 
-.descriptions{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: start;
-  gap: 2rem;
+.descriptions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: start;
+    gap: 2rem;
 }
-
-
 
 .textInfo {
-  margin-top: 20px;
+    margin-top: 20px;
 }
 
 .attackContainer {
-  margin: 15px 0;
+    margin: 15px 0;
 
 }
 
 .attack {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  padding: 1rem 2rem 1rem 2rem ;
-  margin-bottom: 15px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 1rem 2rem 1rem 2rem;
+    margin-bottom: 15px;
 }
 
 .attackTitle {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-  font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-weight: 600;
 }
 
 .attackTitle p:first-child {
-  color: #7dcbff;
-  font-size: 18px;
+    color: var(--colorBis);
+    font-size: 18px;
 }
 
 .attackTitle p:last-child {
-  color: #ffffff;
-  font-size: 20px;
-  font-weight: 700;
+    color: var(--color);
+    font-size: 20px;
+    font-weight: 700;
 }
 
 .attack > p {
-  color: #d0d9e8;
-  font-size: 15px;
-  line-height: 1.5;
+    color: var(--color);
+    font-size: 15px;
+    line-height: 1.5;
 }
 
 .textInfo > p {
-  font-style: italic;
-  color: #bcc5d9;
-  padding: 10px;
-  border-radius: 8px;
-  background-color: rgba(255, 255, 255, 0.05);
-  margin: 15px 0;
-  font-size: 14px;
-  text-align: center;
+    font-style: italic;
+    color: var(--colorQua);
+    padding: 10px;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.05);
+    margin: 15px 0;
+    font-size: 14px;
+    text-align: center;
 }
 
 .priceInfo {
-  margin-top: 25px;
-  border-top: 1px solid #3a4d6b;
-  padding-top: 15px;
-  display: flex;
-  flex-direction: column;
+    margin-top: 25px;
+    border-top: 1px solid var(--borderColor);;
+    padding-top: 15px;
+    display: flex;
+    flex-direction: column;
 }
 
 .priceTitle {
-  font-size: 20px;
-  font-weight: 700;
-  margin-bottom: 15px;
-  color: #e0e7ff;
-  text-align: center;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: var(--color);;
+    text-align: center;
 }
 
 .priceInfo {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
 }
 
 .normalPrice, .hollowPrice {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .normalPrice p, .hollowPrice p {
-  background-color: rgba(255, 255, 255, 0.1);
-  padding: 10px;
-  border-radius: 6px;
-  font-size: 14px;
-  text-align: center;
-  margin: 0;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    text-align: center;
+    margin: 0;
 }
 
 .hollowPrice p {
-  background-color: rgba(255, 255, 255, 0.15);
-  color: #f0f8ff;
+    background-color: rgba(255, 255, 255, 0.15);
+    color: var(--color);;
 }
 
 .priceInfo > p:last-child {
-  text-align: right;
-  font-size: 14px;
-  color: #bcc5d9;
-  margin-top: 15px;
-  width: 100%;
+    text-align: right;
+    font-size: 14px;
+    color: var(--color);
+    margin-top: 15px;
+    width: 100%;
 }
 
 @media screen and (max-width: 768px) {
 
-  .cardInfoContainer {
-    flex-direction: column;
-    height: 100vh;
-    align-items: center;
-  }
-  .priceInfo {
-    flex-direction: column;
-  }
-  .infosContainer{
-    min-width: auto;
-    gap : 2rem;
+    .cardInfoContainer {
+        flex-direction: column;
+        height: 100vh;
+        align-items: center;
+    }
 
-  }
-  .descriptions{
-    flex-direction: column;
-    align-items: center;
-  }
+    .priceInfo {
+        flex-direction: column;
+    }
 
-  .infosContainer > div:first-child {
-    flex: 1;
-  }
+    .infosContainer {
+        min-width: auto;
+        gap: 2rem;
 
-  .textInfo {
-    flex: 2;
-    margin-top: 0;
-  }
+    }
 
-  .imgContainer{
-    height: auto;
-  }
+    .descriptions {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .infosContainer > div:first-child {
+        flex: 1;
+    }
+
+    .textInfo {
+        flex: 2;
+        margin-top: 0;
+    }
+
+    .imgContainer {
+        height: auto;
+    }
 }
 
 
-@media  screen and (max-width: 480px) {
+@media screen and (max-width: 480px) {
 
-  .priceInfo {
-    flex-direction: column;
-  }
-  .cardInfoContainer {
-    flex-direction: column;
-    height: 100vh;
-    align-items: center;
-  }
+    .priceInfo {
+        flex-direction: column;
+    }
+
+    .cardInfoContainer {
+        flex-direction: column;
+        height: 100vh;
+        align-items: center;
+    }
 
 }
 
