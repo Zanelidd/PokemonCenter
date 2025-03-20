@@ -93,10 +93,11 @@ const Results = () => {
     }
   });
 
-  return (<>
+  return (
+      <>
       <div className={style.filterContainer}>
-        <SelectFilter cards={data} id={'set'} setFilterTags={setFilterTags} />
-        <SelectFilter cards={data} id={'rarity'} setFilterTags={setFilterTags} />
+        <SelectFilter cards={data} id={'set'} setFilterTags={setFilterTags} filterTags={filterTags} />
+        <SelectFilter cards={data} id={'rarity'} setFilterTags={setFilterTags} filterTags={filterTags} />
         <button onClick={() => setFilterTags({})}>Reset</button>
       </div>
 

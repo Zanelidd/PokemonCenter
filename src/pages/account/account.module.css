@@ -38,7 +38,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: start;
-    width: 10vw;
+    width: 15vw;
+    height: 20%;
 }
 
 .buttonConfirmAccount{
@@ -46,7 +47,7 @@
     margin-left: 0;
 }
 .accountNumberCard{
-    width: 70vw;
+    width: 100%;
 }
 .confirmationModal {
     background-color: var(--borderColor);
