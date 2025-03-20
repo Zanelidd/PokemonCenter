@@ -30,9 +30,9 @@
 }
 
 select {
-    background-color: #1a2635;
-    color: #ffffff;
-    border: 1px solid #3a4a5a;
+    background-color: var(--primaryColor);
+    color: var(--color);
+    border: 1px solid var(--borderColor);
     border-radius: 4px;
     padding: 6px 10px;
     font-size: 14px;
@@ -49,14 +49,14 @@ select {
 }
 
 select:hover {
-    background-color: #263545;
-    border-color: #4a5a6a;
+    background-color: var(--tertiaryColor);
+    border-color: var(--borderColor);
 }
 
 select:focus {
     outline: none;
     border-color: #5f9eff;
-    box-shadow: 0 0 0 2px rgba(95, 158, 255, 0.25);
+    box-shadow: 0 0 0 2px var(--boxShadow);
 }
 
 @media (max-width: 768px) {

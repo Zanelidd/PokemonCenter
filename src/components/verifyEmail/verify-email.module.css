@@ -1,100 +1,99 @@
 .verifyContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 90vh;
-  width: 100vw;
-  padding: 2rem;
-  background: linear-gradient(145deg, #1a2a42 0%, #0f1723 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 90vh;
+    width: 100vw;
+    padding: 2rem;
+    background: linear-gradient(145deg, var(--primaryColor) 0%, var(--secondaryColor) 100%);
 }
 
 .verifyCard {
-  background: linear-gradient(145deg, #1a2a42 0%, #0f1723 100%);
-  border-radius: 12px;
-  padding: 2rem;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-  width: 100%;
-  max-width: 400px;
-  text-align: center;
-  border: 2px solid #3a4d6b;
+    background: linear-gradient(145deg, var(--primaryColor) 0%, var(--secondaryColor) 100%);
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 10px 20px var(--boxShadow);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    border: 2px solid var(--borderColor);
 }
 
 .verifyTitle {
-  color: #fff;
-  font-size: 1.8rem;
-  margin-bottom: 1.5rem;
-  font-weight: 600;
+    color: var(--color);
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
 }
 
 .verifyMessage {
-  color: #fff;
-  font-size: 1.1rem;
-  line-height: 1.6;
-  margin-bottom: 2rem;
+    color: var(--color);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
 }
 
 .verifyError {
-  color: #fff;
-  background-color: rgba(239, 68, 68, 0.1);
-  padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
-  font-size: 0.9rem;
-  border: 1px solid rgba(239, 68, 68, 0.3);
+    color: var(--color);
+    background-color: var(--colorBackgroundError);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    border: 1px solid var(--colorBorderError);
 }
 
 .verifySpinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid #3a4d6b;
-  border-top: 4px solid #38bdf8;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin: 0 auto 1.5rem;
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--borderColor);
+    border-top: 4px solid var(--colorBis);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1.5rem;
 }
 
 @keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
+    0% {
+        transform: rotate(0deg);
+    }
 
-  100% {
-    transform: rotate(360deg);
-  }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .verifyButton {
-  background-color: #38bdf8;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 0.8rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+    background-color: var(--colorBis);
+    color: var(--color);
+    border: none;
+    border-radius: 8px;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
 }
 
 .verifyButton:hover {
-  background-color: #0284c7;
+    background-color: var(--buttonHover);
 }
 
-/* Responsive Design */
 @media (max-width: 480px) {
-  .verifyContainer {
-    padding: 1rem;
-  }
+    .verifyContainer {
+        padding: 1rem;
+    }
 
-  .verifyCard {
-    padding: 1.5rem;
-  }
+    .verifyCard {
+        padding: 1.5rem;
+    }
 
-  .verifyTitle {
-    font-size: 1.5rem;
-  }
+    .verifyTitle {
+        font-size: 1.5rem;
+    }
 
-  .verifyMessage {
-    font-size: 1rem;
-  }
+    .verifyMessage {
+        font-size: 1rem;
+    }
 }
