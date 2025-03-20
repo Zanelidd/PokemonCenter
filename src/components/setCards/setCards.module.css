@@ -1,66 +1,89 @@
 
 .cardContainer {
-  max-width: 1200px;
-  margin: 20px auto;
-  display: grid;
-  justify-items: center;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 50px;
-  width: 100%;
-  box-sizing: border-box;
+    max-width: 1200px;
+    margin: 20px auto;
+    display: grid;
+    justify-items: center;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 50px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-
 .card {
-  box-shadow: 7px 5px 9px 0 grey;
+    box-shadow: 7px 5px 9px 0 grey;
 }
 
 .card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+}
+
+.filterContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding: 0 8px;
 }
 
 select {
-  background-color: #1a2635;
-  color: #ffffff;
-  border: 1px solid #3a4a5a;
-  border-radius: 4px;
-  padding: 6px 10px;
-  font-size: 14px;
-  appearance: none;
-  cursor: pointer;
-  margin-right: 8px;
+    background-color: #1a2635;
+    color: #ffffff;
+    border: 1px solid #3a4a5a;
+    border-radius: 4px;
+    padding: 6px 10px;
+    font-size: 14px;
+    appearance: none;
+    cursor: pointer;
+    margin-right: 8px;
 }
 
 select {
-  background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
-  background-repeat: no-repeat;
-  background-position: right 8px center;
-  padding-right: 30px;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    padding-right: 30px;
 }
 
 select:hover {
-  background-color: #263545;
-  border-color: #4a5a6a;
+    background-color: #263545;
+    border-color: #4a5a6a;
 }
 
 select:focus {
-  outline: none;
-  border-color: #5f9eff;
-  box-shadow: 0 0 0 2px rgba(95, 158, 255, 0.25);
+    outline: none;
+    border-color: #5f9eff;
+    box-shadow: 0 0 0 2px rgba(95, 158, 255, 0.25);
 }
 
+@media (max-width: 768px) {
 
-.reset-button {
-  background-color: #2a5298;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 6px 12px;
-  font-size: 14px;
-  cursor: pointer;
+    select {
+        min-width: 70%;
+        margin-right: 0;
+    }
+
+    button {
+        margin-top: 8px;
+        margin-left : 0;
+        width: 70%;
+    }
 }
 
-.reset-button:hover {
-  background-color: #3a62a8;
+@media (max-width: 480px) {
+    select {
+        min-width: 70%;
+        margin-bottom: 8px;
+        margin-right: 0;
+
+    }
+    button {
+             margin-top: 8px;
+             margin-left : 0;
+             width: 70%;
+         }
 }
+

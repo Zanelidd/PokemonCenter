@@ -1,23 +1,10 @@
-import {
-  ChangeEvent,
-  FormEvent,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { useMutation } from "@tanstack/react-query";
-import { useUser } from "../../stores/UserStore";
-import style from "./login.module.css";
-import VerifPassword from "../../services/validationPassword.ts";
-import api from "../../api/api.service.ts";
-import {
-  showSuccess,
-  showError,
-  showWarning,
-  showLoading,
-  updateLoadingToast,
-} from "../../utils/toastUtils.ts";
+import { ChangeEvent, FormEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { useUser } from '../../stores/UserStore';
+import style from './login.module.css';
+import VerifPassword from '../../services/validationPassword.ts';
+import api from '../../api/api.service.ts';
+import { showError, showLoading, showWarning, updateLoadingToast } from '../../utils/toastUtils.ts';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -44,13 +31,11 @@ const Login = () => {
       );
       try {
         if (signIn) {
-          const response = await api.auth.login(userData);
-          const result = await response;
+          const result = await api.auth.login(userData);
           login(result.username, result.access_token, result.userId);
           return { result, loadingId };
         } else {
-          const response = await api.auth.register(userData);
-          const result = await response;
+          const result = await api.auth.register(userData);
           return { result, loadingId };
         }
       } catch (error) {
@@ -59,7 +44,7 @@ const Login = () => {
     },
     onSuccess: (data) => {
       if (signIn) {
-        showSuccess("Welcome back! 👋", `${formData.username}`);
+        updateLoadingToast(data.loadingId,"success","Welcome back! 👋", `${formData.username}`);
         user && api.card.getCard(user?.userId);
         toggleModal();
       } else {
