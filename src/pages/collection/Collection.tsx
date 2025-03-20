@@ -17,6 +17,7 @@ const Collection = () => {
     const { collection } = useCollection();
     const { user } = useUser();
     const [filterTags, setFilterTags] = useState<Record<string, string>>({});
+    const NUMBER_OF_PAGE = 20
 
     const filteredData = collection.filter((card: Card) => {
       if (filterTags) {
@@ -36,7 +37,7 @@ const Collection = () => {
     });
     const [pagination, setPagination] = useState({
       pageIndex: 0,
-      pageSize: 20,
+      pageSize: NUMBER_OF_PAGE,
     });
 
     const { mutate: fetchCards, isPending } = useMutation({

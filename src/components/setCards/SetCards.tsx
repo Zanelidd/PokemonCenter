@@ -13,6 +13,7 @@ const SetCards = () => {
   const navigate = useNavigate();
   const params = useParams();
   const twentyFourHoursInMs = 1000 * 60 * 60 * 24;
+  const NUMBER_OF_PAGE = 20
   const { isPending, error, data } = useQuery({
     queryKey: ["SetCard", `${params.setId}`],
     queryFn: async (): Promise<Array<Card>> => {
@@ -27,7 +28,7 @@ const SetCards = () => {
 
   const [pagination, setPagination] = useState({
     pageIndex: 0,
-    pageSize: 20,
+    pageSize: NUMBER_OF_PAGE,
   });
 
   const table = useReactTable({

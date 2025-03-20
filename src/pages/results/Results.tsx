@@ -16,6 +16,7 @@ const Results = () => {
   const navigate = useNavigate();
   const state = location.state;
   const twentyFourHoursInMs = 1000 * 60 * 60 * 24;
+  const NUMBER_OF_PAGE = 20
   const [filterTags, setFilterTags] = useState<Record<string, string>>({});
 
   useEffect(() => {
@@ -28,7 +29,7 @@ const Results = () => {
 
   const [pagination, setPagination] = useState({
     pageIndex: 0,
-    pageSize: 20,
+    pageSize: NUMBER_OF_PAGE,
   });
 
   const { isPending, error, data } = useQuery({

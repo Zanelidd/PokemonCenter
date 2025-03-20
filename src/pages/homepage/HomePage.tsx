@@ -1,25 +1,22 @@
-import style from "./homePage.module.css";
-import { useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import type { Set } from "pokemon-tcg-sdk-typescript/dist/sdk";
-import { useState } from "react";
-import {
-  getCoreRowModel,
-  getPaginationRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import Pagination from "../../components/pagination/Pagination.tsx";
-import api from "../../api/api.service.ts";
-import SetSkeleton from "../../components/skeletons/set-Skeleton/SetSkeleton.tsx";
-import { showError } from "../../utils/toastUtils.ts";
+import style from './homePage.module.css';
+import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import type { Set } from 'pokemon-tcg-sdk-typescript/dist/sdk';
+import { useState } from 'react';
+import { getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
+import Pagination from '../../components/pagination/Pagination.tsx';
+import api from '../../api/api.service.ts';
+import SetSkeleton from '../../components/skeletons/set-Skeleton/SetSkeleton.tsx';
+import { showError } from '../../utils/toastUtils.ts';
 
 const HomePage = () => {
   const navigate = useNavigate();
   const twentyFourHoursInMs = 1000 * 60 * 60 * 24;
+  const NUMBER_OF_PAGE = 20
 
   const [pagination, setPagination] = useState({
     pageIndex: 0,
-    pageSize: 20,
+    pageSize: NUMBER_OF_PAGE,
   });
 
   const { isPending, data, refetch } = useQuery({
