@@ -10,7 +10,7 @@ const SelectFilter = ({ cards, id, setFilterTags }: SetFilterProps) => {
   const filterHandler = (event: ChangeEvent<HTMLSelectElement>) => {
     const { value, id } = event.target;
     const category = id;
-    
+
     if (value) {
       setFilterTags((previous) => ({ ...previous, [category]: value }));
     } else {
@@ -19,7 +19,6 @@ const SelectFilter = ({ cards, id, setFilterTags }: SetFilterProps) => {
         return { ...previous };
       });
     }
-
   };
 
   const getValue = (data: Card, id: keyof Card): string => {
