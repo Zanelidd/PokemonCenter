@@ -12,7 +12,6 @@ export const errorHandlerInterceptor: ResponseInterceptor = async (
 
     let errorData;
     try {
-      // Clone the response because response.json() can only be called once
       const clonedResponse = response.clone();
       errorData = await clonedResponse.json();
     } catch (e) {

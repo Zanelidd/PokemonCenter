@@ -76,9 +76,9 @@ const Collection = () => {
         return (
             <>
                 <div className={style.filterContainer}>
-                    <SelectFilter cards={collection} id={'set'} setFilterTags={setFilterTags} filterTags={filterTags} />
+                    <SelectFilter cards={collection} id={'set'} setFilterTags={setFilterTags} filterTags={filterTags}/>
                     <SelectFilter cards={collection} id={'types'} setFilterTags={setFilterTags} filterTags={filterTags}/>
-                    <SelectFilter cards={collection} id={'rarity'} setFilterTags={setFilterTags} filterTags={filterTags} />
+                    <SelectFilter cards={collection} id={'rarity'} setFilterTags={setFilterTags} filterTags={filterTags}/>
                     <button onClick={() => setFilterTags({})}>Reset</button>
                 </div>
 

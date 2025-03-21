@@ -5,6 +5,7 @@ const endpoints = {
       login: `/users/signIn`,
       register: `/users/signUp`,
       verify: `/users/verify`,
+
     },
   },
   card: {
