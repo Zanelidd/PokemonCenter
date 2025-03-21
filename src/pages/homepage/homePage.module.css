@@ -29,18 +29,18 @@
   padding: 30px;
   text-align: center;
   transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 8px var(--boxShadow);
 }
 
 .setCard:hover {
   transform: scale(1.05);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 8px 16px var(--boxShadow);
 }
 
 .setName {
   margin-top: 15px;
   font-size: 18px;
-  color: #38bdf8;
+  color: var(--colorBis);
 
 }
 

@@ -1,18 +1,27 @@
 .accountContainer {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-evenly;
     height: 75vh;
-    background: linear-gradient(145deg, #1a2a42 0%, #0f1723 100%);
-    color: white;
+    background: linear-gradient(145deg, var(--primaryColor) 0%, var(--secondaryColor) 100%);
+    color:var(--color);
     font-family: 'Montserrat', sans-serif;
     border-radius: 15px;
     max-width: 95%;
     min-width: 75vw;
     padding: 25px 20px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-    border: 2px solid #3a4d6b;
+    border: 2px solid var(--borderColor);
+}
+
+.accountInfosContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 100%;
+    width: 100%;
 }
 
 .changePassword {
@@ -22,16 +31,55 @@
     justify-content: space-around;
     gap: 1rem;
 }
-.accountInfo{
+
+.accountInfos {
+    position: relative;
     display: flex;
     flex-direction: column;
-    align-items: start;
+    align-items: center;
     justify-content: start;
+    width: 15vw;
+    height: 20%;
+}
 
+.buttonConfirmAccount{
+    width: auto;
+    margin-left: 0;
+}
+.accountNumberCard{
+    width: 100%;
+}
+.confirmationModal {
+    background-color: var(--borderColor);
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-content: space-around;
+    border-radius: 5px;
+}
+
+.buttonConfirm {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
 }
 
 @media screen and (max-width: 768px) {
     .accountContainer {
         width: 80vw;
     }
+    .accountInfosContainer{
+        flex-direction: column;
+    }
+}
+
+
+@media (max-width: 480px) {
+
 }

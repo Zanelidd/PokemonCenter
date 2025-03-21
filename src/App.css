@@ -99,6 +99,19 @@
 
 }
 
+button{
+    padding: 10px 20px;
+    margin-left: 10px;
+    background-color: var(--colorBis);
+    color: var(--color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {  background-color: var(--buttonHover);}
+
+
 
 :root {
     --mouseX: 50%;
@@ -115,6 +128,18 @@
     --pointer-from-top: var(--pointer-from-center);
     --pointer-from-left: var(--pointer-from-center);
     --o: 1;
+    --primaryColor : #1a2a42;
+    --secondaryColor :#0f1723;
+    --tertiaryColor :#1f2937;
+    --borderColor : #3a4d6b;
+    --boxShadow:rgba(0, 0, 0, 0.3);
+    --buttonHover: #0284c7;
+    --color:#e0e7ff;
+    --colorBis:#38bdf8;
+    --colorTer:#ffb347;
+    --colorQua :#a0b0c8;
+    --colorBackgroundError : rgba(239, 68, 68, 0.1);
+    --colorBorderError: rgba(239, 68, 68, 0.3)
 }
 
 * {

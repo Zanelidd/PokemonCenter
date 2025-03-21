@@ -8,7 +8,6 @@ type useCollectionStore = {
   addToCollection: (card: Card, collectionId: number) => void;
   deleteFromCollection: (cardId: string) => void;
   clearCollection: () => void;
-  // isInCollection: (cardId: string) => boolean;
   getCardById: (cardId: string) => Card | undefined;
 
 };

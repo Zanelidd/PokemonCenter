@@ -1,14 +1,14 @@
-import { useNavigate, useParams } from 'react-router-dom';
-import style from './card.module.css';
-import { useCollection } from '../../stores/CollectionStore';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import loadingGif from '/ピカチュウ-pokeball.gif';
-import { useState } from 'react';
-import type { Attack, Card } from 'pokemon-tcg-sdk-typescript/dist/sdk';
-import { useUser } from '../../stores/UserStore.tsx';
-import api from '../../api/api.service.ts';
-import { cardResponse, CollectionCard } from '../../types/card.types.ts';
-import { toast, Toaster } from 'sonner';
+import { useNavigate, useParams } from "react-router-dom";
+import style from "./card.module.css";
+import { useCollection } from "../../stores/CollectionStore";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import loadingGif from "/ピカチュウ-pokeball.gif";
+import { useState } from "react";
+import type { Attack, Card } from "pokemon-tcg-sdk-typescript/dist/sdk";
+import { useUser } from "../../stores/UserStore.tsx";
+import api from "../../api/api.service.ts";
+import { cardResponse, CollectionCard } from "../../types/card.types.ts";
+import { showError, showSuccess } from "../../utils/toastUtils.ts";
 
 const Card = () => {
   const navigate = useNavigate();
@@ -32,10 +32,10 @@ const Card = () => {
     },
     onSuccess: (result, data: Card) => {
       addToCollection(data, result.id);
-      toast.success("Cards added successfully.");
+      showSuccess("Cards added successfully.");
     },
     onError: (error) => {
-      toast.error(error.message);
+      showError(error.message);
     },
   });
 
@@ -45,10 +45,10 @@ const Card = () => {
     },
     onSuccess: (data: cardResponse) => {
       deleteFromCollection(data.remoteId);
-      toast.success("Card deleted successfully.");
+      showSuccess("Card delete successfully");
     },
     onError: (error) => {
-      toast.error(error.message);
+      showError(error.message);
     },
   });
 
@@ -61,7 +61,7 @@ const Card = () => {
     if (findCard) {
       mutationDelete.mutate(findCard);
     } else {
-      toast.error("Card not found in collection");
+      showError("Card not found in collection");
     }
   };
 
@@ -80,13 +80,11 @@ const Card = () => {
   }
 
   if (error) {
-    toast.error(error.message);
-    return "An error occurred: " + error.message;
+    showError(error.message);
   }
 
   return (
     <div className={style.cardInfoContainer}>
-      <Toaster position="top-right" />
       <div className={style.card}>
         <div
           className={style.imgContainer}
@@ -137,7 +135,7 @@ const Card = () => {
           <div className={style.textInfo}>
             <div className={style.attackContainer}>
               <p className={style.priceTitle}>Attacks</p>
-              {data.attacks?.map((attack : Attack) => {
+              {data.attacks?.map((attack: Attack) => {
                 return (
                   <div key={attack.text} className={style.attack}>
                     <div className={style.attackTitle}>

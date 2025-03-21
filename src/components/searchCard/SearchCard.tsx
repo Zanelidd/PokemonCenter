@@ -1,36 +1,37 @@
-import { FormEvent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import style from './searchCard.module.css';
+import { FormEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import style from "./searchCard.module.css";
+import { showWarning } from "../../utils/toastUtils";
 
 const SearchCard = () => {
-  const [search, setSearch] = useState<string>('');
+  const [search, setSearch] = useState<string>("");
   const navigate = useNavigate();
 
   const handleSearch = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    navigate('/result', { state: search });
 
+    if (search.trim().length < 2) {
+      showWarning("Please enter at least 2 characters");
+      return;
+    }
+
+    navigate("/result", { state: search.trim() });
   };
 
   return (
-
-    <form className={style.searchContainer} onSubmit={(e) => handleSearch(e)}>
+    <form className={style.searchContainer} onSubmit={handleSearch}>
       <input
         id="search"
         type="search"
         value={search}
-        placeholder={'Search...'}
+        placeholder={"Search for a card..."}
         required
         onChange={(e) => {
           setSearch(e.target.value);
         }}
       />
-      <button type="submit">
-        Search
-      </button>
+      <button type="submit">Search</button>
     </form>
-
-
   );
 };
 
