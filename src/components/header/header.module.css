@@ -1,45 +1,156 @@
 .header {
- position: fixed;
-  top: 0;
-  display: flex;
-  justify-content: space-between;
-  width: 100vw;
-  align-items: center;
-  padding: 20px;
-  background-color: var(--tertiaryColor);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
+    width: 100vw;
+    min-height: 75px;
+    align-items: center;
+    padding: 20px;
+    background-color: var(--tertiaryColor);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.hamburgerContainer {
+    display: none;
+}
+
+.hamburger {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    justify-content: space-around;
+    flex-flow: column wrap;
+    z-index: 10;
+}
+
+
+.headerContainer {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+
 }
 
 header a {
-  text-decoration: none;
-  color: var(--colorBis);
-  font-weight: bold;
+    text-decoration: none;
+    color: var(--colorBis);
+    font-weight: bold;
+    align-self: center;
 }
 
 
+.burger {
+    width: 2rem;
+    height: 0.25rem;
+    border-radius: 10px;
+    transition: all 0.3s linear;
+    transform-origin: 1px;
+    background-color: var(--colorBis);
+}
+
+.burger1 {
+    transform: rotate(0);
+}
+
+.burger1.isOpen {
+    transform: rotate(45deg);
+}
+
+.burger1 {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.burger2.isOpen {
+    transform: translateX(100%);
+    opacity: 0;
+}
+
+.burger1 {
+    transform: rotate(0);
+}
+
+.burger3.isOpen {
+    transform: rotate(-45deg);
+}
+
 .linkContainer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding-left: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 20px;
 }
 
 .loginContainer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding-right: 1rem
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-right: 1rem
 }
 
 a.active {
-  text-decoration: none;
-  color: white;
+    text-decoration: none;
+    color: var(--color);
+
 }
 
-@media screen and (max-width : 768px) {
-  .header {
-    display: none
-  }
+.navOpen {
+    display: none;
+}
+
+@media screen and (max-width: 768px) {
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        flex-direction: column;
+    }
+
+    .hamburgerContainer {
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 20px;
+        transform: translateY(-50%);
+        z-index: 999;
+        cursor: pointer;
+    }
+
+    .linkContainer,
+    .loginContainer {
+        display: none;
+        padding-right: 0;
+    }
+
+    .headerContainer {
+        justify-content: flex-end;
+    }
+    .headerContainerBurger {
+        position: fixed;
+        top: 0;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+        height: 100vh;
+        width: 100%;
+        background-color: var(--tertiaryColor);
+        margin-top: 1rem;
+    }
+
+    .navOpen {
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 100;
+
+    }
+
+
 }
