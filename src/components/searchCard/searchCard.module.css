@@ -1,17 +1,34 @@
 .searchContainer {
-  width: 20vw;
-  display: flex;
-  justify-content: end;
-  align-items: center;
-  font-size: 0.75rem;
-  text-align: center;
+    width: 20vw;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    font-size: 0.75rem;
+    text-align: center;
 }
 
 input {
-  width: 300px;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  outline: none;
+    width: 300px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    outline: none;
 }
 
+.searchButton {
+    margin-top: 0;
+}
+
+@media screen and (max-width: 768px) {
+    .searchContainer {
+        align-items: center;
+        width: 50vw;
+        gap: 2rem
+    }
+
+    input {
+        width: 40vw;
+    }
+
+
+}
