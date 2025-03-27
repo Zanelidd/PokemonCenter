@@ -9,7 +9,7 @@
 .loginContainer {
   position: absolute;
   top: 18vh;
-  left: 35vw;
+  left: 32.5vw;
   z-index : 999;
   display: flex;
   flex-direction: column;
