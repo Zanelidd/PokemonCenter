@@ -30,7 +30,7 @@ const SearchCard = () => {
           setSearch(e.target.value);
         }}
       />
-      <button type="submit">Search</button>
+      <button type="submit" className={style.searchButton}>Search</button>
     </form>
   );
 };
