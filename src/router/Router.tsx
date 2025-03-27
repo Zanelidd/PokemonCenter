@@ -10,6 +10,7 @@ import { useUser } from '../stores/UserStore';
 import { ReactElement } from 'react';
 import Login from '../components/login/Login';
 import VerifyEmail from '../components/verifyEmail/VerifyEmail.tsx';
+import ForgetPassword from "../pages/forgetpassword/ForgetPassword.tsx";
 
 const PrivateRoute = ({ children }: { children: ReactElement }) => {
   const { isAuthenticated } = useUser();
@@ -68,6 +69,10 @@ const Router = () => {
       path: "/verify-email",
       element: <VerifyEmail />,
     },
+    {
+      path : "/forget-pass",
+      element : <ForgetPassword />
+    }
   ]);
 
   return <RouterProvider router={router} />;
