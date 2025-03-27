@@ -5,6 +5,8 @@ const endpoints = {
       login: `/users/signIn`,
       register: `/users/signUp`,
       verify: `/users/verify`,
+      forget: `/users/findForModifyPassword`,
+      verifyTokenModifyPassword : '/users/verifyTokenModifyPassword'
 
     },
   },
