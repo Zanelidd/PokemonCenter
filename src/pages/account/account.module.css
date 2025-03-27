@@ -76,15 +76,17 @@
 
 @media screen and (max-width: 768px) {
     .accountContainer {
-        width: 80vw;
+        width: 90vw;
     }
 
     .accountInfosContainer {
         flex-direction: column;
+        justify-content: space-between;
     }
 
     .accountInfos {
         position: static;
+        width: 100%;
     }
 
     .confirmationModal {
@@ -94,6 +96,9 @@
     .buttonConfirm {
         width: 50%;
         gap: 2rem;
+    }
+    .buttonUpdate{
+        background-color: var(--secondaryColor);
     }
 }
 

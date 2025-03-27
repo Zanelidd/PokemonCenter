@@ -128,7 +128,7 @@ const Account = () => {
                                     setConfirmPassword(e.target.value);
                                 }}
                             />
-                            <button type="submit">Update Password</button>
+                            <button className={style.buttonUpdate} type="submit">Update Password</button>
                         </form>
                     </div>
                 </div>
