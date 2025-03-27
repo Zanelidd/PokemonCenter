@@ -5,7 +5,6 @@ export const authInterceptor: RequestInterceptor = (url, config = {}) => {
   if (typeof url === "string" && url.includes("/users/verify")) {
     return [url, config];
   }
-
   const token = useUser.getState().user?.access_token;
   return [
     url,
