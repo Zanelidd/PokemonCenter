@@ -76,7 +76,7 @@ const SetCards = () => {
 
     const {collection, addToCollection, deleteFromCollection, getCardById} =
         useCollection();
-    const {user} = useUser()
+    const {user,isAuthenticated} = useUser()
 
     if (isPending) {
         return <CardSkeleton/>;
@@ -124,7 +124,7 @@ const SetCards = () => {
                                 <button className={style.buttonAddCardToCollection}  onClick={() => {
                                     navigate(`/card/${card.id}`);
                                 }}> Infos </button>
-                                {isInCollection ? <button className={style.buttonAddCardToCollection}
+                                {isInCollection && isAuthenticated ? <button className={style.buttonAddCardToCollection}
                                                           onClick={() => {
                                                               handleDeleteCollection(card);
                                                           }}>Delete
