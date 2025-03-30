@@ -14,17 +14,16 @@
     display: flex;
     align-items:flex-end;
     justify-content: space-evenly;
-    height: 100%;
+   height: auto;
     width: 100%;
     position: absolute;
-    top: 0;
+    bottom: 0;
     left: 0;
     padding-bottom: 1rem;
 }
 .cardContainerWithButton {
     position: relative;
 }
-
 .card {
     box-shadow: 7px 5px 9px 0 grey;
 }

@@ -76,7 +76,7 @@ const SetCards = () => {
 
     const {collection, addToCollection, deleteFromCollection, getCardById} =
         useCollection();
-    const {user,isAuthenticated} = useUser()
+    const {user, isAuthenticated} = useUser()
 
     if (isPending) {
         return <CardSkeleton/>;
@@ -116,25 +116,27 @@ const SetCards = () => {
                                 <img
                                     className={style.card}
                                     key={card.id}
-
+                                    onClick={() => {
+                                        navigate(`/card/${card.id}`)
+                                    }}
                                     src={card.images.small}
                                     alt={`image of ${card.name}`}
                                 />
-                                <div className={style.cardButtonContainer}>
-                                <button className={style.buttonAddCardToCollection}  onClick={() => {
-                                    navigate(`/card/${card.id}`);
-                                }}> Infos </button>
-                                {isInCollection && isAuthenticated ? <button className={style.buttonAddCardToCollection}
-                                                          onClick={() => {
-                                                              handleDeleteCollection(card);
-                                                          }}>Delete
-                                </button> : <button className={style.buttonAddCardToCollection}
-
+                                {isAuthenticated ? <div className={style.cardButtonContainer}>
+                                        {isInCollection ?
+                                            <button className={style.buttonAddCardToCollection}
                                                     onClick={() => {
-                                                        handleAddCollection(card)
-                                                    }}>Add
-                                </button>}
-                                </div>
+                                                        handleDeleteCollection(card);
+                                                    }}>Delete
+                                            </button> : <button className={style.buttonAddCardToCollection}
+
+                                                                onClick={() => {
+                                                                    handleAddCollection(card)
+                                                                }}>Add
+                                            </button>}
+                                    </div>
+                                    : null}
+
                             </div>
                         )
                             ;
@@ -142,7 +144,8 @@ const SetCards = () => {
             </div>
             <Pagination table={table} pagination={pagination}/>
         </>
-    );
+    )
+        ;
 };
 
 export default SetCards;
