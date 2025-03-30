@@ -9,6 +9,7 @@
     padding: 20px;
     background-color: var(--tertiaryColor);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    z-index: 2;
 }
 
 .hamburgerContainer {
@@ -119,6 +120,7 @@ a.active {
         cursor: pointer;
     }
 
+
     .linkContainer,
     .loginContainer {
         display: none;
@@ -128,6 +130,7 @@ a.active {
     .headerContainer {
         justify-content: flex-end;
     }
+
     .headerContainerBurger {
         position: fixed;
         top: 0;
@@ -149,6 +152,7 @@ a.active {
         justify-content: center;
         align-items: center;
         z-index: 150;
+        transform: translateY(100%);
 
     }
 
