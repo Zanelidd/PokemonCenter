@@ -5,7 +5,7 @@
     align-items: center;
     padding: 2rem;
     gap: 3rem;
-    z-index : -1;
+    z-index: 1;
 }
 
 .imgContainer {
@@ -17,6 +17,7 @@
     filter: brightness(.9) contrast(1.45);
     transform: rotateX(var(--xAxis)) rotateY(var(--yAxis));
     transition: all 0.15s ease-out;
+
 }
 
 .imgContainer.cardImg {
@@ -189,6 +190,14 @@
     color: var(--color);
     margin-top: 15px;
     width: 100%;
+}
+
+.numberOfCard {
+    cursor: pointer;
+}
+
+body .numberOfCard:hover {
+    color: var(--colorBis);
 }
 
 @media screen and (max-width: 768px) {
