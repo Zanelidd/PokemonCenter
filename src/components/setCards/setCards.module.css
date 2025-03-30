@@ -10,6 +10,21 @@
     box-sizing: border-box;
 }
 
+.cardButtonContainer{
+    display: flex;
+    align-items:flex-end;
+    justify-content: space-evenly;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding-bottom: 1rem;
+}
+.cardContainerWithButton {
+    position: relative;
+}
+
 .card {
     box-shadow: 7px 5px 9px 0 grey;
 }
@@ -17,6 +32,20 @@
 .card:hover {
     transform: scale(1.05);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+}
+
+.cardContainerWithButton .buttonAddCardToCollection {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.cardContainerWithButton:hover .buttonAddCardToCollection {
+    opacity: 1;
+}
+
+.buttonRemoveCardToCollection:hover {
+    display: flex;
+
 }
 
 .filterContainer {
@@ -68,7 +97,7 @@ select:focus {
 
     button {
         margin-top: 8px;
-        margin-left : 0;
+        margin-left: 0;
         width: 70%;
     }
 }
@@ -80,10 +109,11 @@ select:focus {
         margin-right: 0;
 
     }
+
     button {
-             margin-top: 8px;
-             margin-left : 0;
-             width: 70%;
-         }
+        margin-top: 8px;
+        margin-left: 0;
+        width: 70%;
+    }
 }
 
