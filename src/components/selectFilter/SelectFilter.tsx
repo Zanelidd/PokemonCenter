@@ -29,7 +29,7 @@ const SelectFilter = ({cards, id, setFilterTags, filterTags}: SetFilterProps) =>
         return cards.filter(card => {
             return activeFilters.every(filterKey => {
                 if (filterKey === 'set') {
-                    return card.set?.id === filterTags[filterKey];
+                    return card.set?.name === filterTags[filterKey];
                 }
                 if (filterKey === 'types') {
                     return card.types?.includes(filterTags[filterKey] as Type);
@@ -41,7 +41,7 @@ const SelectFilter = ({cards, id, setFilterTags, filterTags}: SetFilterProps) =>
 
     const options = useMemo(() => {
         if (id === 'set') {
-            return [...new Set(filteredCards.map(card => card.set?.id).filter(Boolean))].sort();
+            return [...new Set(filteredCards.map(card => card.set?.name).filter(Boolean))].sort();
         }
 
         if (id === 'types') {

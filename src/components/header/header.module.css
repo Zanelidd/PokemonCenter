@@ -21,7 +21,7 @@
     display: flex;
     justify-content: space-around;
     flex-flow: column wrap;
-    z-index: 10;
+    z-index: 250;
 }
 
 
@@ -115,7 +115,7 @@ a.active {
         top: 50%;
         left: 20px;
         transform: translateY(-50%);
-        z-index: 999;
+        z-index: 300;
         cursor: pointer;
     }
 
@@ -148,7 +148,7 @@ a.active {
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        z-index: 100;
+        z-index: 150;
 
     }
 
