@@ -19,12 +19,14 @@ const Collection = () => {
         const [filterTags, setFilterTags] = useState<Record<string, string>>({});
         const NUMBER_OF_PAGE = 20
 
+
+
         const filteredData = collection.filter((card: Card) => {
             if (filterTags) {
                 return Object.entries(filterTags).every(([category, value]) => {
                     switch (category) {
                         case 'set':
-                            return Array.isArray(card.set.id) ? card.set.id.includes(value) : card.set.id === value;
+                            return Array.isArray(card.set.name) ? card.set.name.includes(value) : card.set.name === value;
                         case 'types':
                             return card.types?.includes(value as Type);
                         case 'rarity':
@@ -56,6 +58,13 @@ const Collection = () => {
             },
         });
 
+
+    useEffect(() => {
+        if (user?.userId && collection.length === 0) {
+            fetchCards();
+        }
+    }, [user, collection.length, fetchCards]);
+
         const table = useReactTable({
             columns: [],
             data: collection || [],
@@ -67,11 +76,6 @@ const Collection = () => {
             },
         });
 
-        useEffect(() => {
-            if (user?.userId && collection.length === 0) {
-                fetchCards();
-            }
-        }, [user, collection.length, fetchCards]);
 
         return (
             <>
@@ -91,7 +95,7 @@ const Collection = () => {
                             )
                             .map((card) => {
                                 return (
-                                    <SearchResults key={`${card.name}${card.set}`} data={card}/>
+                                    <SearchResults key={`${card.name}${card.set.name}`} data={card}/>
                                 );
                             })}
                 </div>
