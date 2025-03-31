@@ -102,7 +102,7 @@ const Collection = () => {
                     </div>
                 )}
                 {filteredData.length > 0 && (
-                    <Pagination table={table} pagination={pagination}/>
+                    <Pagination table={table} pageKey={"collection"}/>
                 )}
             </>
         );
