@@ -10,20 +10,14 @@
     box-sizing: border-box;
 }
 
-.cardButtonContainer{
-    display: flex;
-    align-items:flex-end;
-    justify-content: space-evenly;
-   height: auto;
-    width: 100%;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    padding-bottom: 1rem;
-}
 .cardContainerWithButton {
     position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-evenly;
+
 }
+
 .card {
     box-shadow: 7px 5px 9px 0 grey;
 }
@@ -34,16 +28,17 @@
 }
 
 .cardContainerWithButton .buttonAddCardToCollection {
+
     opacity: 0;
     transition: opacity 0.3s ease;
+    position: absolute;
+    /*bottom: 0;
+    left: 0;*/
+
 }
 
 .cardContainerWithButton:hover .buttonAddCardToCollection {
     opacity: 1;
-}
-
-.buttonRemoveCardToCollection:hover {
-    display: flex;
 
 }
 
