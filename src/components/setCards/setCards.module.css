@@ -11,17 +11,11 @@
     cursor: pointer;
 }
 
-.cardButtonContainer {
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-end;
-    height: auto;
-    width: 100%;
-    padding-bottom: 1rem;
-}
 
 .cardContainerWithButton {
     position: relative;
+    text-align: center;
+    height: auto;
 }
 
 .card {
@@ -98,13 +92,11 @@ select:focus {
         width: 70%;
     }
 
-    .cardButtonContainer {
-        width: 30%;
-    }
 
     .cardContainerWithButton .buttonAddCardToCollection {
         opacity: 1;
         align-items: center;
+        width: 20%;
     }
 }
 
