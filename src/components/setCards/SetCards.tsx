@@ -88,13 +88,13 @@ const SetCards = () => {
                                                 onClick={() => {
                                                     handleDeleteCollection(card);
                                                 }}
-                                        >Delete
+                                        >-
                                         </button> : <button className={style.buttonAddCardToCollection}
 
                                                             onClick={() => {
                                                                 handleAddCollection(card)
                                                             }}
-                                        >Add
+                                        >+
                                         </button>
                                     : null}
 
