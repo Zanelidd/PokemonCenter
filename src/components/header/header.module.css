@@ -6,7 +6,7 @@
     width: 100vw;
     min-height: 75px;
     align-items: center;
-    padding: 20px;
+    padding: 1.5vw;
     background-color: var(--tertiaryColor);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
     z-index: 2;
