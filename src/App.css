@@ -1,11 +1,12 @@
 #root {
     text-align: center;
     width: 100%;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    margin-top: 100px;
+    margin-top: 10vh;
     overflow: hidden;
 }
 
@@ -98,7 +99,7 @@
 
 }
 
-button{
+button {
     padding: 10px 20px;
     margin-left: 10px;
     background-color: var(--colorBis);
@@ -108,8 +109,9 @@ button{
     cursor: pointer;
 }
 
-button:hover {  background-color: var(--buttonHover);}
-
+button:hover {
+    background-color: var(--buttonHover);
+}
 
 
 :root {
@@ -127,17 +129,17 @@ button:hover {  background-color: var(--buttonHover);}
     --pointer-from-top: var(--pointer-from-center);
     --pointer-from-left: var(--pointer-from-center);
     --o: 1;
-    --primaryColor : #1a2a42;
-    --secondaryColor :#0f1723;
-    --tertiaryColor :#1f2937;
-    --borderColor : #3a4d6b;
-    --boxShadow:rgba(0, 0, 0, 0.3);
+    --primaryColor: #1a2a42;
+    --secondaryColor: #0f1723;
+    --tertiaryColor: #1f2937;
+    --borderColor: #3a4d6b;
+    --boxShadow: rgba(0, 0, 0, 0.3);
     --buttonHover: #0284c7;
-    --color:#e0e7ff;
-    --colorBis:#38bdf8;
-    --colorTer:#ffb347;
-    --colorQua :#a0b0c8;
-    --colorBackgroundError : rgba(239, 68, 68, 0.1);
+    --color: #e0e7ff;
+    --colorBis: #38bdf8;
+    --colorTer: #ffb347;
+    --colorQua: #a0b0c8;
+    --colorBackgroundError: rgba(239, 68, 68, 0.1);
     --colorBorderError: rgba(239, 68, 68, 0.3)
 }
 

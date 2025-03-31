@@ -8,44 +8,35 @@
     gap: 50px;
     width: 100%;
     box-sizing: border-box;
+    cursor: pointer;
 }
 
-.cardButtonContainer{
-    display: flex;
-    align-items:flex-end;
-    justify-content: space-evenly;
-    height: auto;
-    width: 100%;
-    position: absolute;
-    bottom:0;
-    left: 0;
-    padding-bottom: 1rem;
-}
+
 .cardContainerWithButton {
     position: relative;
+    text-align: center;
+    height: auto;
 }
 
 .card {
     box-shadow: 7px 5px 9px 0 grey;
 }
 
-.card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+.buttonAddCardToCollection {
+    align-content: center;
 }
 
 .cardContainerWithButton .buttonAddCardToCollection {
     opacity: 0;
     transition: opacity 0.3s ease;
+    margin-right: 0.5rem;
+    position: absolute;
+    bottom: 15px;
+    right: 0;
 }
 
 .cardContainerWithButton:hover .buttonAddCardToCollection {
     opacity: 1;
-}
-
-.buttonRemoveCardToCollection:hover {
-    display: flex;
-
 }
 
 .filterContainer {
@@ -99,6 +90,13 @@ select:focus {
         margin-top: 8px;
         margin-left: 0;
         width: 70%;
+    }
+
+
+    .cardContainerWithButton .buttonAddCardToCollection {
+        opacity: 1;
+        align-items: center;
+        width: 20%;
     }
 }
 

@@ -1,16 +1,16 @@
 import {useNavigate, useParams} from 'react-router-dom';
 import style from './setCards.module.css';
-import {useMutation, useQuery} from '@tanstack/react-query';
+import {useQuery} from '@tanstack/react-query';
 import {Card} from 'pokemon-tcg-sdk-typescript/dist/sdk';
 import {getCoreRowModel, getPaginationRowModel, useReactTable} from '@tanstack/react-table';
 import {useState} from 'react';
 import Pagination from '../pagination/Pagination.tsx';
 import api from '../../api/api.service.ts';
 import CardSkeleton from '../skeletons/card-skeleton/CardSkeleton.tsx';
-import {showError, showSuccess} from '../../utils/toastUtils.ts';
-import {cardResponse, CollectionCard} from "../../types/card.types.ts";
+import {showError} from '../../utils/toastUtils.ts';
 import {useCollection} from "../../stores/CollectionStore.tsx";
 import {useUser} from "../../stores/UserStore.tsx";
+import {useCardOperations} from '../../hook/useCardMutation.ts';
 
 const SetCards = () => {
     const navigate = useNavigate();
@@ -28,35 +28,13 @@ const SetCards = () => {
         },
         staleTime: twentyFourHoursInMs,
     });
+    const {collection} = useCollection();
+    const {isAuthenticated} = useUser()
+    const {
+        handleAddCollection,
+        handleDeleteCollection,
+    } = useCardOperations();
 
-    const mutation = useMutation({
-        mutationFn: async (data: Card) => {
-            if (user) {
-                return api.card.addCard(user.userId, data.id);
-            }
-            throw new Error();
-        },
-        onSuccess: (result, data: Card) => {
-            addToCollection(data, result.id);
-            showSuccess("Cards added successfully.");
-        },
-        onError: (error) => {
-            showError(error.message);
-        },
-    });
-
-    const mutationDelete = useMutation({
-        mutationFn: async (data: CollectionCard) => {
-            return api.card.deleteCard(data.id);
-        },
-        onSuccess: (data: cardResponse) => {
-            deleteFromCollection(data.remoteId);
-            showSuccess("Card delete successfully");
-        },
-        onError: (error) => {
-            showError(error.message);
-        },
-    })
 
     const [pagination, setPagination] = useState({
         pageIndex: 0,
@@ -74,10 +52,6 @@ const SetCards = () => {
         },
     });
 
-    const {collection, addToCollection, deleteFromCollection, getCardById} =
-        useCollection();
-    const {user,isAuthenticated} = useUser()
-
     if (isPending) {
         return <CardSkeleton/>;
     }
@@ -86,19 +60,6 @@ const SetCards = () => {
         showError(error.message);
         return "An error occured: " + error.message;
     }
-
-    const handleAddCollection = (data: Card) => {
-        mutation.mutate(data);
-    };
-
-    const handleDeleteCollection = (data: Card) => {
-        const findCard = getCardById(data.id);
-        if (findCard) {
-            mutationDelete.mutate(findCard);
-        } else {
-            showError("Card not found in collection");
-        }
-    };
 
     return (
         <>
@@ -110,31 +71,33 @@ const SetCards = () => {
                     )
                     .map((card: Card) => {
                         const isInCollection = collection.find((test) => test.id == card.id)
-                        console.log(isInCollection)
                         return (
                             <div key={card.id} className={style.cardContainerWithButton}>
                                 <img
                                     className={style.card}
                                     key={card.id}
-
+                                    onClick={() => {
+                                        navigate(`/card/${card.id}`)
+                                    }}
                                     src={card.images.small}
                                     alt={`image of ${card.name}`}
                                 />
-                                <div className={style.cardButtonContainer}>
-                                <button className={style.buttonAddCardToCollection}  onClick={() => {
-                                    navigate(`/card/${card.id}`);
-                                }}> Infos </button>
-                                {isInCollection && isAuthenticated ? <button className={style.buttonAddCardToCollection}
-                                                          onClick={() => {
-                                                              handleDeleteCollection(card);
-                                                          }}>Delete
-                                </button> : <button className={style.buttonAddCardToCollection}
+                                {isAuthenticated ?
+                                    isInCollection ?
+                                        <button className={style.buttonAddCardToCollection}
+                                                onClick={() => {
+                                                    handleDeleteCollection(card);
+                                                }}
+                                        >-
+                                        </button> : <button className={style.buttonAddCardToCollection}
 
-                                                    onClick={() => {
-                                                        handleAddCollection(card)
-                                                    }}>Add
-                                </button>}
-                                </div>
+                                                            onClick={() => {
+                                                                handleAddCollection(card)
+                                                            }}
+                                        >+
+                                        </button>
+                                    : null}
+
                             </div>
                         )
                             ;
@@ -142,7 +105,8 @@ const SetCards = () => {
             </div>
             <Pagination table={table} pagination={pagination}/>
         </>
-    );
+    )
+        ;
 };
 
 export default SetCards;
