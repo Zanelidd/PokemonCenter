@@ -14,6 +14,7 @@ const SearchCard = () => {
       showWarning("Please enter at least 2 characters");
       return;
     }
+    localStorage.setItem('tablePage_results',"0")
 
     navigate("/result", { state: search.trim() });
   };

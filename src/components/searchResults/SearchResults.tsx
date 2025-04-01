@@ -39,13 +39,13 @@ const SearchResults = ({data}: SearchResultsProps) => {
                                 onClick={() => {
                                     handleDeleteCollection(data);
                                 }}
-                        >Delete
+                        >-
                         </button> : <button className={style.buttonAddCardToCollection}
 
                                             onClick={() => {
                                                 handleAddCollection(data)
                                             }}
-                        >Add
+                        >+
                         </button>
                     : null}
             </div>

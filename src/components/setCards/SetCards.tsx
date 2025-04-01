@@ -103,7 +103,7 @@ const SetCards = () => {
                             ;
                     })}
             </div>
-            <Pagination table={table} pagination={pagination}/>
+            <Pagination table={table} pageKey={params.setId}/>
         </>
     )
         ;
