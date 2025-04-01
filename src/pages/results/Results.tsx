@@ -83,7 +83,7 @@ const Results = () => {
             return Object.entries(filterTags).every(([category, value]) => {
                 switch (category) {
                     case 'set':
-                        return Array.isArray(card.set.id) ? card.set.id.includes(value) : card.set.id === value;
+                        return Array.isArray(card.set.name) ? card.set.name.includes(value) : card.set.name === value;
                     case 'rarity':
                         return card.rarity === value;
                     default:
