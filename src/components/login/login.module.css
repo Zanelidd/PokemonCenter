@@ -1,7 +1,7 @@
 .loginBack {
     position: absolute;
     background-color: transparent;
-    height: 95vh;
+    height: 90vh;
     width: 95vw;
     z-index: 998;
 }
