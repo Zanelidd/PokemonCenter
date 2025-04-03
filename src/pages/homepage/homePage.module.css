@@ -1,54 +1,54 @@
 .containerHome {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  width: 100%;
-  height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    height: 90vh;
 }
 
 .setContainer {
-  max-width: 1200px;
-  margin: 20px auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-  padding: 0 20px;
-  width: 100%;
-  box-sizing: border-box;
+    max-width: 1200px;
+    margin: 20px auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 0 20px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .setCard {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
-  background: rgba(31, 41, 55, 0.8);
-  border-radius: 12px;
-  padding: 30px;
-  text-align: center;
-  transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 4px 8px var(--boxShadow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    background: rgba(31, 41, 55, 0.8);
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 8px var(--boxShadow);
 }
 
 .setCard:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 16px var(--boxShadow);
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px var(--boxShadow);
 }
 
 .setName {
-  margin-top: 15px;
-  font-size: 18px;
-  color: var(--colorBis);
+    margin-top: 15px;
+    font-size: 18px;
+    color: var(--colorBis);
 
 }
 
 .setImg {
-  max-width: 100%;
-  height: 50px;
-  margin: 0 auto;
-  display: block;
-  border-radius: 8px;
+    max-width: 100%;
+    height: 50px;
+    margin: 0 auto;
+    display: block;
+    border-radius: 8px;
 }
 
 

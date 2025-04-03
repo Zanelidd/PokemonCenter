@@ -25,7 +25,7 @@ const Header = () => {
                         <div className={`${style.burger} ${style.burger3} ${openBurger ? style.isOpen : ""}`}></div>
                     </div>
                 </div>
-                <div className={`${openBurger ? style.headerContainerBurger : style.headerContainer  }`}>
+                <div className={`${openBurger ? style.headerContainerBurger : style.headerContainer}`}>
                     <nav className={`${style.linkContainer} ${openBurger ? style.navOpen : ''}`}>
                         <NavLink to="/home" onClick={() => setOpenBurger(false)}>Home</NavLink>
                         {isAuthenticated &&

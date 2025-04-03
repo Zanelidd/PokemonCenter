@@ -50,20 +50,20 @@ const ForgetPassword = () => {
 
     return <>
         <h2>Change your password </h2>
-    {token && <FormConfirmPass/>}
-    {!token && <div className={styles.verifyContainer}>
-        <div className={styles.verifyCard}>
-            <h1 className={styles.verifyTitle}>Verification Error</h1>
-            <div className={styles.verifyError}>Missing verification token</div>
-            <button
-                className={styles.verifyButton}
-                onClick={() => navigate("/home")}
-            >
-                Back to registration
-            </button>
+        {token && <FormConfirmPass/>}
+        {!token && <div className={styles.verifyContainer}>
+            <div className={styles.verifyCard}>
+                <h1 className={styles.verifyTitle}>Verification Error</h1>
+                <div className={styles.verifyError}>Missing verification token</div>
+                <button
+                    className={styles.verifyButton}
+                    onClick={() => navigate("/home")}
+                >
+                    Back to registration
+                </button>
+            </div>
         </div>
-    </div>
-    }
+        }
     </>
 }
 

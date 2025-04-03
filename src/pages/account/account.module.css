@@ -97,7 +97,8 @@
         width: 50%;
         gap: 2rem;
     }
-    .buttonUpdate{
+
+    .buttonUpdate {
         background-color: var(--secondaryColor);
     }
 }
