@@ -1,26 +1,26 @@
 export type RequestInterceptor = (
-  url: RequestInfo,
-  config?: RequestInit,
+    url: RequestInfo,
+    config?: RequestInit,
 ) => [RequestInfo, RequestInit] | RequestInit | void;
 
 export type ResponseInterceptor = (response: Response) => Promise<Response>;
 
 export interface Interceptors {
-  request: RequestInterceptor[];
-  response: ResponseInterceptor[];
+    request: RequestInterceptor[];
+    response: ResponseInterceptor[];
 }
 
 export interface InterceptorHandler<T> {
-  use: (callback: T) => number;
-  eject: (id: number) => void;
+    use: (callback: T) => number;
+    eject: (id: number) => void;
 }
 
 export interface CustomFetch {
-  interceptors: {
-    request: InterceptorHandler<RequestInterceptor>;
-    response: InterceptorHandler<ResponseInterceptor>;
-  };
+    interceptors: {
+        request: InterceptorHandler<RequestInterceptor>;
+        response: InterceptorHandler<ResponseInterceptor>;
+    };
 
-  (url: RequestInfo, config?: RequestInit): Promise<Response>;
+    (url: RequestInfo, config?: RequestInit): Promise<Response>;
 }
 

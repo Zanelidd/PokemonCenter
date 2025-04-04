@@ -8,7 +8,7 @@ import {useUser} from "../stores/UserStore.tsx";
 
 export function useCardOperations() {
 
-    const {addToCollection, deleteFromCollection,getCardById}= useCollection()
+    const {addToCollection, deleteFromCollection, getCardById} = useCollection()
     const {user} = useUser()
 
     const addCardMutation = useMutation({

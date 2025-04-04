@@ -1,39 +1,39 @@
-import { FormEvent, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import {FormEvent, useState} from "react";
+import {useNavigate} from "react-router-dom";
 import style from "./searchCard.module.css";
-import { showWarning } from "../../utils/toastUtils";
+import {showWarning} from "../../utils/toastUtils";
 
 const SearchCard = () => {
-  const [search, setSearch] = useState<string>("");
-  const navigate = useNavigate();
+    const [search, setSearch] = useState<string>("");
+    const navigate = useNavigate();
 
-  const handleSearch = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    const handleSearch = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
 
-    if (search.trim().length < 2) {
-      showWarning("Please enter at least 2 characters");
-      return;
-    }
-    localStorage.setItem('tablePage_results',"0")
+        if (search.trim().length < 2) {
+            showWarning("Please enter at least 2 characters");
+            return;
+        }
+        localStorage.setItem('tablePage_results', "0")
 
-    navigate("/result", { state: search.trim() });
-  };
+        navigate("/result", {state: search.trim()});
+    };
 
-  return (
-    <form className={style.searchContainer} onSubmit={handleSearch}>
-      <input
-        id="search"
-        type="search"
-        value={search}
-        placeholder={"Search for a card..."}
-        required
-        onChange={(e) => {
-          setSearch(e.target.value);
-        }}
-      />
-      <button type="submit" className={style.searchButton}>Search</button>
-    </form>
-  );
+    return (
+        <form className={style.searchContainer} onSubmit={handleSearch}>
+            <input
+                id="search"
+                type="search"
+                value={search}
+                placeholder={"Search for a card..."}
+                required
+                onChange={(e) => {
+                    setSearch(e.target.value);
+                }}
+            />
+            <button type="submit" className={style.searchButton}>Search</button>
+        </form>
+    );
 };
 
 export default SearchCard;

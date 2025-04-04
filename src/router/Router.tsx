@@ -20,7 +20,7 @@ import Login from '../components/login/Login';
 import VerifyEmail from '../components/verifyEmail/VerifyEmail.tsx';
 import ForgetPassword from "../pages/forgetpassword/ForgetPassword.tsx";
 import * as Sentry from "@sentry/react";
-import { httpClientIntegration } from '@sentry/react';
+import {httpClientIntegration} from "@sentry/react";
 
 const PrivateRoute = ({children}: { children: ReactElement }) => {
     const {isAuthenticated} = useUser();
@@ -30,7 +30,6 @@ const PrivateRoute = ({children}: { children: ReactElement }) => {
 
     return children;
 };
-
 
 Sentry.init({
     dsn: "https://cfc368a8e9e7d12c02eef326c3be8831@o4509067101143040.ingest.de.sentry.io/4509067134304336",

@@ -1,5 +1,5 @@
 export type UserTypes = {
-  username: string;
-  access_token: string;
-  userId: number;
+    username: string;
+    access_token: string;
+    userId: number;
 };
