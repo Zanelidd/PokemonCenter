@@ -1,5 +1,3 @@
-import { showError } from "./toastUtils";
-
 export class HttpError extends Error {
   status: number;
   data: unknown;
@@ -11,14 +9,6 @@ export class HttpError extends Error {
     this.data = data;
   }
 }
-
-export type ErrorType = "info" | "warning" | "error";
-
-export const getErrorTypeFromStatus = (status: number): ErrorType => {
-  if (status >= 500) return "error";
-  if (status >= 400) return "warning";
-  return "info";
-};
 
 export const getErrorMessageFromStatus = (status: number): string => {
   switch (status) {
@@ -43,41 +33,3 @@ export const getErrorMessageFromStatus = (status: number): string => {
   }
 };
 
-export const handleError = async (
-  error: unknown,
-  retryFn?: () => Promise<void>
-): Promise<void> => {
-  let errorMessage = "An error occurred";
-  let details: string | undefined;
-
-  if (error instanceof HttpError) {
-    errorMessage = error.message;
-    details =
-      typeof error.data === "object" && error.data !== null
-        ? ((error.data as Record<string, unknown>).message as string) ||
-          JSON.stringify(error.data)
-        : undefined;
-  } else if (error instanceof Error) {
-    errorMessage = error.message;
-    details = error.stack;
-  }
-
-  if (error instanceof TypeError && error.message === "Failed to fetch") {
-    errorMessage = "Unable to connect to the server";
-    details = "Please check your internet connection";
-  }
-
-  showError(
-    errorMessage,
-    details,
-    retryFn
-      ? () => {
-          void retryFn();
-        }
-      : undefined
-  );
-
-  console.error("[Error Handler]", error);
-
-  throw error;
-};
