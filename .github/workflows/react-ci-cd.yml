@@ -2,50 +2,50 @@ name: React CI/CD
 
 on:
   push:
-    branches: [ main, master ]
-  pull_requests:
-    branches: [ main, master ]
+    branches: [ main, master ]  # Déclenché lorsque vous poussez sur main ou master
+  pull_request:
+    branches: [ main, master ]  # Déclenché lors des PRs vers main ou master
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-        cache: 'npm'
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
 
-    - name: Install dependencies
-      run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-    - name: Run linting
-      run: npm run lint
-      if: success()
+      - name: Run linting
+        run: npm run lint
+        if: success()
 
-    - name: Run tests
-      run: npm run test
-      if: success()
+      - name: Run tests
+        run: npm test
+        if: success()
 
-    - name: Build project
-      run: npm run build
-      if: success()
+      - name: Build project
+        run: npm run build
+        if: success()
 
-    - name: Deploy to VPS
-      if: success() && github.event_name == 'push'
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.VPS_HOST }}
-        username: ${{ secrets.VPS_USERNAME }}
-        key: ${{ secrets.VPS_SSH_KEY }}
-        script: |
-          cd /var/www/html
-          git pull
-          npm ci
-          npm run build
-            systemctl restart nginx
-
+      - name: Deploy to VPS
+        if: success() && github.event_name == 'push'
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            cd /chemin/vers/votre/application/frontend
+            git pull
+            npm ci
+            npm run build
+            # Commandes supplémentaires pour redémarrer le service si nécessaire
+            # Par exemple: pm2 restart frontend
