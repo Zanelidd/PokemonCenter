@@ -19,7 +19,7 @@ const Pagination = ({table, pageKey = 'default'}
                 table.setPageIndex(pageNumber)
             }
         }
-    }, []);
+    }, [pageKey,table]);
 
     const pageCount = table.getPageCount();
 
