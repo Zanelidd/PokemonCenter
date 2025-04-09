@@ -2,9 +2,9 @@ name: React CI/CD
 
 on:
   push:
-    branches: [ main, master ]  # Déclenché lorsque vous poussez sur main ou master
+    branches: [ main, master ]
   pull_request:
-    branches: [ main, master ]  # Déclenché lors des PRs vers main ou master
+    branches: [ main, master ]
 
 jobs:
   build-and-deploy:
@@ -39,9 +39,8 @@ jobs:
           username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
-            cd /chemin/vers/votre/application/frontend
+            cd /var/www/html
             git pull
             npm ci
             npm run build
-            # Commandes supplémentaires pour redémarrer le service si nécessaire
-            # Par exemple: pm2 restart frontend
+            systemctl restart nginx
