@@ -1,6 +1,7 @@
-import {create} from 'zustand';
+import {create, StateCreator} from 'zustand';
 import {Card} from 'pokemon-tcg-sdk-typescript/dist/sdk';
 import {CollectionCard} from '../types/card.types';
+import {createJSONStorage, persist, PersistOptions} from "zustand/middleware";
 
 type useCollectionStore = {
     collection: Array<CollectionCard>;
@@ -8,36 +9,54 @@ type useCollectionStore = {
     deleteFromCollection: (cardId: string) => void;
     clearCollection: () => void;
     getCardById: (cardId: string) => Card | undefined;
+    setCollectionFromApi?: (apiCollection: CollectionCard[]) => void;
 
 };
 
-export const useCollection = create<useCollectionStore>((set) => {
-    return {
-        collection: [],
+type CollectionPersist = (
+    config: StateCreator<useCollectionStore>,
+    options: PersistOptions<useCollectionStore>
+) => StateCreator<useCollectionStore>;
 
-        addToCollection: (card, collectionId: number) =>
-            set((state) => {
-                if (state.collection.some((c) => c.id === card.id)) {
-                    return state;
-                }
-                return {collection: [...state.collection, {...card, collectionId}]};
+export const useCollection =
+    create<useCollectionStore>(
+        (persist as CollectionPersist)(
+            (set, get) => ({
+                collection: [],
+
+                addToCollection: (card, collectionId: number) =>
+                    set((state) => {
+                        if (state.collection.some((c) => c.id === card.id)) {
+                            return state;
+                        }
+                        return {collection: [...state.collection, {...card, collectionId}]};
+                    }),
+
+                deleteFromCollection: (cardId: string) =>
+                    set((state) => ({
+                        collection: state.collection.filter((card) => card.id !== cardId),
+                    })),
+
+                clearCollection: () => set({collection: []}),
+
+
+                getCardById: (cardId: string): Card | undefined =>
+                    get().collection.find((card: CollectionCard) => card.id === cardId),
+
+                setCollectionFromApi: (apiCollection) => set({collection: apiCollection}),
             }),
-
-        deleteFromCollection: (cardId: string) =>
-            set((state) => ({
-                collection: state.collection.filter((card) => card.id !== cardId),
-            })),
-
-        clearCollection: () => set({collection: []}),
-
-
-        getCardById: (cardId: string): Card | undefined =>
-            useCollection
-                .getState()
-                .collection.find((card: CollectionCard) => card.id === cardId),
+            {
+                name: 'collection-storage',
+                storage: createJSONStorage(() => localStorage),
+            }
+        )
+    );
 
 
-    };
-});
+
+
+
+
+
 
 
