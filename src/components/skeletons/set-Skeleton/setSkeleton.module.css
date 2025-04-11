@@ -31,3 +31,8 @@
     transform: translateY(0);
 }
 
+@media screen and (max-width: 768px) {
+    .setSkeletonCard{
+        width: 100%;
+    }
+}
