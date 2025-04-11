@@ -42,9 +42,9 @@ jobs:
           source: "build/"
           target: "/var/www/html"
 
-      - name; Restart Nginx
+      - name: Restart Nginx
         if: success() && github.event_name == 'push'
-        use: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USERNAME }}
