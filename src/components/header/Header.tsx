@@ -12,6 +12,7 @@ const Header = () => {
 
     const handleModalOpen = () => {
         toggleModal();
+        window.scrollTo({top: 0, behavior: 'smooth'});
         setOpenBurger(false)
     }
 
