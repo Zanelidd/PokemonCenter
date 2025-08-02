@@ -54,6 +54,7 @@ const AccountCollectionInfo = () => {
                     setValidationModal(!validationModal);
                 }}
             >
+
                 Delete collection
             </button>
         </div>
