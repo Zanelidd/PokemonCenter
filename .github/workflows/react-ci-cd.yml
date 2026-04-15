@@ -1,41 +1,42 @@
-name: React CI/CD
+name: Deploy Front to VPS
 
 on:
   push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
+    branches: [ main ]
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          cache: 'npm'
+          node-version: '20'
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Build Front
+        run: |
+          npm ci
+          # Assure-toi que cette commande génère bien un dossier 'dist'
+          npm run build
 
-      - name: Build project
-        run: npm run build
+      - name: Deploy Build to VPS (SCP)
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          source: "dist/*"
+          target: "/home/dede/PokemonCenter/front"
+          strip_components: 1
 
-      - name: Deploy Front to VPS
-        if: success() && github.event_name == 'push'
+      - name: Finalize (Optionnel)
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
-            cd /home/dede/PokemonCenter/front
-            git pull origin main
-            npm ci
-            npm run build
-            sudo systemctl reload nginx
+            echo "Déploiement Front terminé avec succès dans /home/dede/PokemonCenter/front"
