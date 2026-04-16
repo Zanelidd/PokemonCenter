@@ -34,12 +34,12 @@ const AccountCollectionInfo = () => {
 
 
     return <div className={style.accountInfos}>
-        <div className={style.lastCard}>
+        {  collection[collection.length - 1] && <div className={style.lastCard}>
             <h3>Last card add to the collection: </h3>
             <p onClick={() => {
                 navigate(`/card/${collection[collection.length - 1].id}`)
             }}>{collection[collection.length - 1].name}</p>
-        </div>
+        </div> }
         <div className={style.accountContainer}>
             <h3>Estimated value: </h3>
             <p>{Math.round(collectionPrice)} $</p>
