@@ -16,10 +16,10 @@ export const cardService = {
         });
       });
   },
-  addCard: async (userId: number, remoteId: string) => {
+  addCard: async (user_id: number, remoteId: string) => {
     return http(endpoints.card.path, {
       method: 'POST',
-      body: JSON.stringify({ cardId: remoteId, userId: userId }),
+      body: JSON.stringify({ cardId: remoteId, userId: user_id }),
     })
       .then((res) => res.json())
       .then((response: cardResponse) => {
