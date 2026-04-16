@@ -1,28 +1,19 @@
-import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import {QueryClientProvider} from "@tanstack/react-query";
 import "./App.css";
 import Router from "./router/Router";
 import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
 import Login from "./components/login/Login";
 import {useUser} from "./stores/UserStore";
 import {Toaster} from "sonner";
+import {queryClient} from "./api/queryClient.ts";
 
 function App() {
-    const {showModal} = useUser();
-
-    const queryClient = new QueryClient({
-        defaultOptions: {
-            queries: {
-                refetchOnWindowFocus: false,
-                retry: 1,
-            },
-        },
-    });
+    const {isModalOpen} = useUser();
 
     return (
-
         <>
             <QueryClientProvider client={queryClient}>
-                {showModal && <Login/>}
+                {isModalOpen && <Login/>}
                 <Router/>
                 <Toaster
                     theme={"system"}

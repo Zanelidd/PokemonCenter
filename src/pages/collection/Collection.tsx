@@ -5,17 +5,17 @@ import Pagination from '../../components/pagination/Pagination.tsx';
 import {getCoreRowModel, getPaginationRowModel, useReactTable} from '@tanstack/react-table';
 import SearchResults from '../../components/searchResults/SearchResults.tsx';
 import api from '../../api/api.service.ts';
-import {useUser} from '../../stores/UserStore.tsx';
 import {useMutation} from '@tanstack/react-query';
 import CardSkeleton from '../../components/skeletons/card-skeleton/CardSkeleton.tsx';
 import {showError} from '../../utils/toastUtils.ts';
 import SelectFilter from '../../components/selectFilter/SelectFilter.tsx';
 import {Card} from 'pokemon-tcg-sdk-typescript/dist/interfaces/card';
 import {Type} from 'pokemon-tcg-sdk-typescript/dist/enums/type';
+import {useMe} from "../../hook/useMe.ts";
 
 const Collection = () => {
     const {collection} = useCollection();
-    const {user} = useUser();
+    const {data: user} = useMe()
     const [filterTags, setFilterTags] = useState<Record<string, string>>({});
     const NUMBER_OF_PAGE = 20
 

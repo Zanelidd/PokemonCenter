@@ -1,6 +1,6 @@
 import endpoints from "./config/endpoints.ts";
 import http from "./client.ts";
-import {LoginResponse, RegisterResponse} from "../types/response.types.ts";
+import {LoginResponse, MeResponse, RegisterResponse} from "../types/response.types.ts";
 
 export const authService = {
         login: async (form: {
@@ -14,6 +14,14 @@ export const authService = {
             }).then((response) => {
                 return response.json();
             });
+        },
+        me: async (): Promise<MeResponse> => {
+            return http(endpoints.auth.subroutes.me, {
+                method: "GET",
+            })
+                .then((response) => {
+                    return response.json();
+                })
         },
 
         register: async (form: {
@@ -51,7 +59,7 @@ export const authService = {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({email:email})
+                body: JSON.stringify({email: email})
             }
 
             return http(endpoints.auth.subroutes.forget, config).then((response) => {

@@ -20,7 +20,7 @@ export const errorHandlerInterceptor: ResponseInterceptor = async (
         });
 
         if (response.status === 401) {
-            useUser.getState().logout();
+            useUser.getState().actions.setLogout();
         }
 
         let errorData;

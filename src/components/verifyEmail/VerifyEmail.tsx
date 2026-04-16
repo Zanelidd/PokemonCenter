@@ -1,51 +1,52 @@
 import {useEffect} from 'react';
 import {useNavigate, useSearchParams} from 'react-router-dom';
-import {useMutation} from '@tanstack/react-query';
+import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {authService} from '../../api/auth.service.ts';
 import styles from './verify-email.module.css';
-import {ApiError} from '../../types/response.types.ts';
-import {useUser} from '../../stores/UserStore.tsx';
-import {showError, showInfo, showSuccess} from '../../utils/toastUtils';
+import {showError, showInfo, showLoading, updateLoadingToast} from '../../utils/toastUtils';
+import {UserTypes} from "../../types/user.types.ts";
+import {MutationErrorContext} from "../../types/error.types.ts";
+import {useAuthActions} from "../../stores/UserStore.tsx";
+import {handleMutationError} from "../../utils/mutationUtils.ts";
 
 export default function VerifyEmail() {
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
     const token = searchParams.get("token");
-    const {setUser} = useUser();
+    const {setLogin} = useAuthActions()
+    const queryClient = useQueryClient()
 
-    const verifyMutation = useMutation({
-        mutationFn: async (token: string) => {
-            try {
-                return await authService.verifyEmail(token);
-            } catch (error) {
-                const apiError = error as ApiError;
-                throw new Error(
-                    apiError.response?.data?.message ||
-                    apiError.message ||
-                    "Failed to verify email"
-                );
+    const verifyMutation = useMutation<{ user: UserTypes; loadingId: string }, MutationErrorContext, string>({
+                mutationFn: async (token: string) => {
+                    const loadingId = showLoading("Verification in process ...")
+                    try {
+                        const result = await authService.verifyEmail(token);
+                        return {user: result, loadingId}
+                    } catch (error) {
+                        throw {error, loadingId} as MutationErrorContext
+                    }
+                },
+                onSuccess: ({user, loadingId}) => {
+                    setLogin(user.access_token);
+                    queryClient.setQueryData(['me'], user);
+
+                    updateLoadingToast(
+                        loadingId,
+                        "success",
+                        "Email verified successfully!",
+                        "You will be redirected to the home page"
+                    );
+                    setTimeout(() => {
+                        return navigate("/home");
+                    }, 3500);
+                },
+
+                onError: (context) => handleMutationError(context, "Email verification failed")
+
             }
-        },
-        onSuccess: (data) => {
-            setUser(data);
-            localStorage.setItem("token", data.access_token);
-            localStorage.setItem("userId", data.userId.toString());
-            localStorage.setItem("username", data.username);
+        )
+    ;
 
-            showSuccess(
-                "Email verified successfully!",
-                "You will be redirected to the home page"
-            );
-        },
-
-        onError: (error: Error) => {
-            console.error("Verification error:", error);
-            showError("Email verification failed", error.message);
-        },
-    });
-    setTimeout(() => {
-        return navigate("/home");
-    }, 3500);
 
     useEffect(() => {
         if (!token) {
@@ -100,7 +101,7 @@ export default function VerifyEmail() {
                 {verifyMutation.isError && (
                     <>
                         <div className={styles.verifyError}>
-                            {verifyMutation.error.message}
+                            {verifyMutation.error.error.message}
                         </div>
                         <button
                             className={styles.verifyButton}

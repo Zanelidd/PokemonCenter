@@ -5,10 +5,10 @@ import {useMutation, useQuery} from "@tanstack/react-query";
 import loadingGif from "/ピカチュウ-pokeball.gif";
 import {useState} from "react";
 import type {Attack, Card} from "pokemon-tcg-sdk-typescript/dist/sdk";
-import {useUser} from "../../stores/UserStore.tsx";
 import api from "../../api/api.service.ts";
 import {cardResponse, CollectionCard} from "../../types/card.types.ts";
 import {showError, showSuccess} from "../../utils/toastUtils.ts";
+import {useMe} from "../../hook/useMe.ts";
 
 const Card = () => {
     const navigate = useNavigate();
@@ -21,7 +21,8 @@ const Card = () => {
     const isInCollection = collection.find((test) => test.id == params.cardId);
 
     const twentyFourHoursInMs = 1000 * 60 * 60 * 24;
-    const {user} = useUser();
+
+    const {data: user} = useMe();
 
     const mutation = useMutation({
         mutationFn: async (data: Card) => {

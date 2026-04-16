@@ -1,54 +1,37 @@
 import {create} from 'zustand';
-import {UserTypes} from '../types/user.types.ts';
-import {persist} from 'zustand/middleware';
-import {useCollection} from './CollectionStore';
+import {queryClient} from "../api/queryClient.ts";
 
 interface UserState {
-    user: UserTypes | null;
-    getUser: () => UserTypes | null;
+    accessToken: string | null;
     isAuthenticated: boolean;
-    setUser: (user: UserTypes | null) => void;
-    login: (username: string, token: string, userId: number) => void;
-    logout: () => void;
-    showModal: boolean;
-    toggleModal: () => void;
+    isModalOpen: boolean;
+    actions: {
+        setLogin: (token: string) => void;
+        setLogout: () => void;
+        toggleModal: () => void;
+    }
 }
 
-export const useUser = create<UserState>()(
-    persist(
-        (set, get) => ({
-            user: null,
-            isAuthenticated: false,
-            showModal: false,
-
-            setUser: (user) =>
-                set({
-                    user,
-                    isAuthenticated: !!user,
-                }),
-            getUser: () => {
-                return get().user;
+export const useUser = create<UserState>((set) => (
+    {
+        accessToken: null,
+        isModalOpen: false,
+        isAuthenticated: false,
+        actions: {
+            setLogin: (token) => {
+                localStorage.setItem('token', token);
+                set({accessToken: token, isAuthenticated: true});
             },
-            login: (username: string, access_token: string, userId: number) =>
-                set({
-                    user: {username, access_token, userId},
-                    isAuthenticated: true,
-                }),
-            logout: () => {
-                set({
-                    user: null,
-                    isAuthenticated: false,
-                });
-                useCollection.getState().clearCollection();
+            setLogout: () => {
+                localStorage.removeItem('token');
+                queryClient.removeQueries({ queryKey: ['me'] })
+                set({accessToken: null, isAuthenticated: false});
             },
-
-            toggleModal: () =>
-                set((state) => ({
-                    showModal: !state.showModal,
-                })),
-        }),
-        {
-            name: "user-storage",
+            toggleModal: () => {
+                set((state) => ({isModalOpen: !state.isModalOpen}))
+            },
         }
-    )
-);
+    }))
+
+export const useAccessToken = () => useUser((s) => s.accessToken);
+export const useAuthActions = () => useUser((s) => s.actions)

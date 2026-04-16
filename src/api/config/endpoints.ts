@@ -3,6 +3,7 @@ const endpoints = {
     path: `/users`,
     subroutes: {
       login: `/users/signIn`,
+        me: `/users/me`,
       register: `/users/signUp`,
       verify: `/users/verify`,
       forget: `/users/findForModifyPassword`,

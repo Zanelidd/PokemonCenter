@@ -3,3 +3,9 @@ export type UserTypes = {
     access_token: string;
     userId: number;
 };
+
+export type LogingCredentials = {
+    username :string,
+    email : string,
+    password:string,
+}
