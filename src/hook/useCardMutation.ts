@@ -4,12 +4,12 @@ import {cardResponse, CollectionCard} from "../types/card.types.ts";
 import Card from "../components/card/Card.tsx";
 import api from "../api/api.service.ts";
 import {useCollection} from "../stores/CollectionStore.tsx";
-import {useUser} from "../stores/UserStore.tsx";
+import {useMe} from "./useMe.ts";
 
 export function useCardOperations() {
 
     const {addToCollection, deleteFromCollection, getCardById} = useCollection()
-    const {user} = useUser()
+    const {data: user} = useMe();
 
     const addCardMutation = useMutation({
         mutationFn: async (data: Card) => {

@@ -1,4 +1,3 @@
-import {useUser} from '../../stores/UserStore';
 import style from './account.module.css';
 import {useMutation} from '@tanstack/react-query';
 import {FormEvent, useState} from 'react';
@@ -6,9 +5,10 @@ import VerifPassword from '../../services/validationPassword.ts';
 import api from '../../api/api.service.ts';
 import {showError, showSuccess, showWarning} from '../../utils/toastUtils.ts';
 import AccountCollectionInfo from "../../components/accountcollectioninfo/AccountCollectionInfo.tsx";
+import {useMe} from "../../hook/useMe.ts";
 
 const Account = () => {
-    const {user} = useUser();
+    const {data: user} = useMe();
     const [confirmPassword, setConfirmPassword] = useState<string>('');
     const [formData, setFormData] = useState({
         password: '',

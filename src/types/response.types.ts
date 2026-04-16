@@ -4,6 +4,16 @@ export interface LoginResponse {
     username: string;
 }
 
+export type MeResponse = {
+    access_token: string;
+    userId: number;
+    username: string;
+}
+
+export interface ForgetPasswordResponse {
+    email: string;
+}
+
 export interface RegisterResponse {
     message: string;
 }

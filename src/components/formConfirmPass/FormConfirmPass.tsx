@@ -4,11 +4,11 @@ import VerifPassword from "../../services/validationPassword.ts";
 import {showError, showSuccess, showWarning} from "../../utils/toastUtils.ts";
 import {useMutation} from "@tanstack/react-query";
 import api from "../../api/api.service.ts";
-import {useUser} from "../../stores/UserStore.tsx";
 import {useNavigate} from "react-router-dom";
+import {useMe} from "../../hook/useMe.ts";
 
 const FormConfirmPass = () => {
-    const {user} = useUser();
+    const {data: user} = useMe();
     const navigate = useNavigate()
     const [confirmPassword, setConfirmPassword] = useState<string>('');
     const [formData, setFormData] = useState({
