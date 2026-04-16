@@ -16,6 +16,7 @@ import {useMe} from "../../hook/useMe.ts";
 const Collection = () => {
     const {collection} = useCollection();
     const {data: user} = useMe()
+
     const [filterTags, setFilterTags] = useState<Record<string, string>>({});
     const NUMBER_OF_PAGE = 20
 
