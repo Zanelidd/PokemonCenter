@@ -112,7 +112,7 @@ PokemonCenter/
 
 ## 👤 Author
 
-**Zanelidd** — [@Zanelidd](https://github.com/Zanelidd)
+**Damien Arnaud** — [@Zanelidd](https://github.com/Zanelidd)
 
 ---
 
