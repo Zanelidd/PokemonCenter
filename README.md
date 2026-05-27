@@ -7,7 +7,6 @@
 ## 📖 Description
 
 **PokemonCenter** is a Pokémon card collection management tool. It lets you browse, search and organize your cards using the official Pokémon TCG API.
-It works with [Backend-center](https://github.com/Zanelidd/Backend-Center)
 
 This project also served as a playground to experiment with **Zustand** (state management) and **TanStack Query** (server state management).
 
@@ -32,7 +31,15 @@ This project also served as a playground to experiment with **Zustand** (state m
 ## 📦 Prerequisites
 
 - **Node.js** >= 18
-- A local [backend](https://github.com/Zanelidd/Backend-Center) running on `http://localhost:3000` (default config)
+- A local backend running on `http://localhost:3000` (default config)
+
+---
+
+## 🔗 Related Projects
+
+This is the **frontend** of the PokemonCenter application. You'll also need the **backend** to run locally:
+
+👉 **[Backend Center](https://github.com/Zanelidd/Backend-Center)** — NestJS API server
 
 ---
 
@@ -105,7 +112,7 @@ PokemonCenter/
 
 ## 👤 Author
 
-**Damien Arnaud** — [@Zanelidd](https://github.com/Zanelidd)
+**Zanelidd** — [@Zanelidd](https://github.com/Zanelidd)
 
 ---
 
