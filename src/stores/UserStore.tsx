@@ -1,5 +1,6 @@
 import {create} from 'zustand';
 import {queryClient} from "../api/queryClient.ts";
+import {useCollection} from "./CollectionStore.tsx";
 
 interface UserState {
     accessToken: string | null;
@@ -14,9 +15,9 @@ interface UserState {
 
 export const useUser = create<UserState>((set) => (
     {
-        accessToken: null,
+        accessToken: localStorage.getItem('token'),
         isModalOpen: false,
-        isAuthenticated: false,
+        isAuthenticated: !!localStorage.getItem('token'),
         actions: {
             setLogin: (token) => {
                 localStorage.setItem('token', token);
@@ -24,7 +25,8 @@ export const useUser = create<UserState>((set) => (
             },
             setLogout: () => {
                 localStorage.removeItem('token');
-                queryClient.removeQueries({ queryKey: ['me'] })
+                queryClient.removeQueries({ queryKey: ['me'] });
+                useCollection.getState().clearCollection();
                 set({accessToken: null, isAuthenticated: false});
             },
             toggleModal: () => {

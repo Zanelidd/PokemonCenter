@@ -1,4 +1,4 @@
-import { authInterceptor } from './interceptors/auth.intecerptor';
+import { authInterceptor } from './interceptors/auth.interceptor';
 import { errorHandlerInterceptor } from './interceptors/error-handler';
 import { createFetchWithInterceptors } from './interceptors/factory.interceptor';
 import { baseUrlInterceptor } from './interceptors/base-url.interceptor.ts';

@@ -10,14 +10,14 @@ export const authInterceptor: RequestInterceptor = (url, config = {}) => {
     }
 
     const user = queryClient.getQueryData<UserTypes>(['me']);
-    const token = user?.access_token
+    const token = user?.access_token ?? localStorage.getItem('token');
     return [
         url,
         {
             ...config,
             headers: {
                 ...config.headers,
-                Authorization: `Bearer ${token}`,
+                ...(token ? { Authorization: `Bearer ${token}` } : {}),
                 "Content-Type": "application/json",
             },
         },

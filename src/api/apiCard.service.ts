@@ -12,6 +12,7 @@ export const apiCardService = {
       })
       .catch((error) => {
         console.error(error);
+        throw error;
       });
   },
 

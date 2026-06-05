@@ -32,7 +32,7 @@ const PrivateRoute = ({children}: { children: ReactElement }) => {
 };
 
 Sentry.init({
-    dsn: "https://cfc368a8e9e7d12c02eef326c3be8831@o4509067101143040.ingest.de.sentry.io/4509067134304336",
+    dsn: import.meta.env.VITE_SENTRY_DSN,
     integrations: [
         Sentry.reactRouterV6BrowserTracingIntegration({
             useEffect: useEffect,
@@ -52,8 +52,8 @@ Sentry.init({
         Sentry.browserTracingIntegration(),
         Sentry.replayIntegration(),
     ],
-    sendDefaultPii: true,
-    tracesSampleRate: 1.0,
+    sendDefaultPii: false,
+    tracesSampleRate: import.meta.env.PROD ? 0.1 : 1.0,
     replaysSessionSampleRate: 0.1,
     replaysOnErrorSampleRate: 1.0,
     profilesSampleRate: 1.0,
