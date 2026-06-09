@@ -176,13 +176,13 @@ const Card = () => {
                                     </p>
                                 </div>
                             ) : null}
-                            <p tabIndex={0}
-                               className={style.numberOfCard}
-                               onClick={() => {
-                                   navigate(`/${data.set.id}`)
-                               }}>
+                            <button
+                                type="button"
+                                className={style.numberOfCard}
+                                onClick={() => navigate(`/${data.set.id}`)}
+                            >
                                 Card number: {data.number}/{data.set.total}
-                            </p>
+                            </button>
                         </div>
                     </div>
                 </div>

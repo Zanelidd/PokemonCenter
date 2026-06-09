@@ -163,19 +163,25 @@ const Login = () => {
             <div className={style.loginBack}>
                 <div className={style.loginContainer} ref={modalRef}>
                     {!forgetPassword && <>
-                        <div className={style.headContainer}>
-                            <div
+                        <div className={style.headContainer} role="tablist">
+                            <button
+                                type="button"
+                                role="tab"
+                                aria-selected={signIn}
                                 className={signIn ? style.activeTab : style.inactiveTab}
                                 onClick={() => setSignIn(true)}
                             >
                                 Sign In
-                            </div>
-                            <div
+                            </button>
+                            <button
+                                type="button"
+                                role="tab"
+                                aria-selected={!signIn}
                                 className={!signIn ? style.activeTab : style.inactiveTab}
                                 onClick={() => setSignIn(false)}
                             >
                                 Sign Up
-                            </div>
+                            </button>
                         </div>
                         <form
                             id="loginForm"
@@ -246,11 +252,11 @@ const Login = () => {
                                     : `Sign ${signIn ? "in" : "up"}`}
                             </button>
                             {signIn &&
-                                <p onClick={() => {
-                                    setForgetPassword(!forgetPassword)
-                                    setSignIn(!signIn)
+                                <button type="button" className={style.linkButton} onClick={() => {
+                                    setForgetPassword(!forgetPassword);
+                                    setSignIn(!signIn);
                                 }}>Forget password ?
-                                </p>}
+                                </button>}
                         </form>
                     </>
                     }

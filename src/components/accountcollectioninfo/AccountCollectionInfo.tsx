@@ -36,9 +36,9 @@ const AccountCollectionInfo = () => {
     return <div className={style.accountInfos}>
         {  collection[collection.length - 1] && <div className={style.lastCard}>
             <h3>Last card add to the collection: </h3>
-            <p onClick={() => {
+            <button type="button" onClick={() => {
                 navigate(`/card/${collection[collection.length - 1].id}`)
-            }}>{collection[collection.length - 1].name}</p>
+            }}>{collection[collection.length - 1].name}</button>
         </div> }
         <div className={style.accountContainer}>
             <h3>Estimated value: </h3>

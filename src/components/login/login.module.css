@@ -39,7 +39,8 @@
     border-bottom: 2px solid var(--borderColor);
 }
 
-.headContainer div {
+.headContainer button {
+    all: unset;
     flex: 1;
     text-align: center;
     padding: 10px;
@@ -50,7 +51,7 @@
     border-bottom: 2px solid transparent;
 }
 
-.headContainer div.activeTab {
+.headContainer button.activeTab {
     color: var(--color);
     border-bottom: 2px solid var(--colorBis);
 }
@@ -105,6 +106,19 @@
     display: flex;
     align-items: center;
     width: 100%;
+}
+
+.loginForm .linkButton {
+    all: unset;
+    cursor: pointer;
+    color: var(--colorBis);
+    font-size: 0.85rem;
+    text-decoration: underline;
+    width: auto;
+}
+
+.loginForm .linkButton:hover {
+    color: var(--color);
 }
 
 .passwordContainer button {

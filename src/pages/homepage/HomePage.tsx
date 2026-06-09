@@ -68,12 +68,11 @@ const HomePage = () => {
                     )
                     .map((set) => {
                         return (
-                            <div
+                            <button
                                 key={set.id}
+                                type="button"
                                 className={style.setCard}
-                                onClick={() => {
-                                    navigate(`/${set.id}`);
-                                }}
+                                onClick={() => navigate(`/${set.id}`)}
                             >
                                 <img
                                     className={style.setImg}
@@ -81,7 +80,7 @@ const HomePage = () => {
                                     alt={`Image of the set ${set.name}`}
                                 />
                                 <h3 className={style.setName}>{set.name}</h3>
-                            </div>
+                            </button>
                         );
                     })}
             </div>

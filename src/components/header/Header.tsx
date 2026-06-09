@@ -21,13 +21,19 @@ const Header = () => {
 
     return <>
         <header className={`${style.header} `}>
-            <div className={style.hamburgerContainer} onClick={() => setOpenBurger(!openBurger)}>
+            <button
+                type="button"
+                aria-label="Toggle menu"
+                aria-expanded={openBurger}
+                className={style.hamburgerContainer}
+                onClick={() => setOpenBurger(!openBurger)}
+            >
                 <div className={style.hamburger}>
                     <div className={`${style.burger} ${style.burger1} ${openBurger ? style.isOpen : ""}`}></div>
                     <div className={`${style.burger} ${style.burger2} ${openBurger ? style.isOpen : ""}`}></div>
                     <div className={`${style.burger} ${style.burger3} ${openBurger ? style.isOpen : ""}`}></div>
                 </div>
-            </div>
+            </button>
             <div className={`${openBurger ? style.headerContainerBurger : style.headerContainer}`}>
                 <nav className={`${style.linkContainer} ${openBurger ? style.navOpen : ''}`}>
                     <NavLink to="/home" onClick={() => setOpenBurger(false)}>Home</NavLink>
