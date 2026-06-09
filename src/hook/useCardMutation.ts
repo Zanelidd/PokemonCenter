@@ -1,7 +1,7 @@
 import {useMutation} from "@tanstack/react-query";
 import {showError, showSuccess} from "../utils/toastUtils.ts";
 import {cardResponse, CollectionCard} from "../types/card.types.ts";
-import Card from "../components/card/Card.tsx";
+import type {Card} from "pokemon-tcg-sdk-typescript/dist/sdk";
 import api from "../api/api.service.ts";
 import {useCollection} from "../stores/CollectionStore.tsx";
 import {useMe} from "./useMe.ts";
