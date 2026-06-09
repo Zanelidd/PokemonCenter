@@ -7,7 +7,8 @@ import SearchCard from "../searchCard/SearchCard.tsx";
 
 const Header = () => {
     const {toggleModal, setLogout} = useAuthActions();
-    const {isAuthenticated, isModalOpen} = useUser();
+    const isAuthenticated = useUser(s => s.isAuthenticated);
+    const isModalOpen = useUser(s => s.isModalOpen);
     const [openBurger, setOpenBurger] = useState(false);
 
 

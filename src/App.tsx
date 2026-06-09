@@ -8,7 +8,7 @@ import {Toaster} from "sonner";
 import {queryClient} from "./api/queryClient.ts";
 
 function App() {
-    const {isModalOpen} = useUser();
+    const isModalOpen = useUser(s => s.isModalOpen);
 
     return (
         <>
