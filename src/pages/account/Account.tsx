@@ -16,11 +16,12 @@ const Account = () => {
 
     const mutation = useMutation({
         mutationFn: async (userData: { password: string }) => {
-            user && (await api.auth.modifyPassword(userData, user?.userId));
+            if (!user) throw new Error('User not logged in');
+            return api.auth.modifyPassword(userData, user.userId);
         },
         onSuccess: () => {
             showSuccess(`Password change successfully`);
-            setFormData({...formData, password: ''});
+            setFormData(prev => ({...prev, password: ''}));
             setConfirmPassword('');
         },
         onError: (error) => {
