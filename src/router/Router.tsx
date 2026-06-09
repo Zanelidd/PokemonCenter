@@ -18,7 +18,7 @@ import ForgetPassword from "../pages/forgetpassword/ForgetPassword.tsx";
 import * as Sentry from "@sentry/react";
 
 const PrivateRoute = ({children}: { children: ReactElement }) => {
-    const {isAuthenticated} = useUser();
+    const isAuthenticated = useUser(s => s.isAuthenticated);
     if (!isAuthenticated) {
         return <Navigate to="/home" replace/>;
     }
