@@ -3,7 +3,7 @@ import style from "./card.module.css";
 import {useCollection} from "../../stores/CollectionStore";
 import {useMutation, useQuery} from "@tanstack/react-query";
 import loadingGif from "/ピカチュウ-pokeball.gif";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import type {Attack, Card} from "pokemon-tcg-sdk-typescript/dist/sdk";
 import api from "../../api/api.service.ts";
 import {cardResponse, CollectionCard} from "../../types/card.types.ts";
@@ -18,7 +18,7 @@ const Card = () => {
     const {collection, addToCollection, deleteFromCollection, getCardById} =
         useCollection();
 
-    const isInCollection = collection.find((test) => test.id == params.cardId);
+    const isInCollection = collection.find((test) => test.id === params.cardId);
 
     const twentyFourHoursInMs = 1000 * 60 * 60 * 24;
 
@@ -29,7 +29,7 @@ const Card = () => {
             if (user) {
                 return api.card.addCard(user.userId, data.id);
             }
-            throw new Error();
+            throw new Error('User not logged in');
         },
         onSuccess: (result, data: Card) => {
             addToCollection(data, result.id);
@@ -76,12 +76,14 @@ const Card = () => {
         staleTime: twentyFourHoursInMs,
     });
 
+    useEffect(() => {
+        if (error) {
+            showError(error.message);
+        }
+    }, [error]);
+
     if (isPending) {
         return <img className="loadingGif" src={loadingGif} alt="Loading Gif"/>;
-    }
-
-    if (error) {
-        showError(error.message);
     }
 
     return (
@@ -113,12 +115,12 @@ const Card = () => {
                     onMouseLeave={() => {
                         const root = document.documentElement;
 
-                        root.style.setProperty("--xAxis", `0 deg`);
-                        root.style.setProperty("--yAxis", `0 deg`);
+                        root.style.setProperty("--xAxis", `0deg`);
+                        root.style.setProperty("--yAxis", `0deg`);
                         root.style.setProperty("--o", "1");
                     }}
                 >
-                    <img className={style.cardImg} src={data.images.large} alt=""/>
+                    <img className={style.cardImg} src={data.images.large} alt={data.name}/>
                 </div>
             </div>
             <section className={style.infosContainer}>
@@ -136,9 +138,9 @@ const Card = () => {
                     <div className={style.textInfo}>
                         <div className={style.attackContainer}>
                             <p className={style.priceTitle}>Attacks</p>
-                            {data.attacks?.map((attack: Attack) => {
+                            {data.attacks?.map((attack: Attack, index: number) => {
                                 return (
-                                    <div key={attack.text} className={style.attack}>
+                                    <div key={attack.name ?? index} className={style.attack}>
                                         <div className={style.attackTitle}>
                                             <p>{attack.name}</p>
                                             <p>{attack.damage}</p>
