@@ -262,7 +262,7 @@ const Login = () => {
                     }
                     {forgetPassword &&
 
-                        < form id="loginForm"
+                        <form id="forgetPasswordForm"
                                onSubmit={handleSubmit}
                                className={style.loginForm}>
                             <label htmlFor="email">Email</label>
@@ -272,10 +272,10 @@ const Login = () => {
                                 id="email"
                                 value={formData.email}
                                 onChange={handleChange}
-                                disabled={loginMutation.isPending}
+                                disabled={forgetMutation.isPending}
                                 required
                             />
-                            <button type="submit" disabled={loginMutation.isPending}>
+                            <button type="submit" disabled={forgetMutation.isPending}>
                                 Send Email
                             </button>
                         </form>
