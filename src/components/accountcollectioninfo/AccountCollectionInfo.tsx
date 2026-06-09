@@ -15,12 +15,16 @@ const AccountCollectionInfo = () => {
         mutationFn: () => Promise.allSettled(
             collection.map((card) => api.card.deleteCard(card.id))
         ),
-        onSuccess: () => {
+        onSuccess: (results) => {
+            const failedCount = results.filter(r => r.status === 'rejected').length;
             clearCollection();
-            showSuccess('Collection deleted');
+            if (failedCount > 0) {
+                showError(`${failedCount} card(s) could not be deleted from server`);
+            } else {
+                showSuccess('Collection deleted');
+            }
             setValidationModal(false);
         },
-        onError: (error) => showError(error.message),
     });
 
     const initialPrice = 0;
