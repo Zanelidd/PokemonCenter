@@ -69,9 +69,8 @@ const Card = () => {
     const {isPending, error, data} = useQuery({
         queryKey: ["PokemonCard", `${params.cardId}`],
         queryFn: async () => {
-            if (params.cardId) {
-                return await api.apiCard.getCardById(params.cardId);
-            }
+            if (!params.cardId) throw new Error('No card ID');
+            return api.apiCard.getCardById(params.cardId);
         },
         staleTime: twentyFourHoursInMs,
     });
@@ -85,6 +84,8 @@ const Card = () => {
     if (isPending) {
         return <img className="loadingGif" src={loadingGif} alt="Loading Gif"/>;
     }
+
+    if (!data) return null;
 
     return (
         <div className={style.cardInfoContainer}>
