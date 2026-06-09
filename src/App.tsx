@@ -26,7 +26,7 @@ function App() {
                         duration: 5000,
                     }}
                 />
-                <ReactQueryDevtools initialIsOpen={false}/>
+                {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false}/>}
             </QueryClientProvider>
         </>
     );
