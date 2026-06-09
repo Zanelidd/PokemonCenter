@@ -37,9 +37,7 @@ const Account = () => {
             ifPasswordValid.forEach((error) => showWarning(error));
             return;
         }
-        if (ifPasswordValid.length === 0) {
-            mutation.mutate(formData);
-        }
+        mutation.mutate(formData);
     };
 
     return (
@@ -78,7 +76,7 @@ const Account = () => {
                                     setConfirmPassword(e.target.value);
                                 }}
                             />
-                            <button type="submit">Update Password</button>
+                            <button type="submit" disabled={mutation.isPending}>Update Password</button>
                         </form>
                     </div>
                 </div>
