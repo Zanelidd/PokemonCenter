@@ -1,6 +1,6 @@
 import {useCollection} from '../../stores/CollectionStore';
 import style from '../../components/setCards/setCards.module.css';
-import {useEffect, useState} from 'react';
+import {useEffect, useMemo, useRef, useState} from 'react';
 import Pagination from '../../components/pagination/Pagination.tsx';
 import {getCoreRowModel, getPaginationRowModel, useReactTable} from '@tanstack/react-table';
 import SearchResults from '../../components/searchResults/SearchResults.tsx';
@@ -20,12 +20,14 @@ const Collection = () => {
     const [filterTags, setFilterTags] = useState<Record<string, string>>({});
     const NUMBER_OF_PAGE = 20;
 
-    const filteredData = collection.filter((card: Card) => {
-        if (filterTags) {
-            return Object.entries(filterTags).every(([category, value]) => {
+    const filteredData = useMemo(() => {
+        const entries = Object.entries(filterTags);
+        if (entries.length === 0) return collection;
+        return collection.filter((card: Card) =>
+            entries.every(([category, value]) => {
                 switch (category) {
                     case 'set':
-                        return Array.isArray(card.set.name) ? card.set.name.includes(value) : card.set.name === value;
+                        return card.set.name === value;
                     case 'types':
                         return card.types?.includes(value as Type);
                     case 'rarity':
@@ -33,9 +35,9 @@ const Collection = () => {
                     default:
                         return false;
                 }
-            });
-        }
-    });
+            })
+        );
+    }, [collection, filterTags]);
 
     const [pagination, setPagination] = useState({
         pageIndex: 0,
@@ -53,11 +55,13 @@ const Collection = () => {
         if (error) showError(error.message);
     }, [error]);
 
+    const initialized = useRef(false);
     useEffect(() => {
-        if (apiCards && collection.length === 0) {
-            setCollectionFromApi?.(apiCards);
+        if (apiCards && !initialized.current) {
+            setCollectionFromApi(apiCards);
+            initialized.current = true;
         }
-    }, [apiCards, collection.length, setCollectionFromApi]);
+    }, [apiCards, setCollectionFromApi]);
 
     const table = useReactTable({
         columns: [],
