@@ -192,8 +192,16 @@
     width: 100%;
 }
 
+.buttonContainer {
+    margin-top: 1.5rem;
+}
+
 .numberOfCard {
+    all: unset;
     cursor: pointer;
+    color: inherit;
+    font-size: inherit;
+    font-family: inherit;
 }
 
 body .numberOfCard:hover {
