@@ -1,7 +1,7 @@
 import {Table} from '@tanstack/react-table';
 import type {Set} from 'pokemon-tcg-sdk-typescript/dist/sdk';
 import {CollectionCard} from '../../types/card.types';
-import {useEffect} from 'react';
+import {useEffect, useRef} from 'react';
 
 const Pagination = ({table, pageKey = 'default'}
                     :
@@ -11,15 +11,18 @@ const Pagination = ({table, pageKey = 'default'}
                     }
 ) => {
 
+    const restored = useRef(false);
     useEffect(() => {
+        if (restored.current) return;
         const savedPage = localStorage.getItem(`tablePage_${pageKey}`);
         if (savedPage !== null) {
-            const pageNumber = parseInt((savedPage), 10);
+            const pageNumber = parseInt(savedPage, 10);
             if (pageNumber >= 0) {
-                table.setPageIndex(pageNumber)
+                table.setPageIndex(pageNumber);
             }
         }
-    }, [pageKey,table]);
+        restored.current = true;
+    }, [pageKey, table]);
 
     const pageCount = table.getPageCount();
 
