@@ -27,7 +27,7 @@ const Card = () => {
     const mutation = useMutation({
         mutationFn: async (data: Card) => {
             if (user) {
-                return api.card.addCard(user.userId, data.id);
+                return api.card.addCard(data.id);
             }
             throw new Error('User not logged in');
         },

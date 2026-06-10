@@ -9,7 +9,7 @@ type useCollectionStore = {
     deleteFromCollection: (cardId: string) => void;
     clearCollection: () => void;
     getCardById: (cardId: string) => Card | undefined;
-    setCollectionFromApi?: (apiCollection: CollectionCard[]) => void;
+    setCollectionFromApi: (apiCollection: CollectionCard[]) => void;
 
 };
 

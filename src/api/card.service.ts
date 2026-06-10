@@ -7,10 +7,10 @@ export const cardService = {
     const res = await http(`${endpoints.card.path}/${userId}`, { method: 'GET' });
     return res.json();
   },
-  addCard: async (user_id: number, remoteId: string) => {
+  addCard: async (remoteId: string) => {
     return http(endpoints.card.path, {
       method: 'POST',
-      body: JSON.stringify({ cardId: remoteId, userId: user_id }),
+      body: JSON.stringify({ cardId: remoteId }),
     })
       .then((res) => res.json())
       .then((response: cardResponse) => {
