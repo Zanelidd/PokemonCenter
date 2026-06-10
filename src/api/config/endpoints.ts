@@ -7,7 +7,8 @@ const endpoints = {
       register: `/users/signUp`,
       verify: `/users/verify`,
       forget: `/users/findForModifyPassword`,
-      verifyTokenModifyPassword : '/users/verifyTokenModifyPassword'
+      verifyTokenModifyPassword : '/users/verifyTokenModifyPassword',
+      logout: '/users/logout',
 
     },
   },

@@ -1,7 +1,7 @@
 export type UserTypes = {
     username: string;
-    access_token: string;
     userId: number;
+    email?: string;
 };
 
 export type LogingCredentials = {

@@ -1,13 +1,16 @@
 import {NavLink} from 'react-router-dom';
 import style from './header.module.css';
 import {useAuthActions, useUser} from '../../stores/UserStore';
-
 import {useState} from "react";
 import SearchCard from "../searchCard/SearchCard.tsx";
+import {useMe} from "../../hook/useMe.ts";
+import {authService} from "../../api/auth.service.ts";
+import {queryClient} from "../../api/queryClient.ts";
 
 const Header = () => {
     const {toggleModal, setLogout} = useAuthActions();
-    const isAuthenticated = useUser(s => s.isAuthenticated);
+    const {data: user} = useMe();
+    const isAuthenticated = !!user;
     const isModalOpen = useUser(s => s.isModalOpen);
     const [openBurger, setOpenBurger] = useState(false);
 
@@ -18,6 +21,14 @@ const Header = () => {
         setOpenBurger(false)
     }
 
+    const handleLogout = async () => {
+        try {
+            await authService.logout();
+        } catch {}
+        queryClient.invalidateQueries({queryKey: ['me']});
+        setLogout();
+        setOpenBurger(false);
+    };
 
     return <>
         <header className={`${style.header} `}>
@@ -45,12 +56,7 @@ const Header = () => {
                     {isAuthenticated &&
                         <NavLink to="user/account" onClick={() => setOpenBurger(false)}>Account</NavLink>}
                     {isAuthenticated ? (
-                        <button
-                            onClick={() => {
-                                setLogout();
-                                setOpenBurger(false)
-                            }}
-                        >
+                        <button onClick={handleLogout}>
                             Logout
                         </button>
                     ) : (

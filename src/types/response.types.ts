@@ -1,11 +1,10 @@
 export interface LoginResponse {
-    access_token: string;
     userId: number;
     username: string;
+    email: string;
 }
 
 export type MeResponse = {
-    access_token: string;
     userId: number;
     username: string;
 }

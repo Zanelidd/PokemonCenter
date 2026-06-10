@@ -10,19 +10,17 @@ import NavLayout from '../layouts/NavLayout';
 import Collection from '../pages/collection/Collection';
 import Results from '../pages/results/Results';
 import Account from '../pages/account/Account';
-import {useUser} from '../stores/UserStore';
 import {ReactElement} from 'react';
 import Login from '../components/login/Login';
 import VerifyEmail from '../components/verifyEmail/VerifyEmail.tsx';
 import ForgetPassword from "../pages/forgetpassword/ForgetPassword.tsx";
 import * as Sentry from "@sentry/react";
+import {useMe} from "../hook/useMe.ts";
 
 const PrivateRoute = ({children}: { children: ReactElement }) => {
-    const isAuthenticated = useUser(s => s.isAuthenticated);
-    if (!isAuthenticated) {
-        return <Navigate to="/home" replace/>;
-    }
-
+    const {data: user, isLoading} = useMe();
+    if (isLoading) return null;
+    if (!user) return <Navigate to="/home" replace/>;
     return children;
 };
 

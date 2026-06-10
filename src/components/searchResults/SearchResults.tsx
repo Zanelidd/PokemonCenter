@@ -2,7 +2,7 @@ import {Card} from 'pokemon-tcg-sdk-typescript/dist/sdk';
 import style from '../setCards/setCards.module.css';
 import {useNavigate} from 'react-router-dom';
 import {useCollection} from "../../stores/CollectionStore.tsx";
-import {useUser} from "../../stores/UserStore.tsx";
+import {useMe} from "../../hook/useMe.ts";
 import {useCardOperations} from "../../hook/useCardMutation.ts";
 
 type SearchResultsProps = {
@@ -12,9 +12,8 @@ type SearchResultsProps = {
 const SearchResults = ({data}: SearchResultsProps) => {
     const navigate = useNavigate();
 
-
     const {collection} = useCollection();
-    const {isAuthenticated} = useUser()
+    const {data: user} = useMe();
     const {
         handleAddCollection,
         handleDeleteCollection,
@@ -33,7 +32,7 @@ const SearchResults = ({data}: SearchResultsProps) => {
                     src={data.images.small}
                     alt={`image of ${data.name}`}
                 />
-                {isAuthenticated ?
+                {user ?
                     isInCollection ?
                         <button className={style.buttonAddCardToCollection}
                                 onClick={() => {

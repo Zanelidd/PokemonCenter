@@ -29,7 +29,7 @@ export function createFetchWithInterceptors(): CustomFetch {
       }
     }
 
-    const response = await fetch(resource, configuration);
+    const response = await fetch(resource, { ...configuration, credentials: 'include' });
     let processedResponse = response.clone();
 
     // Application des interceptors de réponse

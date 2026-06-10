@@ -23,6 +23,12 @@ export const authService = {
                 })
         },
 
+        logout: async (): Promise<void> => {
+            await http(endpoints.auth.subroutes.logout, {
+                method: "POST",
+            });
+        },
+
         register: async (form: {
             username: string;
             password: string;
