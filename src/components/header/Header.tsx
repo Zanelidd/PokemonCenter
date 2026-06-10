@@ -25,7 +25,7 @@ const Header = () => {
         try {
             await authService.logout();
         } catch {}
-        queryClient.invalidateQueries({queryKey: ['me']});
+        queryClient.setQueryData(['me'], undefined);
         setLogout();
         setOpenBurger(false);
     };
