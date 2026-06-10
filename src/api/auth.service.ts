@@ -6,7 +6,6 @@ export const authService = {
         login: async (form: {
             username: string;
             password: string;
-            email: string;
         }): Promise<LoginResponse> => {
             return http(endpoints.auth.subroutes.login, {
                 method: "POST",

@@ -5,7 +5,7 @@ import style from './login.module.css';
 import VerifPassword from '../../services/validationPassword.ts';
 import api from '../../api/api.service.ts';
 import {showLoading, showWarning, updateLoadingToast} from '../../utils/toastUtils.ts';
-import {LogingCredentials, UserTypes} from "../../types/user.types.ts";
+import {LogingCredentials, RegisterCredentials, UserTypes} from "../../types/user.types.ts";
 import {handleMutationError} from "../../utils/mutationUtils.ts";
 import {MutationErrorContext} from "../../types/error.types.ts";
 import {ForgetPasswordResponse, RegisterResponse} from "../../types/response.types.ts";
@@ -52,7 +52,7 @@ const Login = () => {
 
         const registerMutation = useMutation<{
             result: RegisterResponse, loadingId: string
-        }, MutationErrorContext, LogingCredentials>({
+        }, MutationErrorContext, RegisterCredentials>({
             mutationFn: async (data) => {
                 const loadingId = showLoading("Creating account...");
                 try {
@@ -99,7 +99,7 @@ const Login = () => {
                 if (!formData.username || !formData.password) {
                     return showWarning("Please fill in all fields");
                 }
-                loginMutation.mutate(formData);
+                loginMutation.mutate({ username: formData.username, password: formData.password });
             } else if (!signIn && !forgetPassword) {
                 if (
                     !formData.username ||

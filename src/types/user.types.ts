@@ -5,7 +5,12 @@ export type UserTypes = {
 };
 
 export type LogingCredentials = {
-    username :string,
-    email : string,
-    password:string,
+    username: string,
+    password: string,
+}
+
+export type RegisterCredentials = {
+    username: string,
+    email: string,
+    password: string,
 }
