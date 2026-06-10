@@ -100,5 +100,15 @@ export const authService = {
                     return response.json();
                 });
             },
+
+        resetPassword: async (
+            token: string,
+            password: string
+        ): Promise<{ message: string }> => {
+            return http(endpoints.auth.subroutes.resetPassword, {
+                method: "POST",
+                body: JSON.stringify({token, password}),
+            }).then((response) => response.json());
+        },
     }
 ;

@@ -1,33 +1,38 @@
 import style from "../../pages/account/account.module.css";
 import {FormEvent, useState} from "react";
 import VerifPassword from "../../services/validationPassword.ts";
-import {showError, showSuccess, showWarning} from "../../utils/toastUtils.ts";
+import {showWarning} from "../../utils/toastUtils.ts";
 import {useMutation} from "@tanstack/react-query";
-import api from "../../api/api.service.ts";
+import {authService} from "../../api/auth.service.ts";
 import {useNavigate} from "react-router-dom";
-import {useMe} from "../../hook/useMe.ts";
+import {MutationErrorContext} from "../../types/error.types.ts";
+import {handleMutationError} from "../../utils/mutationUtils.ts";
+import {showLoading, updateLoadingToast} from "../../utils/toastUtils.ts";
 
-const FormConfirmPass = () => {
-    const {data: user} = useMe();
+const FormConfirmPass = ({token}: { token: string }) => {
     const navigate = useNavigate()
     const [confirmPassword, setConfirmPassword] = useState<string>('');
     const [formData, setFormData] = useState({
         password: '',
     });
 
-    const mutation = useMutation({
-        mutationFn: async (userData: { password: string }) => {
-            user && (await api.auth.modifyPassword(userData, user?.userId));
+    const mutation = useMutation<{ loadingId: string }, MutationErrorContext, { password: string }>({
+        mutationFn: async (userData) => {
+            const loadingId = showLoading("Updating password...");
+            try {
+                await authService.resetPassword(token, userData.password);
+                return {loadingId};
+            } catch (error) {
+                throw {error, loadingId} as MutationErrorContext;
+            }
         },
-        onSuccess: () => {
-            showSuccess(`Password change successfully`);
-            setFormData({...formData, password: ''});
+        onSuccess: ({loadingId}) => {
+            updateLoadingToast(loadingId, "success", "Password updated!", "You can now sign in");
+            setFormData({password: ''});
             setConfirmPassword('');
-            navigate("/home")
+            navigate("/home");
         },
-        onError: (error) => {
-            showError(error.message);
-        },
+        onError: (context) => handleMutationError(context, "Password update failed"),
     });
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {

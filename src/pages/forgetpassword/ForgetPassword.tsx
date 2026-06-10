@@ -1,22 +1,35 @@
 import FormConfirmPass from "../../components/formConfirmPass/FormConfirmPass.tsx";
 import {useNavigate, useSearchParams} from "react-router-dom";
-import {showError, showInfo} from "../../utils/toastUtils.ts";
-import {useEffect, useRef} from "react";
+import {showError, showInfo, showLoading, updateLoadingToast} from "../../utils/toastUtils.ts";
+import {useEffect, useRef, useState} from "react";
 import {useMutation} from "@tanstack/react-query";
 import {authService} from "../../api/auth.service.ts";
 import styles from "../../components/verifyEmail/verify-email.module.css";
+import {MutationErrorContext} from "../../types/error.types.ts";
+import {handleMutationError} from "../../utils/mutationUtils.ts";
 
 const ForgetPassword = () => {
     const [searchParams] = useSearchParams();
     const token = searchParams.get("token");
     const navigate = useNavigate();
     const called = useRef(false);
+    const [tokenVerified, setTokenVerified] = useState(false);
 
-    const verifyToken = useMutation({
-        mutationFn: (t: string) => authService.verifyTokenModifyPassword(t),
-        onError: (error) => {
-            showError(error.message);
+    const verifyToken = useMutation<{ loadingId: string }, MutationErrorContext, string>({
+        mutationFn: async (t: string) => {
+            const loadingId = showLoading("Verifying reset link...");
+            try {
+                await authService.verifyTokenModifyPassword(t);
+                return {loadingId};
+            } catch (error) {
+                throw {error, loadingId} as MutationErrorContext;
+            }
         },
+        onSuccess: ({loadingId}) => {
+            setTokenVerified(true);
+            updateLoadingToast(loadingId, "success", "Link verified!", "You can now change your password");
+        },
+        onError: (context) => handleMutationError(context, "Verification failed"),
     });
 
     useEffect(() => {
@@ -49,7 +62,7 @@ const ForgetPassword = () => {
         <>
             <h2>Change your password</h2>
 
-            {verifyToken.isPending && (
+            {!tokenVerified && verifyToken.isPending && (
                 <div className={styles.verifyContainer}>
                     <div className={styles.verifyCard}>
                         <div className={styles.verifySpinner}/>
@@ -58,7 +71,7 @@ const ForgetPassword = () => {
                 </div>
             )}
 
-            {verifyToken.isError && (
+            {!tokenVerified && verifyToken.isError && (
                 <div className={styles.verifyContainer}>
                     <div className={styles.verifyCard}>
                         <h1 className={styles.verifyTitle}>Verification Error</h1>
@@ -70,7 +83,7 @@ const ForgetPassword = () => {
                 </div>
             )}
 
-            {verifyToken.isSuccess && <FormConfirmPass/>}
+            {tokenVerified && <FormConfirmPass token={token}/>}
         </>
     );
 };

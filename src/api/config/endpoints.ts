@@ -9,6 +9,7 @@ const endpoints = {
       forget: `/users/findForModifyPassword`,
       verifyTokenModifyPassword : '/users/verifyTokenModifyPassword',
       logout: '/users/logout',
+      resetPassword: '/users/resetPassword',
 
     },
   },
