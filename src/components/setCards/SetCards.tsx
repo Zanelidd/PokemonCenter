@@ -9,7 +9,7 @@ import api from '../../api/api.service.ts';
 import CardSkeleton from '../skeletons/card-skeleton/CardSkeleton.tsx';
 import {showError} from '../../utils/toastUtils.ts';
 import {useCollection} from "../../stores/CollectionStore.tsx";
-import {useMe} from "../../hook/useMe.ts";
+import {useUser} from "../../stores/UserStore.tsx";
 import {useCardOperations} from '../../hook/useCardMutation.ts';
 
 const SetCards = () => {
@@ -29,7 +29,7 @@ const SetCards = () => {
         staleTime: twentyFourHoursInMs,
     });
     const {collection} = useCollection();
-    const {data: user} = useMe();
+    const isAuthenticated = useUser(s => s.isAuthenticated);
     const {
         handleAddCollection,
         handleDeleteCollection,
@@ -82,7 +82,7 @@ const SetCards = () => {
                                     src={card.images.small}
                                     alt={`image of ${card.name}`}
                                 />
-                                {user ?
+                                {isAuthenticated ?
                                     isInCollection ?
                                         <button className={style.buttonAddCardToCollection}
                                                 onClick={() => {

@@ -6,12 +6,14 @@ import styles from './verify-email.module.css';
 import {showError, showInfo, showLoading, updateLoadingToast} from '../../utils/toastUtils';
 import {UserTypes} from "../../types/user.types.ts";
 import {MutationErrorContext} from "../../types/error.types.ts";
+import {useAuthActions} from "../../stores/UserStore.tsx";
 import {handleMutationError} from "../../utils/mutationUtils.ts";
 
 export default function VerifyEmail() {
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
     const token = searchParams.get("token");
+    const {setLogin} = useAuthActions();
     const queryClient = useQueryClient()
 
     const verifyMutation = useMutation<{ user: UserTypes; loadingId: string }, MutationErrorContext, string>({
@@ -25,6 +27,7 @@ export default function VerifyEmail() {
                     }
                 },
                 onSuccess: ({user, loadingId}) => {
+                    setLogin();
                     queryClient.setQueryData(['me'], {userId: user.userId, username: user.username});
 
                     updateLoadingToast(

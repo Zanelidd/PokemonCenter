@@ -24,7 +24,7 @@ const Login = () => {
         const [showPassword, setShowPassword] = useState(false);
         const [showPasswordBis, setShowPasswordBis] = useState(false);
 
-        const {toggleModal} = useUser((s) => s.actions);
+        const {setLogin, toggleModal} = useUser((s) => s.actions);
         const queryClient = useQueryClient();
 
         const loginMutation = useMutation<{
@@ -39,6 +39,7 @@ const Login = () => {
                     throw {error: err, loadingId} as MutationErrorContext
                 }
             }, onSuccess: (data) => {
+                setLogin();
                 queryClient.setQueryData(['me'], {userId: data.result.userId, username: data.result.username})
                 queryClient.invalidateQueries({queryKey: ['collection']})
                 updateLoadingToast(data.loadingId, "success", "Welcome back! 👋", `${formData.username}`);

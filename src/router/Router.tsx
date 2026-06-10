@@ -16,11 +16,13 @@ import VerifyEmail from '../components/verifyEmail/VerifyEmail.tsx';
 import ForgetPassword from "../pages/forgetpassword/ForgetPassword.tsx";
 import * as Sentry from "@sentry/react";
 import {useMe} from "../hook/useMe.ts";
+import {useUser} from "../stores/UserStore.tsx";
 
 const PrivateRoute = ({children}: { children: ReactElement }) => {
-    const {data: user, isLoading} = useMe();
+    const {isLoading} = useMe();
+    const isAuthenticated = useUser(s => s.isAuthenticated);
     if (isLoading) return null;
-    if (!user) return <Navigate to="/home" replace/>;
+    if (!isAuthenticated) return <Navigate to="/home" replace/>;
     return children;
 };
 

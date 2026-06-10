@@ -3,31 +3,26 @@ import style from './header.module.css';
 import {useAuthActions, useUser} from '../../stores/UserStore';
 import {useState} from "react";
 import SearchCard from "../searchCard/SearchCard.tsx";
-import {useMe} from "../../hook/useMe.ts";
 import {authService} from "../../api/auth.service.ts";
 import {queryClient} from "../../api/queryClient.ts";
 
 const Header = () => {
     const {toggleModal, setLogout} = useAuthActions();
-    const {data: user} = useMe();
-    const isAuthenticated = !!user;
+    const isAuthenticated = useUser(s => s.isAuthenticated);
     const isModalOpen = useUser(s => s.isModalOpen);
     const [openBurger, setOpenBurger] = useState(false);
-
 
     const handleModalOpen = () => {
         toggleModal();
         window.scrollTo({top: 0, behavior: 'smooth'});
-        setOpenBurger(false)
-    }
+        setOpenBurger(false);
+    };
 
     const handleLogout = async () => {
-        try {
-            await authService.logout();
-        } catch {}
-        queryClient.setQueryData(['me'], undefined);
         setLogout();
+        queryClient.setQueryData(['me'], undefined);
         setOpenBurger(false);
+        authService.logout().catch(() => {});
     };
 
     return <>
