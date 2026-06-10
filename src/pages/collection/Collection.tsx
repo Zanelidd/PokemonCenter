@@ -1,6 +1,6 @@
 import {useCollection} from '../../stores/CollectionStore';
 import style from '../../components/setCards/setCards.module.css';
-import {useEffect, useMemo, useRef, useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import Pagination from '../../components/pagination/Pagination.tsx';
 import {getCoreRowModel, getPaginationRowModel, useReactTable} from '@tanstack/react-table';
 import SearchResults from '../../components/searchResults/SearchResults.tsx';
@@ -55,12 +55,8 @@ const Collection = () => {
         if (error) showError(error.message);
     }, [error]);
 
-    const initialized = useRef(false);
     useEffect(() => {
-        if (apiCards && !initialized.current) {
-            setCollectionFromApi(apiCards);
-            initialized.current = true;
-        }
+        if (apiCards) setCollectionFromApi(apiCards);
     }, [apiCards, setCollectionFromApi]);
 
     const table = useReactTable({
