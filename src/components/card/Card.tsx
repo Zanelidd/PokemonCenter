@@ -1,70 +1,28 @@
 import {useNavigate, useParams} from "react-router-dom";
 import style from "./card.module.css";
 import {useCollection} from "../../stores/CollectionStore";
-import {useMutation, useQuery} from "@tanstack/react-query";
+import {useQuery} from "@tanstack/react-query";
 import loadingGif from "/ピカチュウ-pokeball.gif";
 import {useEffect, useState} from "react";
 import type {Attack, Card} from "pokemon-tcg-sdk-typescript/dist/sdk";
 import api from "../../api/api.service.ts";
-import {cardResponse, CollectionCard} from "../../types/card.types.ts";
-import {showError, showSuccess} from "../../utils/toastUtils.ts";
+import {showError} from "../../utils/toastUtils.ts";
 import {useMe} from "../../hook/useMe.ts";
+import {useCardOperations} from "../../hook/useCardMutation.ts";
 
 const Card = () => {
     const navigate = useNavigate();
     const params = useParams();
     const cardId = params.cardId;
     const [coord, setCoord] = useState({x: 0, y: 0});
-    const {collection, addToCollection, deleteFromCollection, getCardById} =
-        useCollection();
+    const {collection} = useCollection();
+    const {handleAddCollection, handleDeleteCollection} = useCardOperations();
 
     const isInCollection = collection.find((test) => test.id === params.cardId);
 
     const twentyFourHoursInMs = 1000 * 60 * 60 * 24;
 
     const {data: user} = useMe();
-
-    const mutation = useMutation({
-        mutationFn: async (data: Card) => {
-            if (user) {
-                return api.card.addCard(data.id);
-            }
-            throw new Error('User not logged in');
-        },
-        onSuccess: (result, data: Card) => {
-            addToCollection(data, result.id);
-            showSuccess("Cards added successfully.");
-        },
-        onError: (error) => {
-            showError(error.message);
-        },
-    });
-
-    const mutationDelete = useMutation({
-        mutationFn: async (data: CollectionCard) => {
-            return api.card.deleteCard(data.id);
-        },
-        onSuccess: (data: cardResponse) => {
-            deleteFromCollection(data.remoteId);
-            showSuccess("Card delete successfully");
-        },
-        onError: (error) => {
-            showError(error.message);
-        },
-    });
-
-    const handleAddCollection = (data: Card) => {
-        mutation.mutate(data);
-    };
-
-    const handleDeleteCollection = (data: Card) => {
-        const findCard = getCardById(data.id);
-        if (findCard) {
-            mutationDelete.mutate(findCard);
-        } else {
-            showError("Card not found in collection");
-        }
-    };
 
     const {isPending, error, data} = useQuery({
         queryKey: ["PokemonCard", `${params.cardId}`],
@@ -93,7 +51,7 @@ const Card = () => {
                 <div
                     className={style.imgContainer}
                     onMouseMove={(e) => {
-                        const elRect = (e.target as HTMLDivElement).getBoundingClientRect();
+                        const elRect = e.currentTarget.getBoundingClientRect();
 
                         const root = document.documentElement;
                         const x = Math.round(e.clientX - elRect.left);
