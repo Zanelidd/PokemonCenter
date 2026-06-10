@@ -1,23 +1,25 @@
 import {RequestInterceptor} from '../../types/api.types';
-import {UserTypes} from "../../types/user.types.ts";
-import {queryClient} from "../queryClient.ts";
+import {useUser} from "../../stores/UserStore.tsx";
+import endpoints from '../config/endpoints.ts';
 
+const PUBLIC_URLS = new Set([
+    endpoints.auth.subroutes.verify,
+    endpoints.auth.subroutes.verifyTokenModifyPassword,
+]);
 
 export const authInterceptor: RequestInterceptor = (url, config = {}) => {
-
-    if (typeof url === "string" && url.includes("/users/verify")) {
+    if (typeof url === "string" && PUBLIC_URLS.has(url)) {
         return [url, config];
     }
 
-    const user = queryClient.getQueryData<UserTypes>(['me']);
-    const token = user?.access_token ?? localStorage.getItem('token');
+    const token = useUser.getState().accessToken;
     return [
         url,
         {
             ...config,
             headers: {
                 ...config.headers,
-                ...(token ? { Authorization: `Bearer ${token}` } : {}),
+                ...(token ? {Authorization: `Bearer ${token}`} : {}),
                 "Content-Type": "application/json",
             },
         },
