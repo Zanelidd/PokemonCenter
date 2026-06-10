@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import {useEffect, useRef} from 'react';
 import {useNavigate, useSearchParams} from 'react-router-dom';
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {authService} from '../../api/auth.service.ts';
@@ -48,24 +48,18 @@ export default function VerifyEmail() {
     ;
 
 
+    const called = useRef(false);
     useEffect(() => {
         if (!token) {
             showError("Verification failed", "Missing verification token");
             return;
         }
-
-        if (
-            !verifyMutation.isPending &&
-            !verifyMutation.isSuccess &&
-            !verifyMutation.isError
-        ) {
-            showInfo(
-                "Verifying email",
-                "Please wait while we verify your email address"
-            );
+        if (!called.current) {
+            called.current = true;
+            showInfo("Verifying email", "Please wait while we verify your email address");
             verifyMutation.mutate(token);
         }
-    }, [token, verifyMutation]);
+    }, [token]);
 
     if (!token) {
         return (
