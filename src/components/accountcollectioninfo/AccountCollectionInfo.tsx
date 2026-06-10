@@ -1,14 +1,27 @@
 import style from "../accountcollectioninfo/accountCollectionInfo.module.css";
 import api from "../../api/api.service.ts";
 import {showError, showSuccess} from "../../utils/toastUtils.ts";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useCollection} from "../../stores/CollectionStore.tsx";
 import {useNavigate} from "react-router-dom";
-import {useMutation} from "@tanstack/react-query";
+import {useMutation, useQuery} from "@tanstack/react-query";
+import {useMe} from "../../hook/useMe.ts";
 
 const AccountCollectionInfo = () => {
     const [validationModal, setValidationModal] = useState(false);
-    const {collection, clearCollection} = useCollection();
+    const {collection, clearCollection, setCollectionFromApi} = useCollection();
+    const {data: user} = useMe();
+
+    const {data: apiCards} = useQuery({
+        queryKey: ['collection', user?.userId],
+        queryFn: () => api.card.getCard(user!.userId),
+        enabled: !!user?.userId,
+        staleTime: 1000 * 60 * 5,
+    });
+
+    useEffect(() => {
+        if (apiCards) setCollectionFromApi(apiCards);
+    }, [apiCards, setCollectionFromApi]);
     const navigate = useNavigate();
 
     const {mutate: deleteAll, isPending} = useMutation({
