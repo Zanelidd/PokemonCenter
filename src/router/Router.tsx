@@ -33,6 +33,7 @@ const router = sentryCreateBrowserRouter([
         path: "/",
         element: <NavLayout/>,
         children: [
+            {index: true, element: <Navigate to="/home" replace/>},
             {path: "/home", element: <HomePage/>},
             {path: "/login", element: <Login/>},
             {
