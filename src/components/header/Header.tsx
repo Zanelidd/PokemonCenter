@@ -5,6 +5,7 @@ import {useState} from "react";
 import SearchCard from "../searchCard/SearchCard.tsx";
 import {authService} from "../../api/auth.service.ts";
 import {queryClient} from "../../api/queryClient.ts";
+import * as Sentry from "@sentry/react";
 
 const Header = () => {
     const {toggleModal, setLogout} = useAuthActions();
@@ -22,7 +23,7 @@ const Header = () => {
         setLogout();
         queryClient.setQueryData(['me'], undefined);
         setOpenBurger(false);
-        authService.logout().catch(() => {});
+        authService.logout().catch((e) => Sentry.captureException(e));
     };
 
     return <>
