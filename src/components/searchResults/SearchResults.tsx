@@ -19,7 +19,7 @@ const SearchResults = ({data}: SearchResultsProps) => {
         handleDeleteCollection,
     } = useCardOperations();
 
-    const isInCollection = collection.find((test) => test.id == data.id)
+    const isInCollection = collection.find((test) => test.id === data.id)
     return (
         <div className={style.cardContainer}>
             <div key={data.id} className={style.cardContainerWithButton}>

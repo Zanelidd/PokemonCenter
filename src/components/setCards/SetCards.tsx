@@ -70,7 +70,7 @@ const SetCards = () => {
                         pagination.pageSize + pagination.pageSize * pagination.pageIndex
                     )
                     .map((card: Card) => {
-                        const isInCollection = collection.find((test) => test.id == card.id)
+                        const isInCollection = collection.find((test) => test.id === card.id)
                         return (
                             <div key={card.id} className={style.cardContainerWithButton}>
                                 <img
