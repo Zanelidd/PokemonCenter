@@ -19,7 +19,7 @@ export const errorHandlerInterceptor: ResponseInterceptor = async (
             }
         });
 
-        if (response.status === 401) {
+        if (response.status === 401 && response.url.includes('/users/me')) {
             useUser.getState().actions.setLogout();
         }
 
