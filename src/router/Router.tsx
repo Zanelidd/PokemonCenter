@@ -21,7 +21,7 @@ import {useUser} from "../stores/UserStore.tsx";
 const PrivateRoute = ({children}: { children: ReactElement }) => {
     const {isLoading} = useMe();
     const isAuthenticated = useUser(s => s.isAuthenticated);
-    if (isLoading) return null;
+    if (isLoading) return <img className="loadingGif" src="/ピカチュウ-pokeball.gif" alt="Loading"/>;
     if (!isAuthenticated) return <Navigate to="/home" replace/>;
     return children;
 };
