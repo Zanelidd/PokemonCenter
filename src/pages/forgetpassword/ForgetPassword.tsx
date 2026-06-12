@@ -42,7 +42,7 @@ const ForgetPassword = () => {
             showInfo("Verifying information", "Please wait while we verify your information");
             verifyToken.mutate(token);
         }
-    }, [token]);
+    }, [token, verifyToken.mutate]);
 
     if (!token) {
         return (

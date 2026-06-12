@@ -59,7 +59,7 @@ export default function VerifyEmail() {
             showInfo("Verifying email", "Please wait while we verify your email address");
             verifyMutation.mutate(token);
         }
-    }, [token]);
+    }, [token, verifyMutation.mutate]);
 
     if (!token) {
         return (
@@ -95,7 +95,7 @@ export default function VerifyEmail() {
                 {verifyMutation.isError && (
                     <>
                         <div className={styles.verifyError}>
-                            {verifyMutation.error.error.message}
+                            {verifyMutation.error?.error?.message ?? 'Verification failed'}
                         </div>
                         <button
                             className={styles.verifyButton}
