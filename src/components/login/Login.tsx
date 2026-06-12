@@ -159,6 +159,8 @@ const Login = () => {
             };
         }, [handleClickOutside]);
 
+        const isSubmitting = loginMutation.isPending || registerMutation.isPending;
+
         return (
             <div className={style.loginBack}>
                 <div className={style.loginContainer} ref={modalRef}>
@@ -195,7 +197,7 @@ const Login = () => {
                                 id="username"
                                 value={formData.username}
                                 onChange={handleChange}
-                                disabled={loginMutation.isPending}
+                                disabled={isSubmitting}
                                 required
                             />
 
@@ -208,7 +210,7 @@ const Login = () => {
                                         id="email"
                                         value={formData.email}
                                         onChange={handleChange}
-                                        disabled={loginMutation.isPending}
+                                        disabled={isSubmitting}
                                         required
                                     />
                                 </>
@@ -220,7 +222,7 @@ const Login = () => {
                                     name="password"
                                     id="password"
                                     onChange={handleChange}
-                                    disabled={loginMutation.isPending}
+                                    disabled={isSubmitting}
                                     required
                                 />
                                 <button type="button" onClick={togglePasswordVisibility}>
@@ -246,8 +248,8 @@ const Login = () => {
                                     </div>
                                 </>
                             )}
-                            <button type="submit" disabled={loginMutation.isPending}>
-                                {loginMutation.isPending
+                            <button type="submit" disabled={isSubmitting}>
+                                {isSubmitting
                                     ? `Signing ${signIn ? "in" : "up"}...`
                                     : `Sign ${signIn ? "in" : "up"}`}
                             </button>
