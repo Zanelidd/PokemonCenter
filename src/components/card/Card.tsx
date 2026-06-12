@@ -114,24 +114,24 @@ const Card = () => {
                             <p className={style.priceTitle}>Prices</p>
                             {data?.tcgplayer?.prices?.normal ? (
                                 <div className={style.normalPrice}>
-                                    <p>Low Price: {data.tcgplayer?.prices.normal?.low} $</p>
+                                    <p>Low Price: {data.tcgplayer?.prices?.normal?.low} $</p>
                                     <p>
-                                        Average Price: {data.tcgplayer?.prices.normal?.market} $
+                                        Average Price: {data.tcgplayer?.prices?.normal?.market} $
                                     </p>
-                                    <p>High Price: {data.tcgplayer?.prices.normal?.high} $</p>
+                                    <p>High Price: {data.tcgplayer?.prices?.normal?.high} $</p>
                                 </div>
                             ) : null}
                             {data?.tcgplayer?.prices?.holofoil ? (
                                 <div className={style.hollowPrice}>
                                     <p>
-                                        Holo Low Price: {data.tcgplayer?.prices.holofoil?.low} $
+                                        Holo Low Price: {data.tcgplayer?.prices?.holofoil?.low} $
                                     </p>
                                     <p>
                                         Holo Average Price:{" "}
-                                        {data.tcgplayer?.prices.holofoil?.market} $
+                                        {data.tcgplayer?.prices?.holofoil?.market} $
                                     </p>
                                     <p>
-                                        Holo High Price: {data.tcgplayer?.prices.holofoil?.high} $
+                                        Holo High Price: {data.tcgplayer?.prices?.holofoil?.high} $
                                     </p>
                                 </div>
                             ) : null}

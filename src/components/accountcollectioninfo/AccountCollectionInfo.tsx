@@ -42,9 +42,9 @@ const AccountCollectionInfo = () => {
 
     const initialPrice = 0;
     const collectionPrice = collection.reduce((acc, currentValue) => {
-        const cardPrice = (currentValue.tcgplayer?.prices.normal?.mid)
-            || (currentValue.tcgplayer?.prices.holofoil?.mid)
-            || (currentValue.tcgplayer?.prices.reverseHolofoil?.mid)
+        const cardPrice = (currentValue.tcgplayer?.prices?.normal?.mid)
+            || (currentValue.tcgplayer?.prices?.holofoil?.mid)
+            || (currentValue.tcgplayer?.prices?.reverseHolofoil?.mid)
             || 0
         return acc + cardPrice;
     }, initialPrice)
