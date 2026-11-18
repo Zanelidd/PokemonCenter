@@ -32,7 +32,7 @@ const Results = () => {
         pageSize: NUMBER_OF_PAGE,
     });
 
-    const {isPending, error, data} = useQuery({
+    const {isPending, error, data, refetch} = useQuery({
         queryKey: ['SearchResults', `${state}`],
         staleTime: twentyFourHoursInMs,
         queryFn: async (): Promise<Array<Card>> => {
@@ -77,7 +77,7 @@ const Results = () => {
         return (
             <div className={style.errorContainer}>
                 <h2>Failed to load results</h2>
-                <button onClick={() => window.location.reload()}>Try Again</button>
+                <button onClick={() => refetch()}>Try Again</button>
             </div>
         );
     }
