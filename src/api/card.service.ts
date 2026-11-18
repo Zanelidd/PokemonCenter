@@ -1,25 +1,16 @@
 import endpoints from './config/endpoints.ts';
-import Card from '../components/card/Card.tsx';
-import { useCollection } from '../stores/CollectionStore.tsx';
 import http from './client.ts';
-import { cardResponse } from '../types/card.types.ts';
+import { cardResponse, CollectionCard } from '../types/card.types.ts';
 
 export const cardService = {
-  getCard: async (userId: number) => {
-    return http(`${endpoints.card.path}/${userId}`, {
-      method: 'GET',
-    })
-      .then((res) => res.json())
-      .then((result) => {
-        result.map((card: Card) => {
-          return  useCollection.getState().addToCollection(card, result.id);
-        });
-      });
+  getCard: async (userId: number): Promise<CollectionCard[]> => {
+    const res = await http(`${endpoints.card.path}/${userId}`, { method: 'GET' });
+    return res.json();
   },
-  addCard: async (user_id: number, remoteId: string) => {
+  addCard: async (remoteId: string) => {
     return http(endpoints.card.path, {
       method: 'POST',
-      body: JSON.stringify({ cardId: remoteId, userId: user_id }),
+      body: JSON.stringify({ cardId: remoteId }),
     })
       .then((res) => res.json())
       .then((response: cardResponse) => {
@@ -36,4 +27,3 @@ export const cardService = {
       });
   },
 };
-

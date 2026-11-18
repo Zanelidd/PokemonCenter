@@ -8,7 +8,7 @@ import {Toaster} from "sonner";
 import {queryClient} from "./api/queryClient.ts";
 
 function App() {
-    const {isModalOpen} = useUser();
+    const isModalOpen = useUser(s => s.isModalOpen);
 
     return (
         <>
@@ -26,7 +26,7 @@ function App() {
                         duration: 5000,
                     }}
                 />
-                <ReactQueryDevtools initialIsOpen={false}/>
+                {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false}/>}
             </QueryClientProvider>
         </>
     );

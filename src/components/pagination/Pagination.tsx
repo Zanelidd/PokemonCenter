@@ -1,7 +1,7 @@
 import {Table} from '@tanstack/react-table';
 import type {Set} from 'pokemon-tcg-sdk-typescript/dist/sdk';
 import {CollectionCard} from '../../types/card.types';
-import {useEffect} from 'react';
+import {useEffect, useRef} from 'react';
 
 const Pagination = ({table, pageKey = 'default'}
                     :
@@ -11,45 +11,44 @@ const Pagination = ({table, pageKey = 'default'}
                     }
 ) => {
 
+    const restored = useRef(false);
     useEffect(() => {
+        if (restored.current) return;
         const savedPage = localStorage.getItem(`tablePage_${pageKey}`);
         if (savedPage !== null) {
-            const pageNumber = parseInt((savedPage), 10);
-            if (pageNumber > 0) {
-                table.setPageIndex(pageNumber)
+            const pageNumber = parseInt(savedPage, 10);
+            if (pageNumber >= 0) {
+                table.setPageIndex(pageNumber);
             }
         }
-    }, [pageKey,table]);
+        restored.current = true;
+    }, [pageKey, table]);
 
     const pageCount = table.getPageCount();
 
-    const handleIncrementPage = (action: () => void) => {
-        action();
-
-        const newPageIndex = table.getState().pagination.pageIndex;
-        table.setPageIndex(Number(newPageIndex) + 1)
-        localStorage.setItem(`tablePage_${pageKey}`, (newPageIndex + 1).toString())
+    const handleIncrementPage = () => {
+        const newPageIndex = table.getState().pagination.pageIndex + 1;
+        table.setPageIndex(newPageIndex);
+        localStorage.setItem(`tablePage_${pageKey}`, newPageIndex.toString());
         window.scrollTo({top: 0, behavior: 'smooth'});
     }
 
-    const handleDecrementPage = (action: () => void) => {
-        action();
-
-        const newPageIndex = table.getState().pagination.pageIndex;
-        table.setPageIndex(Number(newPageIndex) - 1)
-        localStorage.setItem(`tablePage_${pageKey}`, (newPageIndex - 1).toString())
+    const handleDecrementPage = () => {
+        const newPageIndex = table.getState().pagination.pageIndex - 1;
+        table.setPageIndex(newPageIndex);
+        localStorage.setItem(`tablePage_${pageKey}`, newPageIndex.toString());
         window.scrollTo({top: 0, behavior: 'smooth'});
     }
 
     const handleFirstPage = () => {
         table.firstPage();
-        localStorage.setItem(`tablePage_${pageKey}`, '1')
+        localStorage.setItem(`tablePage_${pageKey}`, '0');
         window.scrollTo({top: 0, behavior: 'smooth'});
     }
 
     const handleLastPage = () => {
         table.lastPage();
-        localStorage.setItem(`tablePage_${pageKey}`, pageCount.toString());
+        localStorage.setItem(`tablePage_${pageKey}`, (pageCount - 1).toString());
         window.scrollTo({top: 0, behavior: 'smooth'});
     }
 
@@ -62,9 +61,7 @@ const Pagination = ({table, pageKey = 'default'}
             {"<<"}
         </button>
         <button
-            onClick={() => handleDecrementPage(() => {
-                table.previousPage()
-            })}
+            onClick={() => handleDecrementPage()}
             disabled={!table.getCanPreviousPage()}
         >
             {"<"}
@@ -72,9 +69,7 @@ const Pagination = ({table, pageKey = 'default'}
         <div className="pageInformation">{table.getState().pagination.pageIndex + 1}</div>
 
         <button
-            onClick={() => handleIncrementPage(() => {
-                table.nextPage()
-            })}
+            onClick={() => handleIncrementPage()}
             disabled={!table.getCanNextPage()}
         >
             {">"}

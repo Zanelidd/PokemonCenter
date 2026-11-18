@@ -15,8 +15,8 @@ const SelectFilter = ({cards, id, setFilterTags, filterTags}: SetFilterProps) =>
 
         if (value === "") {
             setFilterTags((previous) => {
-                delete previous[category];
-                return { ...previous };
+                const { [category]: _, ...rest } = previous;
+                return rest;
             });
         } else {
             setFilterTags((previous) => ({ ...previous, [category]: value }));

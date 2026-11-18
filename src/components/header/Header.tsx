@@ -1,32 +1,46 @@
 import {NavLink} from 'react-router-dom';
 import style from './header.module.css';
 import {useAuthActions, useUser} from '../../stores/UserStore';
-
 import {useState} from "react";
 import SearchCard from "../searchCard/SearchCard.tsx";
+import {authService} from "../../api/auth.service.ts";
+import {queryClient} from "../../api/queryClient.ts";
+import * as Sentry from "@sentry/react";
 
 const Header = () => {
     const {toggleModal, setLogout} = useAuthActions();
-    const {isAuthenticated, isModalOpen} = useUser();
+    const isAuthenticated = useUser(s => s.isAuthenticated);
+    const isModalOpen = useUser(s => s.isModalOpen);
     const [openBurger, setOpenBurger] = useState(false);
-
 
     const handleModalOpen = () => {
         toggleModal();
         window.scrollTo({top: 0, behavior: 'smooth'});
-        setOpenBurger(false)
-    }
+        setOpenBurger(false);
+    };
 
+    const handleLogout = async () => {
+        setLogout();
+        queryClient.setQueryData(['me'], undefined);
+        setOpenBurger(false);
+        authService.logout().catch((e) => Sentry.captureException(e));
+    };
 
     return <>
         <header className={`${style.header} `}>
-            <div className={style.hamburgerContainer} onClick={() => setOpenBurger(!openBurger)}>
+            <button
+                type="button"
+                aria-label="Toggle menu"
+                aria-expanded={openBurger}
+                className={style.hamburgerContainer}
+                onClick={() => setOpenBurger(!openBurger)}
+            >
                 <div className={style.hamburger}>
                     <div className={`${style.burger} ${style.burger1} ${openBurger ? style.isOpen : ""}`}></div>
                     <div className={`${style.burger} ${style.burger2} ${openBurger ? style.isOpen : ""}`}></div>
                     <div className={`${style.burger} ${style.burger3} ${openBurger ? style.isOpen : ""}`}></div>
                 </div>
-            </div>
+            </button>
             <div className={`${openBurger ? style.headerContainerBurger : style.headerContainer}`}>
                 <nav className={`${style.linkContainer} ${openBurger ? style.navOpen : ''}`}>
                     <NavLink to="/home" onClick={() => setOpenBurger(false)}>Home</NavLink>
@@ -38,12 +52,7 @@ const Header = () => {
                     {isAuthenticated &&
                         <NavLink to="user/account" onClick={() => setOpenBurger(false)}>Account</NavLink>}
                     {isAuthenticated ? (
-                        <button
-                            onClick={() => {
-                                setLogout();
-                                setOpenBurger(false)
-                            }}
-                        >
+                        <button onClick={handleLogout}>
                             Logout
                         </button>
                     ) : (

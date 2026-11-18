@@ -12,15 +12,14 @@ type SearchResultsProps = {
 const SearchResults = ({data}: SearchResultsProps) => {
     const navigate = useNavigate();
 
-
     const {collection} = useCollection();
-    const {isAuthenticated} = useUser()
+    const isAuthenticated = useUser(s => s.isAuthenticated);
     const {
         handleAddCollection,
         handleDeleteCollection,
     } = useCardOperations();
 
-    const isInCollection = collection.find((test) => test.id == data.id)
+    const isInCollection = collection.find((test) => test.id === data.id)
     return (
         <div className={style.cardContainer}>
             <div key={data.id} className={style.cardContainerWithButton}>
@@ -41,7 +40,6 @@ const SearchResults = ({data}: SearchResultsProps) => {
                                 }}
                         >-
                         </button> : <button className={style.buttonAddCardToCollection}
-
                                             onClick={() => {
                                                 handleAddCollection(data)
                                             }}

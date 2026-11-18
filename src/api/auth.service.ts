@@ -6,7 +6,6 @@ export const authService = {
         login: async (form: {
             username: string;
             password: string;
-            email: string;
         }): Promise<LoginResponse> => {
             return http(endpoints.auth.subroutes.login, {
                 method: "POST",
@@ -22,6 +21,12 @@ export const authService = {
                 .then((response) => {
                     return response.json();
                 })
+        },
+
+        logout: async (): Promise<void> => {
+            await http(endpoints.auth.subroutes.logout, {
+                method: "POST",
+            });
         },
 
         register: async (form: {
@@ -95,5 +100,15 @@ export const authService = {
                     return response.json();
                 });
             },
+
+        resetPassword: async (
+            token: string,
+            password: string
+        ): Promise<{ message: string }> => {
+            return http(endpoints.auth.subroutes.resetPassword, {
+                method: "POST",
+                body: JSON.stringify({token, password}),
+            }).then((response) => response.json());
+        },
     }
 ;

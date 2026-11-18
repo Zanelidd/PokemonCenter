@@ -1,37 +1,27 @@
 import {create} from 'zustand';
-import {queryClient} from "../api/queryClient.ts";
+import {useCollection} from './CollectionStore.tsx';
 
 interface UserState {
-    accessToken: string | null;
     isAuthenticated: boolean;
     isModalOpen: boolean;
     actions: {
-        setLogin: (token: string) => void;
+        setLogin: () => void;
         setLogout: () => void;
         toggleModal: () => void;
-    }
+    };
 }
 
-export const useUser = create<UserState>((set) => (
-    {
-        accessToken: null,
-        isModalOpen: false,
-        isAuthenticated: false,
-        actions: {
-            setLogin: (token) => {
-                localStorage.setItem('token', token);
-                set({accessToken: token, isAuthenticated: true});
-            },
-            setLogout: () => {
-                localStorage.removeItem('token');
-                queryClient.removeQueries({ queryKey: ['me'] })
-                set({accessToken: null, isAuthenticated: false});
-            },
-            toggleModal: () => {
-                set((state) => ({isModalOpen: !state.isModalOpen}))
-            },
-        }
-    }))
+export const useUser = create<UserState>((set) => ({
+    isAuthenticated: false,
+    isModalOpen: false,
+    actions: {
+        setLogin: () => set({isAuthenticated: true}),
+        setLogout: () => {
+            set({isAuthenticated: false});
+            useCollection.getState().clearCollection();
+        },
+        toggleModal: () => set((state) => ({isModalOpen: !state.isModalOpen})),
+    },
+}));
 
-export const useAccessToken = () => useUser((s) => s.accessToken);
-export const useAuthActions = () => useUser((s) => s.actions)
+export const useAuthActions = () => useUser((s) => s.actions);

@@ -5,7 +5,7 @@ import style from './login.module.css';
 import VerifPassword from '../../services/validationPassword.ts';
 import api from '../../api/api.service.ts';
 import {showLoading, showWarning, updateLoadingToast} from '../../utils/toastUtils.ts';
-import {LogingCredentials, UserTypes} from "../../types/user.types.ts";
+import {LogingCredentials, RegisterCredentials, UserTypes} from "../../types/user.types.ts";
 import {handleMutationError} from "../../utils/mutationUtils.ts";
 import {MutationErrorContext} from "../../types/error.types.ts";
 import {ForgetPasswordResponse, RegisterResponse} from "../../types/response.types.ts";
@@ -39,8 +39,8 @@ const Login = () => {
                     throw {error: err, loadingId} as MutationErrorContext
                 }
             }, onSuccess: (data) => {
-                setLogin(data.result.access_token)
-                queryClient.setQueryData(['me'], data.result)
+                setLogin();
+                queryClient.setQueryData(['me'], {userId: data.result.userId, username: data.result.username})
                 queryClient.invalidateQueries({queryKey: ['collection']})
                 updateLoadingToast(data.loadingId, "success", "Welcome back! 👋", `${formData.username}`);
                 toggleModal();
@@ -52,7 +52,7 @@ const Login = () => {
 
         const registerMutation = useMutation<{
             result: RegisterResponse, loadingId: string
-        }, MutationErrorContext, LogingCredentials>({
+        }, MutationErrorContext, RegisterCredentials>({
             mutationFn: async (data) => {
                 const loadingId = showLoading("Creating account...");
                 try {
@@ -99,7 +99,7 @@ const Login = () => {
                 if (!formData.username || !formData.password) {
                     return showWarning("Please fill in all fields");
                 }
-                loginMutation.mutate(formData);
+                loginMutation.mutate({ username: formData.username, password: formData.password });
             } else if (!signIn && !forgetPassword) {
                 if (
                     !formData.username ||
@@ -159,23 +159,31 @@ const Login = () => {
             };
         }, [handleClickOutside]);
 
+        const isSubmitting = loginMutation.isPending || registerMutation.isPending;
+
         return (
             <div className={style.loginBack}>
                 <div className={style.loginContainer} ref={modalRef}>
                     {!forgetPassword && <>
-                        <div className={style.headContainer}>
-                            <div
+                        <div className={style.headContainer} role="tablist">
+                            <button
+                                type="button"
+                                role="tab"
+                                aria-selected={signIn}
                                 className={signIn ? style.activeTab : style.inactiveTab}
                                 onClick={() => setSignIn(true)}
                             >
                                 Sign In
-                            </div>
-                            <div
+                            </button>
+                            <button
+                                type="button"
+                                role="tab"
+                                aria-selected={!signIn}
                                 className={!signIn ? style.activeTab : style.inactiveTab}
                                 onClick={() => setSignIn(false)}
                             >
                                 Sign Up
-                            </div>
+                            </button>
                         </div>
                         <form
                             id="loginForm"
@@ -189,7 +197,7 @@ const Login = () => {
                                 id="username"
                                 value={formData.username}
                                 onChange={handleChange}
-                                disabled={loginMutation.isPending}
+                                disabled={isSubmitting}
                                 required
                             />
 
@@ -202,7 +210,7 @@ const Login = () => {
                                         id="email"
                                         value={formData.email}
                                         onChange={handleChange}
-                                        disabled={loginMutation.isPending}
+                                        disabled={isSubmitting}
                                         required
                                     />
                                 </>
@@ -214,7 +222,7 @@ const Login = () => {
                                     name="password"
                                     id="password"
                                     onChange={handleChange}
-                                    disabled={loginMutation.isPending}
+                                    disabled={isSubmitting}
                                     required
                                 />
                                 <button type="button" onClick={togglePasswordVisibility}>
@@ -240,23 +248,23 @@ const Login = () => {
                                     </div>
                                 </>
                             )}
-                            <button type="submit" disabled={loginMutation.isPending}>
-                                {loginMutation.isPending
+                            <button type="submit" disabled={isSubmitting}>
+                                {isSubmitting
                                     ? `Signing ${signIn ? "in" : "up"}...`
                                     : `Sign ${signIn ? "in" : "up"}`}
                             </button>
                             {signIn &&
-                                <p onClick={() => {
-                                    setForgetPassword(!forgetPassword)
-                                    setSignIn(!signIn)
+                                <button type="button" className={style.linkButton} onClick={() => {
+                                    setForgetPassword(!forgetPassword);
+                                    setSignIn(!signIn);
                                 }}>Forget password ?
-                                </p>}
+                                </button>}
                         </form>
                     </>
                     }
                     {forgetPassword &&
 
-                        < form id="loginForm"
+                        <form id="forgetPasswordForm"
                                onSubmit={handleSubmit}
                                className={style.loginForm}>
                             <label htmlFor="email">Email</label>
@@ -266,10 +274,10 @@ const Login = () => {
                                 id="email"
                                 value={formData.email}
                                 onChange={handleChange}
-                                disabled={loginMutation.isPending}
+                                disabled={forgetMutation.isPending}
                                 required
                             />
-                            <button type="submit" disabled={loginMutation.isPending}>
+                            <button type="submit" disabled={forgetMutation.isPending}>
                                 Send Email
                             </button>
                         </form>

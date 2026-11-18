@@ -3,7 +3,7 @@ import style from './setCards.module.css';
 import {useQuery} from '@tanstack/react-query';
 import {Card} from 'pokemon-tcg-sdk-typescript/dist/sdk';
 import {getCoreRowModel, getPaginationRowModel, useReactTable} from '@tanstack/react-table';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import Pagination from '../pagination/Pagination.tsx';
 import api from '../../api/api.service.ts';
 import CardSkeleton from '../skeletons/card-skeleton/CardSkeleton.tsx';
@@ -17,19 +17,26 @@ const SetCards = () => {
     const params = useParams();
     const twentyFourHoursInMs = 1000 * 60 * 60 * 24;
     const NUMBER_OF_PAGE = 20
-    const {isPending, error, data} = useQuery({
+    const {isPending, error, data, refetch} = useQuery({
         queryKey: ["SetCard", `${params.setId}`],
         queryFn: async (): Promise<Array<Card>> => {
             if (params.setId) {
-                const response = await api.apiCard.getCardBySet(params.setId);
-                return Array.isArray(response) ? response : response.data;
+                return await api.apiCard.getCardBySet(params.setId);
             }
             return [];
         },
         staleTime: twentyFourHoursInMs,
+
+        retry: false,
     });
+
+    useEffect(() => {
+        if (error) {
+            showError(error.message);
+        }
+    }, [error]);
     const {collection} = useCollection();
-    const {isAuthenticated} = useUser()
+    const isAuthenticated = useUser(s => s.isAuthenticated);
     const {
         handleAddCollection,
         handleDeleteCollection,
@@ -57,8 +64,12 @@ const SetCards = () => {
     }
 
     if (error) {
-        showError(error.message);
-        return "An error occured: " + error.message;
+        return (
+            <div className={style.errorContainer}>
+                <h2>Failed to load this set's cards</h2>
+                <button onClick={() => refetch()}>Try Again</button>
+            </div>
+        );
     }
 
     return (
@@ -70,7 +81,7 @@ const SetCards = () => {
                         pagination.pageSize + pagination.pageSize * pagination.pageIndex
                     )
                     .map((card: Card) => {
-                        const isInCollection = collection.find((test) => test.id == card.id)
+                        const isInCollection = collection.find((test) => test.id === card.id)
                         return (
                             <div key={card.id} className={style.cardContainerWithButton}>
                                 <img

@@ -16,11 +16,12 @@ const Account = () => {
 
     const mutation = useMutation({
         mutationFn: async (userData: { password: string }) => {
-            user && (await api.auth.modifyPassword(userData, user?.userId));
+            if (!user) throw new Error('User not logged in');
+            return api.auth.modifyPassword(userData, user.userId);
         },
         onSuccess: () => {
             showSuccess(`Password change successfully`);
-            setFormData({...formData, password: ''});
+            setFormData(prev => ({...prev, password: ''}));
             setConfirmPassword('');
         },
         onError: (error) => {
@@ -36,9 +37,7 @@ const Account = () => {
             ifPasswordValid.forEach((error) => showWarning(error));
             return;
         }
-        if (ifPasswordValid.length === 0) {
-            mutation.mutate(formData);
-        }
+        mutation.mutate(formData);
     };
 
     return (
@@ -77,7 +76,7 @@ const Account = () => {
                                     setConfirmPassword(e.target.value);
                                 }}
                             />
-                            <button type="submit">Update Password</button>
+                            <button type="submit" disabled={mutation.isPending}>Update Password</button>
                         </form>
                     </div>
                 </div>

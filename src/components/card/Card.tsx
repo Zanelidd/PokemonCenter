@@ -1,88 +1,60 @@
 import {useNavigate, useParams} from "react-router-dom";
 import style from "./card.module.css";
 import {useCollection} from "../../stores/CollectionStore";
-import {useMutation, useQuery} from "@tanstack/react-query";
+import {useQuery} from "@tanstack/react-query";
 import loadingGif from "/ピカチュウ-pokeball.gif";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import type {Attack, Card} from "pokemon-tcg-sdk-typescript/dist/sdk";
 import api from "../../api/api.service.ts";
-import {cardResponse, CollectionCard} from "../../types/card.types.ts";
-import {showError, showSuccess} from "../../utils/toastUtils.ts";
+import {showError} from "../../utils/toastUtils.ts";
 import {useMe} from "../../hook/useMe.ts";
+import {useCardOperations} from "../../hook/useCardMutation.ts";
 
 const Card = () => {
     const navigate = useNavigate();
     const params = useParams();
     const cardId = params.cardId;
     const [coord, setCoord] = useState({x: 0, y: 0});
-    const {collection, addToCollection, deleteFromCollection, getCardById} =
-        useCollection();
+    const {collection} = useCollection();
+    const {handleAddCollection, handleDeleteCollection} = useCardOperations();
 
-    const isInCollection = collection.find((test) => test.id == params.cardId);
+    const isInCollection = collection.find((test) => test.id === params.cardId);
 
     const twentyFourHoursInMs = 1000 * 60 * 60 * 24;
 
     const {data: user} = useMe();
 
-    const mutation = useMutation({
-        mutationFn: async (data: Card) => {
-            if (user) {
-                return api.card.addCard(user.userId, data.id);
-            }
-            throw new Error();
-        },
-        onSuccess: (result, data: Card) => {
-            addToCollection(data, result.id);
-            showSuccess("Cards added successfully.");
-        },
-        onError: (error) => {
-            showError(error.message);
-        },
-    });
-
-    const mutationDelete = useMutation({
-        mutationFn: async (data: CollectionCard) => {
-            return api.card.deleteCard(data.id);
-        },
-        onSuccess: (data: cardResponse) => {
-            deleteFromCollection(data.remoteId);
-            showSuccess("Card delete successfully");
-        },
-        onError: (error) => {
-            showError(error.message);
-        },
-    });
-
-    const handleAddCollection = (data: Card) => {
-        mutation.mutate(data);
-    };
-
-    const handleDeleteCollection = (data: Card) => {
-        const findCard = getCardById(data.id);
-        if (findCard) {
-            mutationDelete.mutate(findCard);
-        } else {
-            showError("Card not found in collection");
-        }
-    };
-
-    const {isPending, error, data} = useQuery({
+    const {isPending, error, data, refetch} = useQuery({
         queryKey: ["PokemonCard", `${params.cardId}`],
         queryFn: async () => {
-            if (params.cardId) {
-                return await api.apiCard.getCardById(params.cardId);
-            }
+            if (!params.cardId) throw new Error('No card ID');
+            return api.apiCard.getCardById(params.cardId);
         },
         staleTime: twentyFourHoursInMs,
+
+        retry: false,
     });
+
+    useEffect(() => {
+        if (error) {
+            showError(error.message);
+        }
+    }, [error]);
 
     if (isPending) {
         return <img className="loadingGif" src={loadingGif} alt="Loading Gif"/>;
     }
 
     if (error) {
-        showError(error.message);
+        return (
+            <div className={style.errorContainer}>
+                <h2>Failed to load this card</h2>
+                <button onClick={() => refetch()}>Try Again</button>
+            </div>
+        );
     }
+
+    if (!data) return null;
 
     return (
         <div className={style.cardInfoContainer}>
@@ -90,7 +62,7 @@ const Card = () => {
                 <div
                     className={style.imgContainer}
                     onMouseMove={(e) => {
-                        const elRect = (e.target as HTMLDivElement).getBoundingClientRect();
+                        const elRect = e.currentTarget.getBoundingClientRect();
 
                         const root = document.documentElement;
                         const x = Math.round(e.clientX - elRect.left);
@@ -113,12 +85,12 @@ const Card = () => {
                     onMouseLeave={() => {
                         const root = document.documentElement;
 
-                        root.style.setProperty("--xAxis", `0 deg`);
-                        root.style.setProperty("--yAxis", `0 deg`);
+                        root.style.setProperty("--xAxis", `0deg`);
+                        root.style.setProperty("--yAxis", `0deg`);
                         root.style.setProperty("--o", "1");
                     }}
                 >
-                    <img className={style.cardImg} src={data.images.large} alt=""/>
+                    <img className={style.cardImg} src={data.images.large} alt={data.name}/>
                 </div>
             </div>
             <section className={style.infosContainer}>
@@ -136,9 +108,9 @@ const Card = () => {
                     <div className={style.textInfo}>
                         <div className={style.attackContainer}>
                             <p className={style.priceTitle}>Attacks</p>
-                            {data.attacks?.map((attack: Attack) => {
+                            {data.attacks?.map((attack: Attack, index: number) => {
                                 return (
-                                    <div key={attack.text} className={style.attack}>
+                                    <div key={attack.name ?? index} className={style.attack}>
                                         <div className={style.attackTitle}>
                                             <p>{attack.name}</p>
                                             <p>{attack.damage}</p>
@@ -153,34 +125,34 @@ const Card = () => {
                             <p className={style.priceTitle}>Prices</p>
                             {data?.tcgplayer?.prices?.normal ? (
                                 <div className={style.normalPrice}>
-                                    <p>Low Price: {data.tcgplayer?.prices.normal?.low} $</p>
+                                    <p>Low Price: {data.tcgplayer?.prices?.normal?.low} $</p>
                                     <p>
-                                        Average Price: {data.tcgplayer?.prices.normal?.market} $
+                                        Average Price: {data.tcgplayer?.prices?.normal?.market} $
                                     </p>
-                                    <p>High Price: {data.tcgplayer?.prices.normal?.high} $</p>
+                                    <p>High Price: {data.tcgplayer?.prices?.normal?.high} $</p>
                                 </div>
                             ) : null}
                             {data?.tcgplayer?.prices?.holofoil ? (
                                 <div className={style.hollowPrice}>
                                     <p>
-                                        Holo Low Price: {data.tcgplayer?.prices.holofoil?.low} $
+                                        Holo Low Price: {data.tcgplayer?.prices?.holofoil?.low} $
                                     </p>
                                     <p>
                                         Holo Average Price:{" "}
-                                        {data.tcgplayer?.prices.holofoil?.market} $
+                                        {data.tcgplayer?.prices?.holofoil?.market} $
                                     </p>
                                     <p>
-                                        Holo High Price: {data.tcgplayer?.prices.holofoil?.high} $
+                                        Holo High Price: {data.tcgplayer?.prices?.holofoil?.high} $
                                     </p>
                                 </div>
                             ) : null}
-                            <p tabIndex={0}
-                               className={style.numberOfCard}
-                               onClick={() => {
-                                   navigate(`/${data.set.id}`)
-                               }}>
+                            <button
+                                type="button"
+                                className={style.numberOfCard}
+                                onClick={() => navigate(`/${data.set.id}`)}
+                            >
                                 Card number: {data.number}/{data.set.total}
-                            </p>
+                            </button>
                         </div>
                     </div>
                 </div>

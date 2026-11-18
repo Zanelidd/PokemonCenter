@@ -1,45 +1,62 @@
 import style from "../accountcollectioninfo/accountCollectionInfo.module.css";
 import api from "../../api/api.service.ts";
 import {showError, showSuccess} from "../../utils/toastUtils.ts";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useCollection} from "../../stores/CollectionStore.tsx";
 import {useNavigate} from "react-router-dom";
+import {useMutation, useQuery} from "@tanstack/react-query";
+import {useMe} from "../../hook/useMe.ts";
 
 const AccountCollectionInfo = () => {
     const [validationModal, setValidationModal] = useState(false);
-    const {collection, clearCollection} = useCollection();
+    const {collection, clearCollection, setCollectionFromApi} = useCollection();
+    const {data: user} = useMe();
+
+    const {data: apiCards} = useQuery({
+        queryKey: ['collection', user?.userId],
+        queryFn: () => api.card.getCard(user!.userId),
+        enabled: !!user?.userId,
+        staleTime: 1000 * 60 * 5,
+    });
+
+    useEffect(() => {
+        if (apiCards) setCollectionFromApi(apiCards);
+    }, [apiCards, setCollectionFromApi]);
     const navigate = useNavigate();
 
-    const handleCollectionDelete = () => {
-        Promise.all(
-            collection.map((card) => {
-                return api.card.deleteCard(card.id);
-            })
-        )
-            .then(() => {
-                clearCollection()
-                showSuccess('Collection now is gone...')
-                setValidationModal(false);
-            })
-            .catch((error) => showError(error.message));
-    };
+    const {mutate: deleteAll, isPending} = useMutation({
+        mutationFn: () => Promise.allSettled(
+            collection.map((card) => api.card.deleteCard(card.id))
+        ),
+        onSuccess: (results) => {
+            const failedCount = results.filter(r => r.status === 'rejected').length;
+            clearCollection();
+            if (failedCount > 0) {
+                showError(`${failedCount} card(s) could not be deleted from server`);
+            } else {
+                showSuccess('Collection deleted');
+            }
+            setValidationModal(false);
+        },
+    });
+
     const initialPrice = 0;
     const collectionPrice = collection.reduce((acc, currentValue) => {
-        const cardPrice = (currentValue.tcgplayer?.prices.normal?.mid)
-            || (currentValue.tcgplayer?.prices.holofoil?.mid)
-            || (currentValue.tcgplayer?.prices.reverseHolofoil?.mid)
+        const cardPrice = (currentValue.tcgplayer?.prices?.normal?.mid)
+            || (currentValue.tcgplayer?.prices?.holofoil?.mid)
+            || (currentValue.tcgplayer?.prices?.reverseHolofoil?.mid)
             || 0
         return acc + cardPrice;
     }, initialPrice)
 
 
     return <div className={style.accountInfos}>
-        {  collection[collection.length - 1] && <div className={style.lastCard}>
+        {collection[collection.length - 1] && <div className={style.lastCard}>
             <h3>Last card add to the collection: </h3>
-            <p onClick={() => {
+            <button type="button" onClick={() => {
                 navigate(`/card/${collection[collection.length - 1].id}`)
-            }}>{collection[collection.length - 1].name}</p>
-        </div> }
+            }}>{collection[collection.length - 1].name}</button>
+        </div>}
         <div className={style.accountContainer}>
             <h3>Estimated value: </h3>
             <p>{Math.round(collectionPrice)} $</p>
@@ -50,15 +67,12 @@ const AccountCollectionInfo = () => {
             <button
                 className={style.buttonConfirmAccount}
                 type="button"
-                onClick={() => {
-                    setValidationModal(!validationModal);
-                }}
+                disabled={isPending}
+                onClick={() => setValidationModal(!validationModal)}
             >
                 Delete collection
             </button>
         </div>
-
-
 
         {validationModal ? (
             <div className={style.confirmationModal}>
@@ -66,17 +80,15 @@ const AccountCollectionInfo = () => {
                 <div className={style.buttonConfirm}>
                     <button
                         type="button"
-                        onClick={() => {
-                            handleCollectionDelete();
-                        }}
+                        disabled={isPending}
+                        onClick={() => deleteAll()}
                     >
-                        Yes
+                        {isPending ? 'Deleting...' : 'Yes'}
                     </button>
                     <button
                         type="button"
-                        onClick={() => {
-                            setValidationModal(false);
-                        }}
+                        disabled={isPending}
+                        onClick={() => setValidationModal(false)}
                     >
                         No
                     </button>

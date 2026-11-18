@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import {useEffect, useRef} from 'react';
 import {useNavigate, useSearchParams} from 'react-router-dom';
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {authService} from '../../api/auth.service.ts';
@@ -13,7 +13,7 @@ export default function VerifyEmail() {
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
     const token = searchParams.get("token");
-    const {setLogin} = useAuthActions()
+    const {setLogin} = useAuthActions();
     const queryClient = useQueryClient()
 
     const verifyMutation = useMutation<{ user: UserTypes; loadingId: string }, MutationErrorContext, string>({
@@ -27,8 +27,8 @@ export default function VerifyEmail() {
                     }
                 },
                 onSuccess: ({user, loadingId}) => {
-                    setLogin(user.access_token);
-                    queryClient.setQueryData(['me'], user);
+                    setLogin();
+                    queryClient.setQueryData(['me'], {userId: user.userId, username: user.username});
 
                     updateLoadingToast(
                         loadingId,
@@ -48,24 +48,18 @@ export default function VerifyEmail() {
     ;
 
 
+    const called = useRef(false);
     useEffect(() => {
         if (!token) {
             showError("Verification failed", "Missing verification token");
             return;
         }
-
-        if (
-            !verifyMutation.isPending &&
-            !verifyMutation.isSuccess &&
-            !verifyMutation.isError
-        ) {
-            showInfo(
-                "Verifying email",
-                "Please wait while we verify your email address"
-            );
+        if (!called.current) {
+            called.current = true;
+            showInfo("Verifying email", "Please wait while we verify your email address");
             verifyMutation.mutate(token);
         }
-    }, [token, verifyMutation]);
+    }, [token, verifyMutation.mutate]);
 
     if (!token) {
         return (
@@ -101,7 +95,7 @@ export default function VerifyEmail() {
                 {verifyMutation.isError && (
                     <>
                         <div className={styles.verifyError}>
-                            {verifyMutation.error.error.message}
+                            {verifyMutation.error?.error?.message ?? 'Verification failed'}
                         </div>
                         <button
                             className={styles.verifyButton}

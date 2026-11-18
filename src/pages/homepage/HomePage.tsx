@@ -2,7 +2,7 @@ import style from './homePage.module.css';
 import {useNavigate} from 'react-router-dom';
 import {useQuery} from '@tanstack/react-query';
 import type {Set} from 'pokemon-tcg-sdk-typescript/dist/sdk';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {getCoreRowModel, getPaginationRowModel, useReactTable} from '@tanstack/react-table';
 import Pagination from '../../components/pagination/Pagination.tsx';
 import api from '../../api/api.service.ts';
@@ -19,25 +19,20 @@ const HomePage = () => {
         pageSize: NUMBER_OF_PAGE,
     });
 
-    const {isPending, data, refetch} = useQuery({
+    const {isPending, error, data, refetch} = useQuery({
         queryKey: ["PokemonSet"],
         queryFn: async (): Promise<Array<Set>> => {
-            try {
-                const result = await api.apiCard.getAllSets();
-                return Array.isArray(result) ? result : result.data || [];
-            } catch (error) {
-                if (error instanceof Error) {
-                    showError(
-                        "Unable to retrieve Pokémon card sets",
-                        "0 set found",
-                        refetch
-                    );
-                }
-                throw error;
-            }
+            return await api.apiCard.getAllSets();
         },
         staleTime: twentyFourHoursInMs,
+        retry: false,
     });
+
+    useEffect(() => {
+        if (error) {
+            showError("Unable to retrieve Pokémon card sets", error.message, refetch);
+        }
+    }, [error, refetch]);
 
     const table = useReactTable({
         columns: [],
@@ -54,6 +49,15 @@ const HomePage = () => {
         return <SetSkeleton/>;
     }
 
+    if (error) {
+        return (
+            <div className={style.errorContainer}>
+                <h2>Failed to load Pokémon sets</h2>
+                <button onClick={() => refetch()}>Try Again</button>
+            </div>
+        );
+    }
+
     if (!data) {
         return null;
     }
@@ -68,12 +72,11 @@ const HomePage = () => {
                     )
                     .map((set) => {
                         return (
-                            <div
+                            <button
                                 key={set.id}
+                                type="button"
                                 className={style.setCard}
-                                onClick={() => {
-                                    navigate(`/${set.id}`);
-                                }}
+                                onClick={() => navigate(`/${set.id}`)}
                             >
                                 <img
                                     className={style.setImg}
@@ -81,7 +84,7 @@ const HomePage = () => {
                                     alt={`Image of the set ${set.name}`}
                                 />
                                 <h3 className={style.setName}>{set.name}</h3>
-                            </div>
+                            </button>
                         );
                     })}
             </div>
