@@ -22,8 +22,7 @@ const HomePage = () => {
     const {isPending, error, data, refetch} = useQuery({
         queryKey: ["PokemonSet"],
         queryFn: async (): Promise<Array<Set>> => {
-            const result = await api.apiCard.getAllSets();
-            return Array.isArray(result) ? result : result.data || [];
+            return await api.apiCard.getAllSets();
         },
         staleTime: twentyFourHoursInMs,
         retry: false,
@@ -48,6 +47,15 @@ const HomePage = () => {
 
     if (isPending) {
         return <SetSkeleton/>;
+    }
+
+    if (error) {
+        return (
+            <div className={style.errorContainer}>
+                <h2>Failed to load Pokémon sets</h2>
+                <button onClick={() => refetch()}>Try Again</button>
+            </div>
+        );
     }
 
     if (!data) {
