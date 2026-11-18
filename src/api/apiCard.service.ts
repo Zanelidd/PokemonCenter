@@ -5,12 +5,7 @@ export const apiCardService = {
   getCardBySet: async (setId: string) => {
     return http(`${endpoints.externalApi.subroutes.cards}?setId=${encodeURIComponent(setId)}`, {
       method: 'GET',
-    })
-      .then((response) => response.json())
-      .catch((error) => {
-        console.error(error);
-        throw error;
-      });
+    }).then((response) => response.json());
   },
 
   getAllSets: async () => {
