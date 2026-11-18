@@ -37,8 +37,7 @@ const Results = () => {
         staleTime: twentyFourHoursInMs,
         queryFn: async (): Promise<Array<Card>> => {
             try {
-                const result = await api.apiCard.getCardByName({name: state});
-                const cards = Array.isArray(result) ? result : result.data || [];
+                const cards = await api.apiCard.getCardByName({name: state});
                 if (cards.length === 0) {
                     showInfo(`No cards found matching "${state}"`);
                 }

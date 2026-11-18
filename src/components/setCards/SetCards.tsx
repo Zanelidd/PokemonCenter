@@ -21,8 +21,7 @@ const SetCards = () => {
         queryKey: ["SetCard", `${params.setId}`],
         queryFn: async (): Promise<Array<Card>> => {
             if (params.setId) {
-                const response = await api.apiCard.getCardBySet(params.setId);
-                return Array.isArray(response) ? response : response.data;
+                return await api.apiCard.getCardBySet(params.setId);
             }
             return [];
         },

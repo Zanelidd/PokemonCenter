@@ -22,8 +22,7 @@ const HomePage = () => {
     const {isPending, error, data, refetch} = useQuery({
         queryKey: ["PokemonSet"],
         queryFn: async (): Promise<Array<Set>> => {
-            const result = await api.apiCard.getAllSets();
-            return Array.isArray(result) ? result : result.data || [];
+            return await api.apiCard.getAllSets();
         },
         staleTime: twentyFourHoursInMs,
         retry: false,
