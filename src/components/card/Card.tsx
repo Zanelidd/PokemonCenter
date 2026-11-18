@@ -24,7 +24,7 @@ const Card = () => {
 
     const {data: user} = useMe();
 
-    const {isPending, error, data} = useQuery({
+    const {isPending, error, data, refetch} = useQuery({
         queryKey: ["PokemonCard", `${params.cardId}`],
         queryFn: async () => {
             if (!params.cardId) throw new Error('No card ID');
@@ -43,6 +43,15 @@ const Card = () => {
 
     if (isPending) {
         return <img className="loadingGif" src={loadingGif} alt="Loading Gif"/>;
+    }
+
+    if (error) {
+        return (
+            <div className={style.errorContainer}>
+                <h2>Failed to load this card</h2>
+                <button onClick={() => refetch()}>Try Again</button>
+            </div>
+        );
     }
 
     if (!data) return null;
