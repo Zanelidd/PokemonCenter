@@ -17,7 +17,7 @@ const SetCards = () => {
     const params = useParams();
     const twentyFourHoursInMs = 1000 * 60 * 60 * 24;
     const NUMBER_OF_PAGE = 20
-    const {isPending, error, data} = useQuery({
+    const {isPending, error, data, refetch} = useQuery({
         queryKey: ["SetCard", `${params.setId}`],
         queryFn: async (): Promise<Array<Card>> => {
             if (params.setId) {
@@ -65,7 +65,12 @@ const SetCards = () => {
     }
 
     if (error) {
-        return "An error occured: " + error.message;
+        return (
+            <div className={style.errorContainer}>
+                <h2>Failed to load this set's cards</h2>
+                <button onClick={() => refetch()}>Try Again</button>
+            </div>
+        );
     }
 
     return (
