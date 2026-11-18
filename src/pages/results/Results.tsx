@@ -49,7 +49,15 @@ const Results = () => {
                 throw new Error(errorMessage);
             }
         },
+
+        retry: false,
     });
+
+    useEffect(() => {
+        if (error) {
+            showError('Search failed', error.message);
+        }
+    }, [error]);
 
     const table = useReactTable({
         columns: [],
@@ -66,10 +74,6 @@ const Results = () => {
         return <CardSkeleton/>;
     }
     if (error) {
-        showError(
-            'Search failed',
-            error.message,
-        );
         return (
             <div className={style.errorContainer}>
                 <h2>Failed to load results</h2>

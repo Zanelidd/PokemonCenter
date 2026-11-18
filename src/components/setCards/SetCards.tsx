@@ -3,7 +3,7 @@ import style from './setCards.module.css';
 import {useQuery} from '@tanstack/react-query';
 import {Card} from 'pokemon-tcg-sdk-typescript/dist/sdk';
 import {getCoreRowModel, getPaginationRowModel, useReactTable} from '@tanstack/react-table';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import Pagination from '../pagination/Pagination.tsx';
 import api from '../../api/api.service.ts';
 import CardSkeleton from '../skeletons/card-skeleton/CardSkeleton.tsx';
@@ -27,7 +27,15 @@ const SetCards = () => {
             return [];
         },
         staleTime: twentyFourHoursInMs,
+
+        retry: false,
     });
+
+    useEffect(() => {
+        if (error) {
+            showError(error.message);
+        }
+    }, [error]);
     const {collection} = useCollection();
     const isAuthenticated = useUser(s => s.isAuthenticated);
     const {
@@ -57,7 +65,6 @@ const SetCards = () => {
     }
 
     if (error) {
-        showError(error.message);
         return "An error occured: " + error.message;
     }
 

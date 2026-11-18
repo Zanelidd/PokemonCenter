@@ -31,6 +31,8 @@ const Card = () => {
             return api.apiCard.getCardById(params.cardId);
         },
         staleTime: twentyFourHoursInMs,
+
+        retry: false,
     });
 
     useEffect(() => {
