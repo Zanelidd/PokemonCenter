@@ -28,8 +28,6 @@ export const apiCardService = {
   getCardById: async (id: string) => {
     return http(`${endpoints.externalApi.subroutes.cards}/${id}`, {
       method: 'GET',
-    })
-      .then((response) => response.json())
-      .then((data) => data.data);
+    }).then((response) => response.json());
   },
 };
