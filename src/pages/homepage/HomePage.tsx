@@ -50,6 +50,15 @@ const HomePage = () => {
         return <SetSkeleton/>;
     }
 
+    if (error) {
+        return (
+            <div className={style.errorContainer}>
+                <h2>Failed to load Pokémon sets</h2>
+                <button onClick={() => refetch()}>Try Again</button>
+            </div>
+        );
+    }
+
     if (!data) {
         return null;
     }
