@@ -86,7 +86,7 @@ select:focus {
         margin-right: 0;
     }
 
-    button {
+    .filterContainer button {
         margin-top: 8px;
         margin-left: 0;
         width: 70%;
@@ -108,7 +108,7 @@ select:focus {
 
     }
 
-    button {
+    .filterContainer button {
         margin-top: 8px;
         margin-left: 0;
         width: 70%;
