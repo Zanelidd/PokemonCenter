@@ -4,7 +4,7 @@
     display: flex;
     justify-content: space-between;
     width: 100%;
-    min-height: 68px;
+    min-height: var(--headerHeight);
     align-items: center;
     padding: 0.75rem 1.5rem;
     background-color: var(--tertiaryColor);
