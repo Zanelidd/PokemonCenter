@@ -63,7 +63,7 @@ header a {
     transform: rotate(45deg);
 }
 
-.burger1 {
+.burger2 {
     transform: translateX(0);
     opacity: 1;
 }
@@ -73,7 +73,7 @@ header a {
     opacity: 0;
 }
 
-.burger1 {
+.burger3 {
     transform: rotate(0);
 }
 
@@ -156,8 +156,6 @@ a.active {
         justify-content: center;
         align-items: center;
         z-index: 150;
-        transform: translateY(100%);
-
     }
 
 
