@@ -6,7 +6,10 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react(), sentryVitePlugin({
     org: "none-wsy",
-    project: "pokemon-center"
+    project: "pokemon-center",
+    sourcemaps: {
+      filesToDeleteAfterUpload: ["./dist/**/*.map"]
+    }
   })],
 
   define: {
@@ -17,6 +20,6 @@ export default defineConfig({
   },
 
   build: {
-    sourcemap: true
+    sourcemap: "hidden"
   }
 });

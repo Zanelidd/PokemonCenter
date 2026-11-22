@@ -3,10 +3,10 @@
     top: 0;
     display: flex;
     justify-content: space-between;
-    width: 100vw;
-    min-height: 75px;
+    width: 100%;
+    min-height: var(--headerHeight);
     align-items: center;
-    padding: 1.5vw;
+    padding: 0.75rem 1.5rem;
     background-color: var(--tertiaryColor);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
     z-index: 2;
@@ -63,7 +63,7 @@ header a {
     transform: rotate(45deg);
 }
 
-.burger1 {
+.burger2 {
     transform: translateX(0);
     opacity: 1;
 }
@@ -73,7 +73,7 @@ header a {
     opacity: 0;
 }
 
-.burger1 {
+.burger3 {
     transform: rotate(0);
 }
 
@@ -156,8 +156,6 @@ a.active {
         justify-content: center;
         align-items: center;
         z-index: 150;
-        transform: translateY(100%);
-
     }
 
 
