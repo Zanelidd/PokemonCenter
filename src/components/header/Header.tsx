@@ -26,48 +26,48 @@ const Header = () => {
         authService.logout().catch((e) => Sentry.captureException(e));
     };
 
-    return <>
-        <header className={`${style.header} `}>
-            <button
-                type="button"
-                aria-label="Toggle menu"
-                aria-expanded={openBurger}
-                className={style.hamburgerContainer}
-                onClick={() => setOpenBurger(!openBurger)}
-            >
-                <div className={style.hamburger}>
-                    <div className={`${style.burger} ${style.burger1} ${openBurger ? style.isOpen : ""}`}></div>
-                    <div className={`${style.burger} ${style.burger2} ${openBurger ? style.isOpen : ""}`}></div>
-                    <div className={`${style.burger} ${style.burger3} ${openBurger ? style.isOpen : ""}`}></div>
-                </div>
-            </button>
-            <div className={`${openBurger ? style.headerContainerBurger : style.headerContainer}`}>
-                <nav className={`${style.linkContainer} ${openBurger ? style.navOpen : ''}`}>
-                    <NavLink to="/home" onClick={() => setOpenBurger(false)}>Home</NavLink>
-                    {isAuthenticated &&
-                        <NavLink to="user/collection" onClick={() => setOpenBurger(false)}>Collection</NavLink>}
-                </nav>
-                {!openBurger && <SearchCard/>}
-                <nav className={`${style.loginContainer} ${openBurger ? style.navOpen : ''}`}>
-                    {isAuthenticated &&
-                        <NavLink to="user/account" onClick={() => setOpenBurger(false)}>Account</NavLink>}
-                    {isAuthenticated ? (
-                        <button onClick={handleLogout}>
-                            Logout
-                        </button>
-                    ) : (
-                        <button type="button" disabled={isModalOpen}
-                                onClick={() => {
-                                    handleModalOpen();
-                                }}
-                        >
-                            Connect
-                        </button>
-                    )}
-                </nav>
+
+    return <header className={`${style.header} `}>
+        <button
+            type="button"
+            aria-label="Toggle menu"
+            aria-expanded={openBurger}
+            className={style.hamburgerContainer}
+            onClick={() => setOpenBurger(!openBurger)}
+        >
+            <div className={style.hamburger}>
+                <div className={`${style.burger} ${style.burger1} ${openBurger ? style.isOpen : ""}`}></div>
+                <div className={`${style.burger} ${style.burger2} ${openBurger ? style.isOpen : ""}`}></div>
+                <div className={`${style.burger} ${style.burger3} ${openBurger ? style.isOpen : ""}`}></div>
             </div>
-        </header>
-    </>;
+        </button>
+        <div className={`${openBurger ? style.headerContainerBurger : style.headerContainer}`}>
+            <nav className={`${style.linkContainer} ${openBurger ? style.navOpen : ''}`}>
+                <NavLink to="/home" onClick={() => setOpenBurger(false)}>Home</NavLink>
+                {isAuthenticated &&
+                    <NavLink to="user/collection" onClick={() => setOpenBurger(false)}>Collection</NavLink>}
+            </nav>
+            {!openBurger && <SearchCard/>}
+            <nav className={`${style.loginContainer} ${openBurger ? style.navOpen : ''}`}>
+                {isAuthenticated &&
+                    <NavLink to="user/account" onClick={() => setOpenBurger(false)}>Account</NavLink>}
+                {isAuthenticated ? (
+                    <button onClick={handleLogout}>
+                        Logout
+                    </button>
+                ) : (
+                    <button type="button" disabled={isModalOpen}
+                            onClick={() => {
+                                handleModalOpen();
+                            }}
+                    >
+                        Connect
+                    </button>
+                )}
+            </nav>
+        </div>
+    </header>
+
 };
 
 export default Header;
