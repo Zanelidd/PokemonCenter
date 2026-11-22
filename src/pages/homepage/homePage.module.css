@@ -1,10 +1,18 @@
 .containerHome {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
     align-items: center;
     width: 100%;
+    min-height: 100%;
 
+}
+
+.containerHome > *:first-child {
+    margin-top: auto;
+}
+
+.containerHome > *:last-child {
+    margin-bottom: auto;
 }
 
 .setContainer {
